@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SABdrop options</title>
+        <link rel="stylesheet" type="text/css" href="css/options.css"/>
+    </head>
+    <body>
+        <header>
+            <img src="images/icons/sab48.png" alt="SABdrop options"/>
+            <h1>SABdrop options</h1>
+        </header>
+        <form>
+            <label for=host">SABnzbd host <sup title="URL to SABnzbd, optionally with port. For example: http://localhost/sabnzbd/ or http://192.168.80.1:8080/">?</sup></label>
+            <input id="host" type="url"/>
+            <br/>
+            <label for="apiKey">API key <sup title="API key can be found in the SABnzbd settings">?</sup></label>
+            <input id="apiKey" type="text"/>
+            <br/>
+            <label for="popupHide">Hide popup after (ms) <sup title="After how many milliseconds should the popup disappear? Use 0 to disable popups completely.">?</sup></label>
+            <input id="popupHide" type="number" step="100" min="0"/>
+            <br/>
+            <button id="verify">Verify connection</button>&nbsp;<span id="verifyResult"></span>
+            <p>
+                Hover over question mark for help/explanation.
+            </p>
+        </form>
+        <script type="text/javascript" src="js/lib/jquery-1.6.1.min.js"></script>
+        <script type="text/javascript" src="js/sabapi.js"></script>
+        <script type="text/javascript" src="js/options.js"></script>
+    </body>
+</html>

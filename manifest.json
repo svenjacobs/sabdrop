@@ -1,0 +1,30 @@
+{
+    "name": "SABdrop",
+    "version": "0.0.1",
+    "description": "Send NZB links to SABnzbd for download.",
+    "permissions": [
+        "contextMenus",
+        "notifications",
+        "tabs",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "icons": {
+        "16": "images/icons/sab16.png",
+        "48": "images/icons/sab48.png",
+       "128": "images/icons/sab128.png"
+    },
+    "background_page": "background.html",
+    "options_page": "options.html",
+    "content_scripts": [
+        {
+            "matches": ["http://*/*", "https://*/*"],
+            "js": ["js/lib/jquery-1.6.1.min.js", "js/content_nzb.js"]
+        }
+    ],
+    "page_action": {
+        "default_icon": "images/icons/sab16.png",
+        "default_title": "SABdrop found NZBs on this page",
+        "default_popup": "page_action.html"
+    }
+}

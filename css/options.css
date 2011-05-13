@@ -1,0 +1,54 @@
+@import "common.css";
+
+header {
+    height: 48px;
+    margin-bottom: 1em;
+    white-space: nowrap;
+}
+
+header h1 {
+    font-size: large;
+    line-height: 48px;
+    margin: 0 0 0 0.5em;
+}
+
+header img {
+    width: 48px;
+    height: 48px;
+}
+
+header h1, header img {
+    float: left;
+}
+
+label {
+    display: block;
+    width: 11em;
+    float: left;
+}
+
+label sup {
+    cursor: help;
+}
+
+input {
+    width: 20em;
+}
+
+form {
+    background-color: #f3f3f3;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+#verifyResult {
+    font-weight: bold;
+}
+
+#verifyResult.good {
+    color: green;
+}
+
+#verifyResult.bad {
+    color: red;
+}

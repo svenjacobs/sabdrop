@@ -1,0 +1,34 @@
+@import "common.css";
+
+body {
+    font-size: small;
+}
+
+#downloads {
+    min-width: 200px;
+    max-width: 500px;
+    min-height: 200px;
+    max-height: 400px;
+    overflow: scroll;
+    padding: 1em;
+}
+
+#downloads ul {
+    margin: 0;
+    padding: 0 0 0 0.5em;
+    list-style-type: square;
+}
+
+#downloads ul li {
+    color: blue;
+}
+
+#downloads ul li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#downloads ul li.clicked {
+    color: #ccc;
+    text-decoration: line-through; 
+}
