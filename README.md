@@ -9,7 +9,7 @@ Additionally it scans websites for linked NZB files and - when files are found -
 adds a page action to the address bar of Chrome that offers transmission of
 those files to SABnzbd.
 
-SABdrop has been tested with SABnzbd version 0.6.0.
+SABdrop has been tested with SABnzbd version 0.6.0 but should run with 0.5.x, too.
 
 Configuration
 -------------
@@ -18,8 +18,8 @@ The options page of SABdrop offers three settings. These are:
 
 ### SABnzbd host
 
-This is the full address to a SABnzbd instance including the protocol and
-**optionally** the port. Some examples:
+This is the full address of a SABnzbd instance including the protocol and
+**optionally** port. Some examples:
 
     http://localhost/sabnzbd
     http://localhost:8080/
