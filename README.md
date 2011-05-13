@@ -1,4 +1,4 @@
-SAPdrop
+SABdrop
 =======
 
 SAPdrop is a Google Chrome extension that permits sending links of
