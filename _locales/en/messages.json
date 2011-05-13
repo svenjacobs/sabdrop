@@ -1,0 +1,14 @@
+{
+    "ext_description": {
+        "message": "Send NZB links to SABnzbd for download.",
+        "description": "Description of extension"
+    },
+    "page_action_title": {
+        "message": "SABdrop found NZBs on this page",
+        "description": "Title of page action"
+    },
+    "page_action_message": {
+        "message": "SABdrop found NZBs on this page. Click on one to send it to your SABnzbd.",
+        "description": "Text that is displayed in head of page action popup"
+    }
+}

@@ -1,7 +1,8 @@
 {
     "name": "SABdrop",
-    "version": "0.1",
-    "description": "Send NZB links to SABnzbd for download.",
+    "version": "0.2",
+    "description": "__MSG_ext_description__",
+    "default_locale": "en",
     "permissions": [
         "contextMenus",
         "notifications",
@@ -24,7 +25,7 @@
     ],
     "page_action": {
         "default_icon": "images/icons/sab16.png",
-        "default_title": "SABdrop found NZBs on this page",
+        "default_title": "__MSG_page_action_title__",
         "default_popup": "page_action.html"
     }
 }
