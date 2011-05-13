@@ -4,7 +4,7 @@ body {
     font-size: small;
 }
 
-header {
+header:before {
     content: "__MSG_page_action_message__"
 }
 

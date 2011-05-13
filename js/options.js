@@ -1,7 +1,13 @@
 /*jslint browser: true, strict: true, indent: 4 */
 /*global jQuery, window, chrome*/
-(function ($, window) {
+(function ($, window, document) {
     "use strict";
+
+    // some i18n
+    document.title = chrome.i18n.getMessage("options_title");
+    $("label[for='host'] sup").prop("title", chrome.i18n.getMessage("options_setting_host_help"));
+    $("label[for='apiKey'] sup").prop("title", chrome.i18n.getMessage("options_setting_apikey_help"));
+    $("label[for='popupHide'] sup").prop("title", chrome.i18n.getMessage("options_setting_popuphide_help"));
 
     function load() {
         var opt = $(this);
@@ -23,12 +29,14 @@
         evt.preventDefault();
         $("#verifyResult")
             .removeClass("good bad")
-            .empty();
+            .empty()
+            .append($("<img>").attr("src", "images/progress.gif"));
         var api = new SABapi($("#host").val(), $("#apiKey").val());
         api.verifyConnection(function (success, response) {
             $("#verifyResult")
                 .addClass(success ? "good" : "bad")
-                .text(success ? "OK" : "FAILED");
+                .empty()
+                .text(success ? chrome.i18n.getMessage("options_verify_ok") : chrome.i18n.getMessage("options_verify_failed"));
         });
     }
 
@@ -45,4 +53,4 @@
         .click(save);
 
     $("#verify").click(verify);
-}(jQuery, window));
+}(jQuery, window, document));

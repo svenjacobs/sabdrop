@@ -10,5 +10,45 @@
     "page_action_message": {
         "message": "SABdrop found NZBs on this page. Click on one to send it to your SABnzbd.",
         "description": "Text that is displayed in head of page action popup"
+    },
+    "options_title": {
+        "message": "SABdrop options",
+        "description": "Title of options page"
+    },
+    "options_setting_host": {
+        "message": "SABnzbd host",
+        "description": "Name of host setting"
+    },
+    "options_setting_host_help": {
+        "message": "URL to SABnzbd, optionally with port. For example: http://localhost/sabnzbd/ or http://192.168.80.1:8080/",
+        "description": "Help for host setting"
+    },
+    "options_setting_apikey": {
+        "message": "API key",
+        "description": "Name of apikey setting"
+    },
+    "options_setting_apikey_help": {
+        "message": "API key can be found in the SABnzbd settings",
+        "description": "Help for apikey setting"
+    },
+    "options_setting_popuphide": {
+        "message": "Hide popup after (ms)",
+        "description": "Name of popuphide setting"
+    },
+    "options_setting_popuphide_help": {
+        "message": "After how many milliseconds should the popup disappear? Use 0 to disable popups completely.",
+        "description": "Help for popuphide setting"
+    },
+    "options_verify": {
+        "message": "Verify connection",
+        "description": "Description of verify button"
+    },
+    "options_verify_ok": {
+        "message": "OK",
+        "description": "Text when verification succeeded"
+    },
+    "options_verify_failed": {
+        "message": "FAILED",
+        "description": "Text when verification failed"
     }
 }

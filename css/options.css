@@ -21,6 +21,10 @@ header h1, header img {
     float: left;
 }
 
+header h1:before {
+    content: "__MSG_options_title__";
+}
+
 label {
     display: block;
     width: 11em;
@@ -31,6 +35,18 @@ label sup {
     cursor: help;
 }
 
+label[for="host"]:before {
+    content: "__MSG_options_setting_host__";
+}
+
+label[for="apiKey"]:before {
+    content: "__MSG_options_setting_apikey__";
+}
+
+label[for="popupHide"]:before {
+    content: "__MSG_options_setting_popuphide__";
+}
+
 input {
     width: 20em;
 }
@@ -39,6 +55,10 @@ form {
     background-color: #f3f3f3;
     padding: 1em;
     border-radius: 10px;
+}
+
+#verify:before {
+    content: "__MSG_options_verify__";
 }
 
 #verifyResult {
