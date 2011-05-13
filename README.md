@@ -1,7 +1,7 @@
 SABdrop
 =======
 
-SAPdrop is a Google Chrome extension that permits sending links of
+SABdrop is a Google Chrome extension that permits sending links of
 [NZB](http://en.wikipedia.org/wiki/NZB) files to a [SABnzbd](http://sabnzbd.org/)
 instance immediately. It adds a `Send to` option to the context menu of weblinks.
 
