@@ -1,0 +1,58 @@
+{
+    "ext_description": {
+        "message": "Sendet NZB-Links an SABnzbd zum Download."
+    },
+    "page_action_title": {
+        "message": "SABdrop hat NZBs auf dieser Seite gefunden"
+    },
+    "page_action_message": {
+        "message": "SABdrop hat NZBs auf dieser Seite gefunden. Klicke auf einen Eintrag um ihn an SABnzbd zu senden."
+    },
+    "options_title": {
+        "message": "SABdrop Optionen"
+    },
+    "options_setting_host": {
+        "message": "SABnzbd Host"
+    },
+    "options_setting_host_help": {
+        "message": "URL der SABnzbd-Instanz, optional mit Port. Zum Beispiel: http://localhost/sabnzbd/ oder http://192.168.80.1:8080/"
+    },
+    "options_setting_apikey": {
+        "message": "API-Schlüssel"
+    },
+    "options_setting_apikey_help": {
+        "message": "Der API-Schlüssel befindet sich in den SABnzbd-Einstellungen"
+    },
+    "options_setting_popuphide": {
+        "message": "Verstecke Popup nach (ms)"
+    },
+    "options_setting_popuphide_help": {
+        "message": "Nach wie vielen Millisekunden soll das Popup verschwinden? Gebe 0 an um Popups komplett zu deaktivieren"
+    },
+    "options_verify": {
+        "message": "Verbindung überprüfen"
+    },
+    "options_verify_ok": {
+        "message": "OK"
+    },
+    "options_verify_failed": {
+        "message": "FEHLGESCHLAGEN"
+    },
+    "sent_popup": {
+        "message": "$LINK$ wurde an SABnzbd gesendet",
+        "placeholders": {
+            "link": {
+                "content": "$1"
+            }
+        }
+    },
+    "error_popup": {
+        "message": "Beim Senden des Links an SABnzbd trat ein Fehler auf. Bitte überprüfe die Verbindungseinstellungen und beachte die Meldungen in der Konsole."
+    },
+    "error_popup_title": {
+        "message": "Ooops :("
+    },
+    "context_menu": {
+        "message": "Sende Link an SABnzbd"
+    }
+}

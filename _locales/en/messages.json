@@ -5,7 +5,7 @@
     },
     "page_action_title": {
         "message": "SABdrop found NZBs on this page",
-        "description": "Title of page action"
+        "description": "Title of page action icon"
     },
     "page_action_message": {
         "message": "SABdrop found NZBs on this page. Click on one to send it to your SABnzbd.",
@@ -50,5 +50,26 @@
     "options_verify_failed": {
         "message": "FAILED",
         "description": "Text when verification failed"
+    },
+    "sent_popup": {
+        "message": "Sent $LINK$ to to SABnzbd",
+        "description": "Text for popup message when link was sent to SABnzbd",
+        "placeholders": {
+            "link": {
+                "content": "$1"
+            }
+        }
+    },
+    "error_popup": {
+        "message": "There was an error while sending link to SABnzbd. Please verify connection settings and check console for details.",
+        "description": "Text for popup when an error occurred"
+    },
+    "error_popup_title": {
+        "message": "Ooops :(",
+        "description": "Title of error popup"
+    },
+    "context_menu": {
+        "message": "Send link to SABnzbd",
+        "description": "Text of the context menu item"
     }
 }

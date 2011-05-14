@@ -16,10 +16,10 @@
             if (popupHide >= 0) {
                 if (success) {
                     title = basename;
-                    text = "Sent " + SABdrop.Common.truncate(basename, 20) + " to SABnzb";
+                    text = chrome.i18n.getMessage("sent_popup", SABdrop.Common.truncate(basename, 20));
                 } else {
-                    title = "Ooops :(";
-                    text = "There was an error while sending link to SABnzbd. Please verify connection settings and check console for details.";
+                    title = chrome.i18n.getMessage("error_popup_title");
+                    text = chrome.i18n.getMessage("error_popup");
                 }
 
                 var notification = webkitNotifications.createNotification(
@@ -39,7 +39,7 @@
 
     chrome.contextMenus.create(
         {
-            "title": "Send link to SABnzbd",
+            "title": chrome.i18n.getMessage("context_menu"),
             "contexts": ["link"],
             "onclick": function (info, tab) {
                 sendLink(info.linkUrl);
