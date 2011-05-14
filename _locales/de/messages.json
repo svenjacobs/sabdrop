@@ -27,7 +27,7 @@
         "message": "Verstecke Popup nach (ms)"
     },
     "options_setting_popuphide_help": {
-        "message": "Nach wie vielen Millisekunden soll das Popup verschwinden? Gebe 0 an um Popups komplett zu deaktivieren"
+        "message": "Nach wie vielen Millisekunden soll das Popup verschwinden? Gib 0 an um Popups komplett zu deaktivieren"
     },
     "options_verify": {
         "message": "Verbindung überprüfen"
