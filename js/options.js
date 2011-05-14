@@ -42,11 +42,26 @@
         } else {
             api = new SABapi($("#host").val(), $("#username").val(), $("#password").val());
         }
-        api.verifyConnection(function (success, response) {
+
+        var result = function (success, text) {
             $("#verifyResult")
-                .addClass(success ? "good" : "bad")
                 .empty()
-                .text(success ? chrome.i18n.getMessage("options_verify_ok") : chrome.i18n.getMessage("options_verify_failed"));
+                .addClass(success ? "good" : "bad")
+                .text(text);
+        };
+
+        api.remoteAuthMethod(function (success, responseText) {
+            if (!success) {
+                result(false, chrome.i18n.getMessage("options_verify_failed"));
+            } else if ($("#authMethod").val() === responseText) {
+                api.verifyConnection(function (success) {
+                    result(success, success ? chrome.i18n.getMessage("options_verify_ok") : chrome.i18n.getMessage("options_verify_failed"));
+                });
+            } else if (responseText === "none") {
+                result(false, chrome.i18n.getMessage("options_verify_none"));
+            } else {
+                result(false, chrome.i18n.getMessage("options_verify_nomatch"));
+            }
         });
     }
 

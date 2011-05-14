@@ -19,25 +19,34 @@
 
         /**
          * @param params Object properties get translated into URL parameters
-         * @param callback function(success, response)
+         * @param callback A function(success, response)
+         * @param noAuth If true, no authentication parameters will be appened to query
          */
-        this._request = function (params, callback) {
+        this._request = function (params, callback, noAuth) {
             if (typeof params !== "object") {
                 callback(false, null);
                 return;
             }
 
-            if (this._authMethod === "apikey") {
-                params.apikey = this._apiKey;
-            } else {
-                params.ma_username = this._username;
-                params.ma_password = this._password;
+            if (!noAuth) {
+                if (this._authMethod === "apikey") {
+                    params.apikey = this._apiKey;
+                } else {
+                    params.ma_username = this._username;
+                    params.ma_password = this._password;
+                }
             }
 
             var prop, query;
             for (prop in params) {
-                query ? query += "&" : query = "?";
-                query += prop + "=" + escape(params[prop]);
+                if (params.hasOwnProperty(prop)) {
+                    if (query) {
+                        query += "&";
+                    } else {
+                        query = "?";
+                    }
+                    query += prop + "=" + escape(params[prop]);
+                }
             }
 
             var xhr = new XMLHttpRequest();
@@ -45,7 +54,6 @@
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4) {
                     if (this.status === 200) {
-                        // TODO: API seems to always return 200 even if there was an error. We need to check response text.
                         callback(true, xhr.responseText);
                     } else {
                         callback(false, xhr.responseText);
@@ -91,26 +99,35 @@
         };
 
         this.sendLink = function (link, name, callback) {
-            // TODO: reponseText should contain "ok"
-            this._request({mode: "addurl", name: link, nzbname: name},
-                callback);
-        };
-
-        this.verifyConnection = function (callback) {
-            // TODO: This method could also check if the desired auth method is accepted by SABnzbd
-            // see /api?mode=auth
-            this._request({mode: "queue", output: "json"}, function (success, responseText) {
-                if (success) {
-                    var result = eval("(" + responseText + ")"); // TODO: Improve this!
-                    if (result.status === false) {
-                        callback(false, responseText);
-                    } else {
-                        callback(true, responseText);
-                    }
+            this._request({mode: "addurl", name: link, nzbname: name}, function (success, responseText) {
+                if (success && responseText.replace(/\n/, "") === "ok") {
+                    callback(true, responseText);
                 } else {
                     callback(false, responseText);
                 }
             });
+        };
+
+        this.verifyConnection = function (callback) {
+            this._request({mode: "queue", output: "json"}, function (success, responseText) {
+                if (success && /"status":false/.exec(responseText) === null) {
+                    callback(true, responseText);
+                } else {
+                    callback(false, responseText);
+                }
+            });
+        };
+
+        /**
+         * Returns remote authentication method.
+         * responseText may contain "none", "apikey" or "login".
+         *
+         * @param callback A function(success, responseText)
+         */
+        this.remoteAuthMethod = function (callback) {
+            this._request({mode: "auth"}, function (success, responseText) {
+                callback(success, success ? responseText.replace(/\n/, "").toLowerCase() : responseText);
+            }, true);
         };
 
         if (host !== undefined) {

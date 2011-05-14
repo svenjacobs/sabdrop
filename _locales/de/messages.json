@@ -62,6 +62,12 @@
     "options_verify_failed": {
         "message": "FEHLGESCHLAGEN"
     },
+    "options_verify_none": {
+        "message": "FEHLGESCHLAGEN. SABnzbd erlaubt keine Fernwartung."
+    },
+    "options_verify_nomatch": {
+        "message": "FEHLGESCHLAGEN. SABnzbd erlaubt nicht die gewählte Authentifizierungsmethode"
+    },
     "sent_popup": {
         "message": "$LINK$ wurde an SABnzbd gesendet",
         "placeholders": {

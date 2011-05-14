@@ -83,6 +83,14 @@
         "message": "FAILED",
         "description": "Text when verification failed"
     },
+    "options_verify_none": {
+        "message": "FAILED. SABnzbd doesn't permit remote access",
+        "description": "Text when SABnzbd doesn't permit remote access"
+    },
+    "options_verify_nomatch": {
+        "message": "FAILED. SABnzbd doesn't permit selected authentication method",
+        "description": "Text when SABnzbd doesn't permit selected authentication method"
+    },
     "sent_popup": {
         "message": "Sent $LINK$ to to SABnzbd",
         "description": "Text for popup message when link was sent to SABnzbd",
