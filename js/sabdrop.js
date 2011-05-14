@@ -3,7 +3,7 @@
 (function (window) {
     "use strict";
 
-    window.pageActionData = null; // TODO: Is there a better way to send data to the page action?
+    window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
     
     var api = new SABapi(localStorage.host, localStorage.apiKey);
 
@@ -51,7 +51,7 @@
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
         switch (request.action) {
             case "pageAction":
-                window.pageActionData = request.data;
+                window.pageActionData[sender.tab.id] = request.data;
                 chrome.pageAction.show(sender.tab.id);
                 break;
             case "downloadLink":
