@@ -1,5 +1,5 @@
 /*jslint browser: true, strict: true, indent: 4 */
-/*global window, XMLHttpRequest, escape, console*/
+/*global window, XMLHttpRequest, JSON, escape, console*/
 (function (window) {
     "use strict";
 
@@ -20,7 +20,7 @@
         /**
          * @param params Object properties get translated into URL parameters
          * @param callback A function(success, response)
-         * @param noAuth If true, no authentication parameters will be appened to query
+         * @param noAuth If true, no authentication parameters will be appended to query
          */
         this._request = function (params, callback, noAuth) {
             if (typeof params !== "object") {
@@ -98,8 +98,21 @@
             this._password = password;
         };
 
-        this.sendLink = function (link, name, callback) {
-            this._request({mode: "addurl", name: link, nzbname: name}, function (success, responseText) {
+        /**
+         * Send URL to SABnzbd for download.
+         *
+         * @param link URL
+         * @param name Name for that item in download queue
+         * @param category Category. Can be null (no category)
+         * @param callback A function(success, responseText)
+         */
+        this.sendLink = function (link, name, category, callback) {
+            var params = {mode: "addurl", name: link, nzbname: name};
+            if (category) {
+                params.cat = category;
+            }
+
+            this._request(params, function (success, responseText) {
                 if (success && responseText.replace(/\n/, "") === "ok") {
                     callback(true, responseText);
                 } else {
@@ -128,6 +141,32 @@
             this._request({mode: "auth"}, function (success, responseText) {
                 callback(success, success ? responseText.replace(/\n/, "").toLowerCase() : responseText);
             }, true);
+        };
+
+        /**
+         * Gets categories from SABnzbd.
+         *
+         * @param callback A function(categories) where categories is an array of string
+         */
+        this.categories = function (callback) {
+            this._request({mode: "queue", output: "json"}, function (success, responseText) {
+                var filtered = [];
+
+                if (success) {
+                    var json = JSON.parse(responseText);
+                    var categories = json.queue.categories;
+
+                    if (typeof categories === "object") {
+                        categories.forEach(function (c) {
+                            if (c !== "*") {
+                                filtered.push(c);
+                            }
+                        });
+                    }
+                }
+
+                callback(filtered);
+            });
         };
 
         if (host !== undefined) {

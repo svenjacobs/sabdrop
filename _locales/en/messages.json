@@ -111,5 +111,9 @@
     "context_menu": {
         "message": "Send link to SABnzbd",
         "description": "Text of the context menu item"
+    },
+    "context_menu_nocategory": {
+        "message": "--No category--",
+        "description": "Context menu item for selection of no category"
     }
 }

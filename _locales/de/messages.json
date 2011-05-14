@@ -63,7 +63,7 @@
         "message": "FEHLGESCHLAGEN"
     },
     "options_verify_none": {
-        "message": "FEHLGESCHLAGEN. SABnzbd erlaubt keine Fernwartung."
+        "message": "FEHLGESCHLAGEN. SABnzbd erlaubt keine Fernwartung"
     },
     "options_verify_nomatch": {
         "message": "FEHLGESCHLAGEN. SABnzbd erlaubt nicht die gewählte Authentifizierungsmethode"
@@ -84,5 +84,8 @@
     },
     "context_menu": {
         "message": "Sende Link an SABnzbd"
+    },
+    "context_menu_nocategory": {
+        "message": "--Keine Kategorie--"
     }
 }

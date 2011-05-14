@@ -12,9 +12,13 @@
         api = new SABapi(localStorage.host, localStorage.apiKey);
     }
 
-    function sendLink(link) {
+    function sendLink(link, category) {
+        if (category === undefined) {
+            category = null;
+        }
+
         var basename = SABdrop.Common.basename(link);
-        api.sendLink(link, basename, function (success) {
+        api.sendLink(link, basename, category, function (success) {
             var title, text;
 
             var popupHide = localStorage["popupHide"] || 5000;
@@ -42,15 +46,43 @@
         });
     }
 
-    chrome.contextMenus.create(
-        {
+    function createContextMenus() {
+        chrome.contextMenus.removeAll();
+
+        var contextMenuId = chrome.contextMenus.create({
             "title": chrome.i18n.getMessage("context_menu"),
             "contexts": ["link"],
             "onclick": function (info, tab) {
                 sendLink(info.linkUrl);
             }
-        }
-    );
+        });
+
+        api.categories(function (categories) {
+            if (categories.length > 0) {
+                chrome.contextMenus.create({
+                    "title": chrome.i18n.getMessage("context_menu_nocategory"),
+                    "contexts": ["link"],
+                    "parentId": contextMenuId,
+                    "onclick": function (info, tab) {
+                        sendLink(info.linkUrl);
+                    }
+                });
+
+                categories.forEach(function (cat) {
+                    chrome.contextMenus.create({
+                        "title": cat,
+                        "contexts": ["link"],
+                        "parentId": contextMenuId,
+                        "onclick": function (info, tab) {
+                            sendLink(info.linkUrl, cat);
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    createContextMenus();
 
     // Receive message from content script and page action
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
@@ -74,6 +106,8 @@
                     api.setAuthMethod("apikey");
                     api.setAPIKey(localStorage.apiKey);
                 }
+
+                createContextMenus(); // recreate menus because of categories
                 break;
         }
         sendResponse({}); // clean up
