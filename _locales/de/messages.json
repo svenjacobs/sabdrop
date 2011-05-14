@@ -29,6 +29,30 @@
     "options_setting_popuphide_help": {
         "message": "Nach wie vielen Millisekunden soll das Popup verschwinden? Gib 0 an um Popups komplett zu deaktivieren"
     },
+    "options_setting_authmethod": {
+        "message": "Authentifizierungsmethode"
+    },
+    "options_setting_authmethod_help": {
+        "message": "Wähle den Typ der Authentifizierung. API-Schlüssel bevorzugt."
+    },
+    "options_setting_authmethod_api": {
+        "message": "API-Schlüssel"
+    },
+    "options_setting_authmethod_login": {
+        "message": "Benutzername/Passwort"
+    },
+    "options_setting_username": {
+        "message": "Benutzername"
+    },
+    "options_setting_username_help": {
+        "message": "Benutzername für SABnzbd-Authentifizierung"
+    },
+    "options_setting_password": {
+        "message": "Passwort"
+    },
+    "options_setting_password_help": {
+        "message": "Passwort für SABnzbd-Authentifizierung"
+    },
     "options_verify": {
         "message": "Verbindung überprüfen"
     },

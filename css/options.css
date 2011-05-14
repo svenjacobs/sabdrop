@@ -47,12 +47,24 @@ label[for="popupHide"]:before {
     content: "__MSG_options_setting_popuphide__";
 }
 
+label[for="authMethod"]:before {
+    content: "__MSG_options_setting_authmethod__";
+}
+
+label[for="username"]:before {
+    content: "__MSG_options_setting_username__";
+}
+
+label[for="password"]:before {
+    content: "__MSG_options_setting_password__";
+}
+
 input {
     width: 20em;
 }
 
 form {
-    background-color: #f3f3f3;
+    background-color: #d1d1d1;
     padding: 1em;
     border-radius: 10px;
 }

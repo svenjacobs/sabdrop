@@ -39,6 +39,38 @@
         "message": "After how many milliseconds should the popup disappear? Use 0 to disable popups completely.",
         "description": "Help for popuphide setting"
     },
+    "options_setting_authmethod": {
+        "message": "Authentication method",
+        "description": "Name of authmethod setting"
+    },
+    "options_setting_authmethod_help": {
+        "message": "Choose type of authentication. Preferred method is API key.",
+        "description": "Help for authmethod setting"
+    },
+    "options_setting_authmethod_api": {
+        "message": "API key",
+        "description": "Text for API authmethod setting"
+    },
+    "options_setting_authmethod_login": {
+        "message": "Username/password",
+        "description": "Text for login authmethod setting"
+    },
+    "options_setting_username": {
+        "message": "Username",
+        "description": "Name of username setting"
+    },
+    "options_setting_username_help": {
+        "message": "Username for SABnzbd authentication",
+        "description": "Help for username setting"
+    },
+    "options_setting_password": {
+        "message": "Password",
+        "description": "Name of password setting"
+    },
+    "options_setting_password_help": {
+        "message": "Password for SABnzbd authentication",
+        "description": "Help for password setting"
+    },
     "options_verify": {
         "message": "Verify connection",
         "description": "Description of verify button"

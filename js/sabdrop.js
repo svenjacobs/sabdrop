@@ -5,7 +5,12 @@
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
     
-    var api = new SABapi(localStorage.host, localStorage.apiKey);
+    var api;
+    if (localStorage.authMethod === "login") {
+        api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
+    } else {
+        api = new SABapi(localStorage.host, localStorage.apiKey);
+    }
 
     function sendLink(link) {
         var basename = SABdrop.Common.basename(link);
@@ -60,7 +65,15 @@
             case "reloadConfig":
                 console.info("Reloading SABdrop configuration");
                 api.setHost(localStorage.host);
-                api.setAPIKey(localStorage.apiKey);
+
+                if (localStorage.authMethod === "login") {
+                    api.setAuthMethod("login");
+                    api.setUsername(localStorage.username);
+                    api.setPassword(localStorage.password);
+                } else {
+                    api.setAuthMethod("apikey");
+                    api.setAPIKey(localStorage.apiKey);
+                }
                 break;
         }
         sendResponse({}); // clean up
