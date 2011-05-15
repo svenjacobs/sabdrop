@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.2 (05/15/11)
+--------------
+
+* Support for username/password authentication method
+* Category support (categories will be displayed in context menu)
+
 0.1.1 (05/14/11)
 ----------------
 

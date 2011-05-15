@@ -11,10 +11,18 @@ those files to SABnzbd.
 
 SABdrop has been tested with SABnzbd version 0.6.0 but should run with 0.5.x, too.
 
+Features
+--------
+
+* Context menu to send NZB weblinks to SABnzbd for immediate download
+* Page action in address bar that scans for NZB weblinks
+* Supports API key and username/password authentication
+* Supports categories (NZB links can be assigned to a category with context menu)
+
 Configuration
 -------------
 
-The options page of SABdrop offers three settings. These are:
+These are the settings found on the options page of SABdrop:
 
 ### SABnzbd host
 
@@ -27,10 +35,36 @@ This is the full address of a SABnzbd instance including the protocol and
 
 Note that `/api` **must not** be appended to the URL.
 
+### Authentication method
+
+Type of authentication method of SABnzbd instance. This is either `API key` or 
+`Username/password`. `API key` is the preferred method. `Username/password`
+should only be used if `API key` doesn't work for some reason. Note that a SABnzbd
+instance only supports one method at a time. If uncertain please check your SABnzbd
+configuration.
+
 ### API key
 
-The API key is required to access SABnzbd's API. It can be found in the
-configuration of SABnzbd's web interface. If no API key exists one must be created.
+The API key is required to access SABnzbd's API when `API key` has been selected as
+`Authentication method`. It can be found in the configuration of SABnzbd's web
+interface. If no API key exists one must be created.
+
+### Username
+
+Username for `Username/password` authentication method. This doesn't need to be
+filled out if `API key` is used.
+
+### Password
+
+Password for `Username/password` authentication method. This doesn't need to be
+filled out if `API key` is used.
+
+### Hide categories
+
+By default SABdrop requests the categories that have been set up on SABnzbd and
+adds them to the context menu. This enables sending a link to SABnzbd while adding
+it to a category at the same time. If this is not desired categories can be disabled
+with this setting. All downloads will be added to the standard category then.
 
 ### Hide popup after
 
