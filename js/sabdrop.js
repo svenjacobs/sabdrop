@@ -57,6 +57,10 @@
             }
         });
 
+        if (localStorage.hideCategories === "true") {
+            return;
+        }
+
         api.categories(function (categories) {
             if (categories.length > 0) {
                 chrome.contextMenus.create({

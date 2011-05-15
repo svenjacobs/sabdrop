@@ -12,27 +12,32 @@
         </header>
         <form>
             <label for="host">&nbsp;<sup title="">?</sup></label>
-            <input id="host" type="url"/>
+            <input id="host" type="url" data-default="http://localhost/sabnzbd"/>
             <br/>
             <label for="authMethod">&nbsp;<sup title="">?</sup></label>
-            <select id="authMethod">
+            <select id="authMethod" data-default="apikey">
                 <option value="apikey"></option>
                 <option value="login"></option>
             </select>
             <br/>
             <label for="apiKey">&nbsp;<sup title="">?</sup></label>
-            <input id="apiKey" type="text"/>
+            <input id="apiKey" type="text" data-default=""/>
             <br/>
             <label for="username">&nbsp;<sup title="">?</sup></label>
-            <input id="username" type="text"/>
+            <input id="username" type="text" data-default=""/>
             <br/>
             <label for="password">&nbsp;<sup title="">?</sup></label>
-            <input id="password" type="text"/>
+            <input id="password" type="text" data-default=""/>
+            <br/>
+            <label for="hideCategories">&nbsp;<sup title="">?</sup></label>
+            <input id="hideCategories" type="checkbox" data-default="false"/>
             <br/>
             <label for="popupHide">&nbsp;<sup title="">?</sup></label>
-            <input id="popupHide" type="number" step="100" min="0"/>
+            <input id="popupHide" type="number" step="100" min="0" data-default="5000"/>
             <br/>
-            <button id="verify"></button>&nbsp;<span id="verifyResult"></span>
+            <div>
+                <button id="verify"></button>&nbsp;<span id="verifyResult"></span>
+            </div>
         </form>
         <script type="text/javascript" src="js/lib/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="js/sabapi.js"></script>

@@ -71,6 +71,14 @@
         "message": "Password for SABnzbd authentication",
         "description": "Help for password setting"
     },
+    "options_setting_hidecategories": {
+        "message": "Hide categories",
+        "description": "Name for hide categories setting"
+    },
+    "options_setting_hidecategories_help": {
+        "message": "Don't show categories (if available) in context menu. All downloads will be put into standard category.",
+        "description": "Help for hide categories setting"
+    },
     "options_verify": {
         "message": "Verify connection",
         "description": "Description of verify button"

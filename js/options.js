@@ -13,20 +13,36 @@
     $("label[for='authMethod'] sup").prop("title", chrome.i18n.getMessage("options_setting_authmethod_help"));
     $("label[for='username'] sup").prop("title", chrome.i18n.getMessage("options_setting_username_help"));
     $("label[for='password'] sup").prop("title", chrome.i18n.getMessage("options_setting_password_help"));
+    $("label[for='hideCategories'] sup").prop("title", chrome.i18n.getMessage("options_setting_hidecategories_help"));
 
     function load() {
         var opt = $(this);
-        opt.val(localStorage[opt.attr("id")]);
+        var val = localStorage[opt.attr("id")];
+
+        if (opt.attr("type") === "checkbox") {
+            opt.prop("checked", val === "true" ? true : false);
+        } else {
+            opt.val(val);
+        }
     }
 
     function save() {
         var opt = $(this);
-        localStorage[opt.attr("id")] = opt.val();
+        var val;
+
+        if (opt.attr("type") === "checkbox") {
+            val = opt.is(":checked").toString();
+        } else {
+            val = opt.val();
+        }
+
+        localStorage[opt.attr("id")] = val;
     }
 
-    function defaultOption(option, defaultValue) {
-        if (!localStorage[option]) {
-            localStorage[option] = defaultValue;
+    function defaultValue() {
+        var opt = $(this);
+        if (!localStorage[opt.attr("id")]) {
+            localStorage[opt.attr("id")] = opt.data("default");
         }
     }
 
@@ -79,11 +95,8 @@
         chrome.extension.sendRequest({action: "reloadConfig"});
     });
 
-    defaultOption("host", "http://localhost/sabnzbd");
-    defaultOption("authMethod", "apikey");
-    defaultOption("popupHide", 5000);
-
-    $("#host, #authMethod, #apiKey, #username, #password, #popupHide")
+    $("input, select")
+        .each(defaultValue)
         .each(load)
         .keyup(save)
         .change(save)
@@ -94,4 +107,8 @@
     $("#authMethod")
         .each(authOptions)
         .change(authOptions);
+
+    $("#host")
+        .focus()
+        .select();
 }(jQuery, window, document));

@@ -53,6 +53,12 @@
     "options_setting_password_help": {
         "message": "Passwort für SABnzbd-Authentifizierung"
     },
+    "options_setting_hidecategories": {
+        "message": "Verstecke Kategorien"
+    },
+    "options_setting_hidecategories_help": {
+        "message": "Zeige keine Kategorien im Kontextmenü an (wenn verfügbar). Alle Downloads werden der Standardkategorie zugewiesen."
+    },
     "options_verify": {
         "message": "Verbindung überprüfen"
     },
