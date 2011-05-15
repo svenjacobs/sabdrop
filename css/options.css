@@ -27,7 +27,7 @@ header h1:before {
 
 label {
     display: block;
-    width: 15em;
+    width: 16em;
     float: left;
 }
 
@@ -72,19 +72,17 @@ select, textarea {
     width: 20em;
 }
 
-form {
-    background-color: #d1d1d1;
-    padding: 1em;
-    border-radius: 10px;
-}
-
 br {
     clear:left;
 }
 
-#verify:before {
-    content: "__MSG_options_verify__";
+#tabs {
+    font-size: small;
 }
+
+/*#verify:before {
+    content: "__MSG_options_verify__";
+}*/
 
 #verifyResult {
     font-weight: bold;

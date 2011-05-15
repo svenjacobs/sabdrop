@@ -11,6 +11,12 @@
     "options_title": {
         "message": "SABdrop Optionen"
     },
+    "options_tab": {
+        "message": "Optionen"
+    },
+    "options_tab_advanced": {
+        "message": "Erweiterte Optionen"
+    },
     "options_setting_host": {
         "message": "SABnzbd Host"
     },

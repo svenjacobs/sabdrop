@@ -15,6 +15,14 @@
         "message": "SABdrop options",
         "description": "Title of options page"
     },
+    "options_tab": {
+        "message": "Options",
+        "description": "Title of options tab"
+    },
+    "options_tab_advanced": {
+        "message": "Advanced options",
+        "description": "Title of advanced options tab"
+    },
     "options_setting_host": {
         "message": "SABnzbd host",
         "description": "Name of host setting"

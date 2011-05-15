@@ -15,6 +15,8 @@
     $("label[for='password'] sup").prop("title", chrome.i18n.getMessage("options_setting_password_help"));
     $("label[for='hideCategories'] sup").prop("title", chrome.i18n.getMessage("options_setting_hidecategories_help"));
     $("label[for='matchPatterns'] sup").prop("title", chrome.i18n.getMessage("options_setting_matchpatterns_help"));
+    $("a[href='#options']").text(chrome.i18n.getMessage("options_tab"));
+    $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
 
     function load() {
         var opt = $(this);
@@ -103,7 +105,10 @@
         .change(save)
         .click(save);
 
-    $("#verify").click(verify);
+    $("#verify")
+        .text(chrome.i18n.getMessage("options_verify"))
+        .button()
+        .click(verify);
 
     $("#authMethod")
         .each(authOptions)
@@ -112,4 +117,6 @@
     $("#host")
         .focus()
         .select();
+
+    $("#tabs").tabs();
 }(jQuery, window, document));
