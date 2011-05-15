@@ -4,8 +4,8 @@ Changelog
 0.2 (05/15/11)
 --------------
 
-* Support for username/password authentication method
-* Category support (categories will be displayed in context menu)
+* Support for username/password authentication method (issue [#1](https://github.com/svenjacobs/SABdrop/issues/1))
+* Category support (categories will be displayed in context menu) (issue [#3](https://github.com/svenjacobs/SABdrop/issues/3))
 
 0.1.1 (05/14/11)
 ----------------
