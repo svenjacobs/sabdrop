@@ -59,6 +59,12 @@
     "options_setting_hidecategories_help": {
         "message": "Zeige keine Kategorien im Kontextmenü an (wenn verfügbar). Alle Downloads werden der Standardkategorie zugewiesen."
     },
+    "options_setting_matchpatterns": {
+        "message": "Suchmuster"
+    },
+    "options_setting_matchpatterns_help": {
+        "message": "Liste von regulären Ausdrücken, die auf NZB-Links im href-Attribut von Seitenelementen zutreffen. Je Zeile ein Ausdruck."
+    },
     "options_verify": {
         "message": "Verbindung überprüfen"
     },

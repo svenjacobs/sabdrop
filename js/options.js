@@ -14,6 +14,7 @@
     $("label[for='username'] sup").prop("title", chrome.i18n.getMessage("options_setting_username_help"));
     $("label[for='password'] sup").prop("title", chrome.i18n.getMessage("options_setting_password_help"));
     $("label[for='hideCategories'] sup").prop("title", chrome.i18n.getMessage("options_setting_hidecategories_help"));
+    $("label[for='matchPatterns'] sup").prop("title", chrome.i18n.getMessage("options_setting_matchpatterns_help"));
 
     function load() {
         var opt = $(this);
@@ -95,7 +96,7 @@
         chrome.extension.sendRequest({action: "reloadConfig"});
     });
 
-    $("input, select")
+    $("input, select, textarea")
         .each(defaultValue)
         .each(load)
         .keyup(save)

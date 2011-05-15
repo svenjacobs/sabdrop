@@ -21,7 +21,7 @@
         api.sendLink(link, basename, category, function (success) {
             var title, text;
 
-            var popupHide = localStorage["popupHide"] || 5000;
+            var popupHide = localStorage.popupHide || 5000;
             if (popupHide >= 0) {
                 if (success) {
                     title = basename;
@@ -32,7 +32,9 @@
                 }
 
                 var notification = webkitNotifications.createNotification(
-                    "images/icons/sab48.png", title, text
+                    "images/icons/sab48.png",
+                    title,
+                    text
                 );
 
                 notification.ondisplay = function () {
@@ -113,12 +115,15 @@
 
                 createContextMenus(); // recreate menus because of categories
                 break;
+            case "getLocalStorage":
+                sendResponse(localStorage[request.attribute]);
+                return;
         }
         sendResponse({}); // clean up
     });
 
     // open options page if extension hasn't been configured yet
-    if (!localStorage["host"]) {
+    if (!localStorage.host) {
         chrome.tabs.create({url: "options.html"});
     }
 }(window));

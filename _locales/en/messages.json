@@ -79,6 +79,14 @@
         "message": "Don't show categories (if available) in context menu. All downloads will be put into standard category.",
         "description": "Help for hide categories setting"
     },
+    "options_setting_matchpatterns": {
+        "message": "Match patterns",
+        "description": "Name for matchpatterns setting"
+    },
+    "options_setting_matchpatterns_help": {
+        "message": "List of regular expressions that match NZB links in the href attribute of page elements. One pattern per line.",
+        "description": "Help for matchpatterns setting"
+    },
     "options_verify": {
         "message": "Verify connection",
         "description": "Description of verify button"
