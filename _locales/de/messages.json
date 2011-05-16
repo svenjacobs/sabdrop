@@ -17,6 +17,9 @@
     "options_tab_advanced": {
         "message": "Erweiterte Optionen"
     },
+    "options_tab_about": {
+        "message": "Über"
+    },
     "options_setting_host": {
         "message": "SABnzbd Host"
     },

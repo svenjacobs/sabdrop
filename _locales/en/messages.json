@@ -23,6 +23,10 @@
         "message": "Advanced options",
         "description": "Title of advanced options tab"
     },
+    "options_tab_about": {
+        "message": "About",
+        "description": "Title of about options tab"
+    },
     "options_setting_host": {
         "message": "SABnzbd host",
         "description": "Name of host setting"

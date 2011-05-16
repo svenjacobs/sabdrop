@@ -115,3 +115,27 @@ br {
 #resetDialog, .ui-button, .ui-dialog-title {
     font-size: small !important;
 }
+
+#changelog h1:first-child {
+    margin-top: 0;
+}
+
+#changelog h1 {
+    font-size: 12pt;
+}
+
+#changelog h2 {
+    font-size: 10pt;
+}
+
+#changelog ul {
+    list-style-type: square;
+}
+
+#changelog a {
+    color: blue;
+}
+
+#about p {
+    max-width: 40em;
+}

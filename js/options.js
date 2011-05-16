@@ -17,6 +17,7 @@
     $("label[for='matchPatterns'] sup").prop("title", chrome.i18n.getMessage("options_setting_matchpatterns_help"));
     $("a[href='#options']").text(chrome.i18n.getMessage("options_tab"));
     $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
+    $("a[href='#about']").text(chrome.i18n.getMessage("options_tab_about"));
 
     function load() {
         setVal(this, localStorage[$(this).attr("id")]);
@@ -160,5 +161,13 @@
         .focus()
         .select();
 
-    $("#tabs").tabs();
+    $("#tabs").tabs({
+        select: function (evt, ui) {
+            if (ui.index === 2 && $("#changelog").children().length === 0) {
+                $.get("/CHANGELOG.md", function (data) {
+                    $("#changelog").html(new Showdown.converter().makeHtml(data));
+                });
+            }
+        }
+    });
 }(jQuery, window, document));

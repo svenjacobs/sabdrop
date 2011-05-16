@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.3 (05/16/11)
+--------------
+
+* Added configurable NZB match patterns (issue [#2](https://github.com/svenjacobs/SABdrop/issues/2))
+* Page action now also supports categories (issue [#8](https://github.com/svenjacobs/SABdrop/issues/8))
+* Page action results can be filtered
+* Reworked options page
+
 0.2 (05/15/11)
 --------------
 
