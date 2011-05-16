@@ -103,12 +103,12 @@
          *
          * @param link URL
          * @param name Name for that item in download queue
-         * @param category Category. Can be null (no category)
+         * @param category Category. Can be null or empty string (== no category)
          * @param callback A function(success, responseText)
          */
         this.sendLink = function (link, name, category, callback) {
             var params = {mode: "addurl", name: link, nzbname: name};
-            if (category) {
+            if (category !== null && category !== "") {
                 params.cat = category;
             }
 

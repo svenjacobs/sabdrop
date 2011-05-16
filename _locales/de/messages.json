@@ -117,5 +117,8 @@
     },
     "no": {
         "message": "Nein"
+    },
+    "filter_results": {
+        "message": "Ergebnisse filtern"
     }
 }

@@ -153,5 +153,9 @@
     },
     "no": {
         "message": "No"
+    },
+    "filter_results": {
+        "message": "Filter results",
+        "description": "Text for search box on page action popup"
     }
 }

@@ -3,8 +3,11 @@
 (function ($) {
     "use strict";
 
-    chrome.tabs.getSelected(null, function (tab) {
-        var data = chrome.extension.getBackgroundPage().pageActionData[tab.id];
+    var data = null;
+
+    function buildList(data) {
+        $("#downloads ul").empty();
+
         $.each(data, function (index, item) {
             var name = SABdrop.Common.basename(item);
 
@@ -16,10 +19,71 @@
                         .data("link", item)
                         .click(function () {
                             $(this).addClass("clicked");
-                            chrome.extension.sendRequest({action: "downloadLink", link: $(this).data("link")});
+                            var cat = null;
+                            if ($("#categories").is(":visible")) {
+                                cat = $("#categories").val();
+                            }
+                            chrome.extension.sendRequest({
+                                action: "downloadLink",
+                                link: $(this).data("link"),
+                                category: cat
+                            });
                         })
                 );
             }
         });
+    }
+
+    function filter() {
+        if (data === null) {
+            return;
+        }
+
+        var filter = $(this).val().toLowerCase();
+        if (filter === "") {
+            buildList(data);
+        } else {
+            var filtered = [];
+            $.each(data, function (index, item) {
+                if (item.toLowerCase().indexOf(filter) >= 0) {
+                    filtered.push(item);
+                }
+            });
+            buildList(filtered);
+        }
+    }
+
+    chrome.tabs.getSelected(null, function (tab) {
+        data = chrome.extension.getBackgroundPage().pageActionData[tab.id];
+        buildList(data);
     });
+
+    // fill categories dropdown
+    chrome.extension.sendRequest({action: "getCategories"}, function (categories) {
+        if (categories === null || categories.length === 0) {
+            return;
+        }
+
+        var select = $("#categories");
+
+        select.append($("<option>")
+            .html(chrome.i18n.getMessage("context_menu_nocategory"))
+            .val("")
+        );
+
+        $.each(categories, function (index, cat) {
+            select.append($("<option>")
+                .html(cat)
+                .val(cat)
+            );
+        });
+
+        select.show();
+    });
+
+    $("#filter")
+        .prop("placeholder", chrome.i18n.getMessage("filter_results"))
+        .keyup(filter)
+        .change(filter)
+        .click(filter);
 }(jQuery));

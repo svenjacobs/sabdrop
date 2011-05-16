@@ -98,7 +98,7 @@
                 chrome.pageAction.show(sender.tab.id);
                 break;
             case "downloadLink":
-                sendLink(request.link);
+                sendLink(request.link, request.category);
                 break;
             case "reloadConfig":
                 console.info("Reloading SABdrop configuration");
@@ -115,6 +115,15 @@
 
                 createContextMenus(); // recreate menus because of categories
                 break;
+            case "getCategories":
+                if (localStorage.hideCategories === "true") {
+                    sendResponse([]);
+                } else {
+                    api.categories(function (categories) {
+                        sendResponse(categories);
+                    });
+                }
+                return;
             case "getLocalStorage":
                 sendResponse(localStorage[request.attribute]);
                 return;

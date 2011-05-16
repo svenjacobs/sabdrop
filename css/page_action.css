@@ -4,27 +4,41 @@ body {
     font-size: small;
 }
 
-header:before {
+header img {
+    float: left;
+    width: 32px;
+    height: 32px;
+}
+
+header p:before {
     content: "__MSG_page_action_message__"
 }
 
+header p {
+    clear: both;
+    margin: 0.5em;
+}
+
+#filter {
+    float: right;
+    margin-bottom: 1em;
+}
+
 #downloads {
-    min-width: 200px;
-    max-width: 500px;
+    width: 400px;
     min-height: 200px;
     max-height: 400px;
     overflow: scroll;
-    padding: 1em;
 }
 
 #downloads ul {
     margin: 0;
     padding: 0 0 0 0.5em;
-    list-style-type: square;
+    list-style-type: none;
 }
 
 #downloads ul li {
-    color: blue;
+    color: #827900;
 }
 
 #downloads ul li:hover {
@@ -35,4 +49,9 @@ header:before {
 #downloads ul li.clicked {
     color: #ccc;
     text-decoration: line-through; 
+}
+
+#categories {
+    display: none;
+    margin-bottom: 0.5em;
 }
