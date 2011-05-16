@@ -34,21 +34,24 @@
                 <br/>
                 <label for="password">&nbsp;<sup title="">?</sup></label>
                 <input id="password" type="text" data-default=""/>
-                <br/>
+                <div>
+                    <button id="verify"></button>&nbsp;<span id="verifyResult"></span>
+                    <button id="reset"></button>
+                </div>
+            </div>
+            <div id="advanced">
                 <label for="hideCategories">&nbsp;<sup title="">?</sup></label>
                 <input id="hideCategories" type="checkbox" data-default="false"/>
                 <br/>
                 <label for="popupHide">&nbsp;<sup title="">?</sup></label>
                 <input id="popupHide" type="number" step="100" min="0" data-default="5000"/>
                 <br/>
-                <div>
-                    <button id="verify"></button>&nbsp;<span id="verifyResult"></span>
-                </div>
-            </div>
-            <div id="advanced">
                 <label for="matchPatterns">&nbsp;<sup title="">?</sup></label>
                 <textarea id="matchPatterns" wrap="off" data-default="\.nzb$"></textarea>
             </div>
+        </div>
+        <div id="resetDialog">
+            <p></p>
         </div>
         <script type="text/javascript" src="js/lib/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui-1.8.12.custom.min.js"></script>

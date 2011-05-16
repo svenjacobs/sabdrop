@@ -86,6 +86,12 @@
     "options_verify_nomatch": {
         "message": "FEHLGESCHLAGEN. SABnzbd erlaubt nicht die gewählte Authentifizierungsmethode"
     },
+    "options_reset": {
+        "message": "Auf Standardwerte zurücksetzen"
+    },
+    "options_reset_dialog": {
+        "message": "Möchtest Du wirklich alle Optionen auf ihre Standardwerte zurücksetzen?"
+    },
     "sent_popup": {
         "message": "$LINK$ wurde an SABnzbd gesendet",
         "placeholders": {
@@ -105,5 +111,11 @@
     },
     "context_menu_nocategory": {
         "message": "--Keine Kategorie--"
+    },
+    "yes": {
+        "message": "Ja"
+    },
+    "no": {
+        "message": "Nein"
     }
 }

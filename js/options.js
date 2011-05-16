@@ -19,9 +19,11 @@
     $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
 
     function load() {
-        var opt = $(this);
-        var val = localStorage[opt.attr("id")];
+        setVal(this, localStorage[$(this).attr("id")]);
+    }
 
+    function setVal(opt, val) {
+        var opt = $(opt);
         if (opt.attr("type") === "checkbox") {
             opt.prop("checked", val === "true" ? true : false);
         } else {
@@ -42,6 +44,10 @@
         localStorage[opt.attr("id")] = val;
     }
 
+    /**
+     * If option is not available in localStorage, default value
+     * will be loaded from DOM object and put into storage.
+     */
     function defaultValue() {
         var opt = $(this);
         if (!localStorage[opt.attr("id")]) {
@@ -51,6 +57,7 @@
 
     function verify(evt) {
         evt.preventDefault();
+        $("#verify").button("option", "disabled", true);
         $("#verifyResult")
             .removeClass("good bad")
             .empty()
@@ -63,6 +70,7 @@
         }
 
         var result = function (success, text) {
+            $("#verify").button("option", "disabled", false);
             $("#verifyResult")
                 .empty()
                 .addClass(success ? "good" : "bad")
@@ -81,6 +89,35 @@
             } else {
                 result(false, chrome.i18n.getMessage("options_verify_nomatch"));
             }
+        });
+    }
+
+    function reset() {
+        $("#resetDialog").dialog({
+            resizeable: false,
+            modal: true,
+            width: 400,
+            title: chrome.i18n.getMessage("options_reset"),
+            buttons: [
+                {
+                    text: chrome.i18n.getMessage("yes"),
+                    click: function () {
+                        $("input, select, textarea")
+                            .each(function () {
+                                setVal(this, $(this).data("default"));
+                            })
+                            .each(save);
+                        authOptions.call($("#authMethod"));
+                        $(this).dialog("close");
+                    }
+                },
+                {
+                    text: chrome.i18n.getMessage("no"),
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
         });
     }
 
@@ -109,6 +146,11 @@
         .text(chrome.i18n.getMessage("options_verify"))
         .button()
         .click(verify);
+
+    $("#reset")
+        .text(chrome.i18n.getMessage("options_reset"))
+        .button()
+        .click(reset);
 
     $("#authMethod")
         .each(authOptions)

@@ -115,6 +115,14 @@
         "message": "FAILED. SABnzbd doesn't permit selected authentication method",
         "description": "Text when SABnzbd doesn't permit selected authentication method"
     },
+    "options_reset": {
+        "message": "Reset to defaults",
+        "description": "Text for reset to defaults button"
+    },
+    "options_reset_dialog": {
+        "message": "Do you really want to reset all options to their default values?",
+        "description": "Text of reset to defaults dialog"
+    },
     "sent_popup": {
         "message": "Sent $LINK$ to to SABnzbd",
         "description": "Text for popup message when link was sent to SABnzbd",
@@ -139,5 +147,11 @@
     "context_menu_nocategory": {
         "message": "--No category--",
         "description": "Context menu item for selection of no category"
+    },
+    "yes": {
+        "message": "Yes"
+    },
+    "no": {
+        "message": "No"
     }
 }

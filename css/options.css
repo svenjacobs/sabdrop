@@ -96,6 +96,22 @@ br {
     color: red;
 }
 
+#reset {
+    float: right;
+}
+
 #matchPatterns {
     height: 5em;
+}
+
+#resetDialog {
+    display: none;
+}
+
+#resetDialog p:before {
+    content: "__MSG_options_reset_dialog__";
+}
+
+#resetDialog, .ui-button, .ui-dialog-title {
+    font-size: small !important;
 }

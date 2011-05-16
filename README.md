@@ -59,15 +59,28 @@ filled out if `API key` is used.
 Password for `Username/password` authentication method. This doesn't need to be
 filled out if `API key` is used.
 
-### Hide categories
+### Advanced options
+
+These settings are hidden beneath the "Advanced options" tab:
+
+#### Hide categories
 
 By default SABdrop requests the categories that have been set up on SABnzbd and
 adds them to the context menu. This enables sending a link to SABnzbd while adding
 it to a category at the same time. If this is not desired categories can be disabled
 with this setting. All downloads will be added to the standard category then.
 
-### Hide popup after
+#### Hide popup after
 
 SABdrop displays a non-obstrusive popup explaining the status of the current 
 action. This settings specifies the milliseconds after the popup shall disappear.
 If this setting is `0` popups will be disabled completely.
+
+#### Match patterns
+
+A list of [regular expressions](http://en.wikipedia.org/wiki/Regular_expression)
+that are applied to the `href` attribute of page elements. If one of these
+expressions match, the href is considered a link to a NZB and is displayed in the
+page action (address bar). Each regular expression is separated by a newline.
+If you are not familiar with regular expressions please don't change this option.
+It may break SABdrops behavior.
