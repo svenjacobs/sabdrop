@@ -132,31 +132,36 @@
         }
     }
 
-    function startCredits() {        
-        var index = 0,
+    function startCredits() {
+        var TIMEOUT = 6000,
+            index = 0,
             show = function () {
+                var text = credits[index];
                 $("#credits")
+                    .attr("style", "") // reset style attribute because of strange behaviour when tab is inactive (interval is paused)
                     .show("slide", {direction: "left"}, 600, function () {
-                        index++;
+                        if (index === credits.length - 1) {
+                            index = 0;
+                        } else {
+                            index++;
+                        }
                     })
-                    .html(credits[index]);
-            };
+                    .html(text);
+            }; 
 
         $("#credits").data("running", true);
         show();
 
         window.setInterval(function () {
-            if (index === credits.length) {
-                index = 0;
-            }
-
             var crdt = $("#credits");
             if (crdt.is(":visible")) {
-                crdt.fadeOut(400, show);
+                crdt
+                    .attr("style", "") // reset style attribute because of strange behaviour when tab is inactive (interval is paused)
+                    .fadeOut(400, show);
             } else {
                 show();
             }
-        }, 6000);
+        }, TIMEOUT);
     }
 
     $(window).unload(function () {
@@ -188,17 +193,19 @@
         .focus()
         .select();
 
-    $("#tabs").tabs({
-        select: function (evt, ui) {
-            if (ui.index === 2 && $("#changelog").children().length === 0) {
-                $.get("/CHANGELOG.md", function (data) {
-                    $("#changelog").html(new Showdown.converter().makeHtml(data));
-                });
-            } else if (ui.index === 3 && $("#credits").data("running") === false) {
-                window.setTimeout(startCredits, 500);
+    $("#tabs")
+        .tabs({
+            select: function (evt, ui) {
+                if (ui.index === 2 && $("#changelog").children().length === 0) {
+                    $.get("/CHANGELOG.md", function (data) {
+                        $("#changelog").html(new Showdown.converter().makeHtml(data));
+                    });
+                } else if (ui.index === 3 && $("#credits").data("running") === false) {
+                    window.setTimeout(startCredits, 500);
+                }
             }
-        }
-    });
+        })
+        .show(); // delayed show so that we don't see how the tabs are build
     
     var credits = [
         "The SABnzbd team",

@@ -78,6 +78,7 @@ br {
 
 #tabs {
     font-size: small;
+    display: none;
 }
 
 /*#verify:before {
