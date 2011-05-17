@@ -139,3 +139,7 @@ br {
 #about p {
     max-width: 40em;
 }
+
+#credits {
+    height: 1em;
+}

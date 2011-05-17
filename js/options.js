@@ -132,6 +132,33 @@
         }
     }
 
+    function startCredits() {        
+        var index = 0,
+            show = function () {
+                $("#credits")
+                    .show("slide", {direction: "left"}, 600, function () {
+                        index++;
+                    })
+                    .html(credits[index]);
+            };
+
+        $("#credits").data("running", true);
+        show();
+
+        window.setInterval(function () {
+            if (index === credits.length) {
+                index = 0;
+            }
+
+            var crdt = $("#credits");
+            if (crdt.is(":visible")) {
+                crdt.fadeOut(400, show);
+            } else {
+                show();
+            }
+        }, 6000);
+    }
+
     $(window).unload(function () {
         chrome.extension.sendRequest({action: "reloadConfig"});
     });
@@ -167,7 +194,17 @@
                 $.get("/CHANGELOG.md", function (data) {
                     $("#changelog").html(new Showdown.converter().makeHtml(data));
                 });
+            } else if (ui.index === 3 && $("#credits").data("running") === false) {
+                window.setTimeout(startCredits, 500);
             }
         }
     });
+    
+    var credits = [
+        "The SABnzbd team",
+        "The jQuery and jQuery UI developers for great and very useful JavaScript libraries",
+        "Google for their Chrome browser and other products",
+        "GitHub for hosting this project",
+        "My girlfriend for her patience ♥"
+    ];
 }(jQuery, window, document));
