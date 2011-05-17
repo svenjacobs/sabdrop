@@ -138,7 +138,7 @@
             show = function () {
                 var text = credits[index];
                 $("#credits")
-                    .attr("style", "") // reset style attribute because of strange behaviour when tab is inactive (interval is paused)
+                    .css("left", 0) // reset style attribute because of strange behaviour when tab is inactive (interval is paused)
                     .show("slide", {direction: "left"}, 600, function () {
                         if (index === credits.length - 1) {
                             index = 0;
@@ -155,9 +155,7 @@
         window.setInterval(function () {
             var crdt = $("#credits");
             if (crdt.is(":visible")) {
-                crdt
-                    .attr("style", "") // reset style attribute because of strange behaviour when tab is inactive (interval is paused)
-                    .fadeOut(400, show);
+                crdt.fadeOut(400, show);
             } else {
                 show();
             }
