@@ -133,7 +133,7 @@
     }
 
     function startCredits() {
-        var TIMEOUT = 6000,
+        var TIMEOUT = 5000,
             index = 0,
             show = function () {
                 var text = credits[index];
@@ -195,7 +195,7 @@
         .tabs({
             select: function (evt, ui) {
                 if (ui.index === 2 && $("#changelog").children().length === 0) {
-                    $.get("/CHANGELOG.md", function (data) {
+                    $.get(chrome.extension.getURL("/CHANGELOG.md"), function (data) {
                         $("#changelog").html(new Showdown.converter().makeHtml(data));
                     });
                 } else if (ui.index === 3 && $("#credits").data("running") === false) {
@@ -204,7 +204,14 @@
             }
         })
         .show(); // delayed show so that we don't see how the tabs are build
-    
+   
+    // just a graphical gimmick ;-)
+    window.setTimeout(function () {
+        $("header img")
+            .css("visibility", "visible")
+            .show("slide", {direction: "up"}, 400);
+    }, 300);
+
     var credits = [
         "The SABnzbd team",
         "The jQuery and jQuery UI developers for great and very useful JavaScript libraries",
