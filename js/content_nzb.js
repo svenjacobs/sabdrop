@@ -19,7 +19,7 @@
             });
 
             if (matches) {
-                if (!/^(file|https?):\/\//.exec(url)) {
+                if (!/^(file|https?):\/\//.test(url)) {
                     url = window.location.protocol + "//" + window.location.host + url;
                 }
 

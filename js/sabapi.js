@@ -71,7 +71,7 @@
         };
 
         this.setHost = function (host) {
-            if (!/\/$/.exec(host)) {
+            if (!/\/$/.test(host)) {
                 host += "/";
             }
             this._host = host;
@@ -123,7 +123,7 @@
 
         this.verifyConnection = function (callback) {
             this._request({mode: "queue", output: "json"}, function (success, responseText) {
-                if (success && /"status":false/.exec(responseText) === null) {
+                if (success && !/"status":false/.test(responseText)) {
                     callback(true, responseText);
                 } else {
                     callback(false, responseText);
