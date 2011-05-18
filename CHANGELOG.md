@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.1 (05/18/11)
+----------------
+
+* Some polishing
+* Minor code improvements
+
 0.3 (05/16/11)
 --------------
 
