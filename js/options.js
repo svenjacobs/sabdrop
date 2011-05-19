@@ -1,5 +1,5 @@
 /*jslint browser: true, strict: true, indent: 4 */
-/*global jQuery, window, chrome, SABapi*/
+/*global jQuery, window, chrome, SABapi, Showdown*/
 (function ($, window, document) {
     "use strict";
 
@@ -19,17 +19,17 @@
     $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
     $("a[href='#about']").text(chrome.i18n.getMessage("options_tab_about"));
 
-    function load() {
-        setVal(this, localStorage[$(this).attr("id")]);
-    }
-
     function setVal(opt, val) {
-        var opt = $(opt);
+        opt = $(opt);
         if (opt.attr("type") === "checkbox") {
             opt.prop("checked", val === "true" ? true : false);
         } else {
             opt.val(val);
         }
+    }
+
+    function load() {
+        setVal(this, localStorage[$(this).attr("id")]);
     }
 
     function save() {
@@ -93,6 +93,16 @@
         });
     }
 
+    function authOptions() {
+        if ($(this).val() === "apikey") {
+            $("#apiKey").prop("disabled", false);
+            $("#username, #password").prop("disabled", true);
+        } else {
+            $("#apiKey").prop("disabled", true);
+            $("#username, #password").prop("disabled", false);
+        }
+    }
+
     function reset() {
         $("#resetDialog").dialog({
             resizeable: false,
@@ -122,15 +132,13 @@
         });
     }
 
-    function authOptions() {
-        if ($(this).val() === "apikey") {
-            $("#apiKey").prop("disabled", false);
-            $("#username, #password").prop("disabled", true);
-        } else {
-            $("#apiKey").prop("disabled", true);
-            $("#username, #password").prop("disabled", false);
-        }
-    }
+    var credits = [
+        "The SABnzbd team",
+        "The jQuery and jQuery UI developers for great and very useful JavaScript libraries",
+        "Google for their Chrome browser and other products",
+        "GitHub for hosting this project",
+        "My girlfriend for her patience ♥"
+    ];
 
     function startCredits() {
         var TIMEOUT = 5000,
@@ -211,12 +219,4 @@
             .css("visibility", "visible")
             .show("slide", {direction: "up"}, 400);
     }, 300);
-
-    var credits = [
-        "The SABnzbd team",
-        "The jQuery and jQuery UI developers for great and very useful JavaScript libraries",
-        "Google for their Chrome browser and other products",
-        "GitHub for hosting this project",
-        "My girlfriend for her patience ♥"
-    ];
 }(jQuery, window, document));

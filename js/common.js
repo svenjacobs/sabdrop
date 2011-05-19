@@ -6,7 +6,7 @@
     window.SABdrop = {
         Common: {
             truncate: function (text, maxLength) {
-                var maxLength = maxLength || 40;
+                maxLength = maxLength || 40;
 
                 if (text.length > maxLength + 3) {
                     var front = text.substring(0, maxLength / 2);

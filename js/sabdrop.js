@@ -1,5 +1,5 @@
 /*jslint browser: true, strict: true, indent: 4 */
-/*global chrome, webkitNotifications, SABdrop, SABapi*/
+/*global console, chrome, webkitNotifications, SABdrop, SABapi*/
 (function (window) {
     "use strict";
 
@@ -93,40 +93,40 @@
     // Receive message from content script and page action
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
         switch (request.action) {
-            case "pageAction":
-                window.pageActionData[sender.tab.id] = request.data;
-                chrome.pageAction.show(sender.tab.id);
-                break;
-            case "downloadLink":
-                sendLink(request.link, request.category);
-                break;
-            case "reloadConfig":
-                console.info("Reloading SABdrop configuration");
-                api.setHost(localStorage.host);
+        case "pageAction":
+            window.pageActionData[sender.tab.id] = request.data;
+            chrome.pageAction.show(sender.tab.id);
+            break;
+        case "downloadLink":
+            sendLink(request.link, request.category);
+            break;
+        case "reloadConfig":
+            console.info("Reloading SABdrop configuration");
+            api.setHost(localStorage.host);
 
-                if (localStorage.authMethod === "login") {
-                    api.setAuthMethod("login");
-                    api.setUsername(localStorage.username);
-                    api.setPassword(localStorage.password);
-                } else {
-                    api.setAuthMethod("apikey");
-                    api.setAPIKey(localStorage.apiKey);
-                }
+            if (localStorage.authMethod === "login") {
+                api.setAuthMethod("login");
+                api.setUsername(localStorage.username);
+                api.setPassword(localStorage.password);
+            } else {
+                api.setAuthMethod("apikey");
+                api.setAPIKey(localStorage.apiKey);
+            }
 
-                createContextMenus(); // recreate menus because of categories
-                break;
-            case "getCategories":
-                if (localStorage.hideCategories === "true") {
-                    sendResponse([]);
-                } else {
-                    api.categories(function (categories) {
-                        sendResponse(categories);
-                    });
-                }
-                return;
-            case "getLocalStorage":
-                sendResponse(localStorage[request.attribute]);
-                return;
+            createContextMenus(); // recreate menus because of categories
+            break;
+        case "getCategories":
+            if (localStorage.hideCategories === "true") {
+                sendResponse([]);
+            } else {
+                api.categories(function (categories) {
+                    sendResponse(categories);
+                });
+            }
+            return;
+        case "getLocalStorage":
+            sendResponse(localStorage[request.attribute]);
+            return;
         }
         sendResponse({}); // clean up
     });

@@ -39,13 +39,13 @@
             return;
         }
 
-        var filter = $(this).val().toLowerCase();
-        if (filter === "") {
+        var term = $(this).val().toLowerCase();
+        if (term === "") {
             buildList(data);
         } else {
             var filtered = [];
             $.each(data, function (index, item) {
-                if (item.toLowerCase().indexOf(filter) >= 0) {
+                if (item.toLowerCase().indexOf(term) >= 0) {
                     filtered.push(item);
                 }
             });
@@ -66,15 +66,17 @@
 
         var select = $("#categories");
 
-        select.append($("<option>")
-            .html(chrome.i18n.getMessage("context_menu_nocategory"))
-            .val("")
+        select.append(
+            $("<option>")
+                .html(chrome.i18n.getMessage("context_menu_nocategory"))
+                .val("")
         );
 
         $.each(categories, function (index, cat) {
-            select.append($("<option>")
-                .html(cat)
-                .val(cat)
+            select.append(
+                $("<option>")
+                    .html(cat)
+                    .val(cat)
             );
         });
 
