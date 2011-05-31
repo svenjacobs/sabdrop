@@ -21,8 +21,9 @@
          * @param params Object properties get translated into URL parameters
          * @param callback A function(success, response)
          * @param noAuth If true, no authentication parameters will be appended to query
+         * @param post If true, sends request as POST instead of GET
          */
-        this._request = function (params, callback, noAuth) {
+        this._request = function (params, callback, noAuth, post) {
             if (typeof params !== "object") {
                 callback(false, null);
                 return;
@@ -37,13 +38,11 @@
                 }
             }
 
-            var prop, query;
+            var prop, query = "";
             for (prop in params) {
                 if (params.hasOwnProperty(prop)) {
                     if (query) {
                         query += "&";
-                    } else {
-                        query = "?";
                     }
                     query += prop + "=" + escape(params[prop]);
                 }
@@ -66,7 +65,36 @@
                 callback(false, xhr.responseText);
             };
 
-            xhr.open("GET", this._host + "api" + query, true);
+            if (post === true) {
+                xhr.open("POST", this._host + "api", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send(query);
+            } else {
+                xhr.open("GET", this._host + "api?" + query, true);
+                xhr.send();
+            }
+        };
+
+        this._getFile = function (link, callback) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        var file = xhr.responseText;
+                        callback(xhr.responseText);
+                    } else {
+                        callback(null);
+                    }
+                }
+            };
+
+            xhr.onerror = function (e) {
+                console.error(e);
+                callback(null);
+            };
+
+            xhr.open("GET", link, true);
             xhr.send();
         };
 
@@ -121,6 +149,16 @@
             });
         };
 
+        /**
+         * Send URL to SABnzbd as file upload.
+         */
+        this.sendFile = function (link, name, category, callback) {
+            this._getFile(link, function(file) {
+                // TODO
+                // attribute name of file: "nzbfile"
+            });
+        };
+
         this.verifyConnection = function (callback) {
             this._request({mode: "queue", output: "json"}, function (success, responseText) {
                 if (success && !/"status":false/.test(responseText)) {
@@ -154,14 +192,16 @@
 
                 if (success) {
                     var json = JSON.parse(responseText);
-                    var categories = json.queue.categories;
+                    if (json.queue && json.queue.categories) {
+                        var categories = json.queue.categories;
 
-                    if (typeof categories === "object") {
-                        categories.forEach(function (c) {
-                            if (c !== "*") {
-                                filtered.push(c);
-                            }
-                        });
+                        if (typeof categories === "object") {
+                            categories.forEach(function (c) {
+                                if (c !== "*") {
+                                    filtered.push(c);
+                                }
+                            });
+                        }
                     }
                 }
 
