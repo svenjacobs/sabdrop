@@ -17,8 +17,9 @@
             category = null;
         }
 
-        var basename = SABdrop.Common.basename(link);
-        api.sendLink(link, basename, category, function (success) {
+        var basename = SABdrop.Common.basename(link),
+            method = localStorage.fileUpload === "true" ? api.sendFile : api.sendLink;
+        method.call(api, link, basename, category, function (success) {
             var title, text;
 
             var popupHide = localStorage.popupHide || 5000;

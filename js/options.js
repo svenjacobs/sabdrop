@@ -15,6 +15,7 @@
     $("label[for='password'] sup").prop("title", chrome.i18n.getMessage("options_setting_password_help"));
     $("label[for='hideCategories'] sup").prop("title", chrome.i18n.getMessage("options_setting_hidecategories_help"));
     $("label[for='matchPatterns'] sup").prop("title", chrome.i18n.getMessage("options_setting_matchpatterns_help"));
+    $("label[for='fileUpload'] sup").prop("title", chrome.i18n.getMessage("options_setting_fileupload_help"));
     $("a[href='#options']").text(chrome.i18n.getMessage("options_tab"));
     $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
     $("a[href='#about']").text(chrome.i18n.getMessage("options_tab_about"));

@@ -74,6 +74,12 @@
     "options_setting_matchpatterns_help": {
         "message": "Liste von regulären Ausdrücken, die auf NZB-Links im href-Attribut von Seitenelementen zutreffen. Je Zeile ein Ausdruck."
     },
+    "options_setting_fileupload": {
+        "message": "Benutze Dateiupload"
+    },
+    "options_setting_fileupload_help": {
+        "message": "EXPERIMENTELL. Anstatt einen Link an SABnzbd zu senden, lade die NZB-Datei lokal herunter und sende diese Datei an SABnzbd. Umgeht möglicherweise Probleme mit Websites, die eine Anmeldung benötigen (z.B. Foren)."
+    },
     "options_verify": {
         "message": "Verbindung überprüfen"
     },

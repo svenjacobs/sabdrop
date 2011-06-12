@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4 (06/12/11)
+--------------
+
+* Added support for file upload functionality (experimental).
+
 0.3.1 (05/18/11)
 ----------------
 

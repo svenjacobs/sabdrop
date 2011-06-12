@@ -18,6 +18,7 @@ Features
 * Page action in address bar that scans for NZB weblinks
 * Supports API key and username/password authentication
 * Supports categories (NZB links can be assigned to a category with context menu)
+* Allows sending NZB files as file upload which should work around issues with sites that require an authentication (e.g. forums)
 
 Configuration
 -------------
@@ -62,6 +63,16 @@ filled out if `API key` is used.
 ### Advanced options
 
 These settings are hidden beneath the "Advanced options" tab:
+
+#### Use file upload
+
+The default behavior of SABdrop is to send the weblink of a NZB file to SABnzbd.
+If this options is enabled SABdrop will instead download the NZB file locally and
+then send that file to SABnzbd. This may work around issues with sites that require
+an authentication (e.g. forums).
+
+This is an **experimental** feature and has not been tested thoroughly. It may not
+work as expected.
 
 #### Hide categories
 

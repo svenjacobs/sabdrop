@@ -67,7 +67,7 @@
 
             if (post === true) {
                 xhr.open("POST", this._host + "api", true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.send(query);
             } else {
                 xhr.open("GET", this._host + "api?" + query, true);
@@ -153,10 +153,63 @@
          * Send URL to SABnzbd as file upload.
          */
         this.sendFile = function (link, name, category, callback) {
-            this._getFile(link, function(file) {
-                // TODO
-                // attribute name of file: "nzbfile"
-            });
+            this._getFile(link, (function (api) {
+                return function (file) {
+                    if (file === null || file === undefined) {
+                        callback(false);
+                        return;
+                    }
+
+                    var boundary = "----SABdropFormBoundary",
+                        formData = "--" + boundary + "\n";
+
+                    formData += "Content-Disposition: form-data; name=\"nzbfile\"; filename=\"" + name + "\"\n" +
+                        "Content-Type: text/xml\n\n" +
+                        file + 
+                        "\n--" + boundary + "\n" +
+                        "Content-Disposition: form-data; name=\"mode\"\n\naddfile" +
+                        "\n--" + boundary + "\n" +
+                        "Content-Disposition: form-data; name=\"nzbname\"\n\n" + name;
+
+                    if (api._authMethod === "apikey") {
+                        formData += "\n--" + boundary + "\n" +
+                            "Content-Disposition: form-data; name=\"apikey\"\n\n" + api._apiKey;
+                    } else {
+                        formData += "\n--" + boundary + "\n" +
+                            "Content-Disposition: form-data; name=\"ma_username\"\n\n" + api._username +
+                            "\n--" + boundary + "\n" +
+                            "Content-Disposition: form-data; name=\"ma_password\"\n\n" + api._password;
+                    }
+
+                    if (category) {
+                        formData += "\n--" + boundary + "\n" +
+                            "Content-Disposition: form-data; name=\"cat\"\n\n" + category;
+                    }
+
+                    formData += "\n--" + boundary + "--\n"; // last boundary
+
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            if (this.status === 200) {
+                                callback(true, xhr.responseText);
+                            } else {
+                                callback(false, xhr.responseText);
+                            }
+                        }
+                    };
+
+                    xhr.onerror = function (e) {
+                        console.error(e);
+                        callback(false, xhr.responseText);
+                    };
+
+                    xhr.open("POST", api._host + "api", true);
+                    xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+                    xhr.send(formData);
+                };
+            }(this)));
         };
 
         this.verifyConnection = function (callback) {

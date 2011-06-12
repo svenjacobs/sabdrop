@@ -99,6 +99,14 @@
         "message": "List of regular expressions that match NZB links in the href attribute of page elements. One pattern per line.",
         "description": "Help for matchpatterns setting"
     },
+    "options_setting_fileupload": {
+        "message": "Use file upload",
+        "description": "Name for fileupload setting"
+    },
+    "options_setting_fileupload_help": {
+        "message": "EXPERIMENTAL. Instead of sending a link to SABnzbd, download the NZB file locally and send that file to SABnzbd. This may work around issues with sites that require an authentication (for example forums).",
+        "description": "Help for fileupload setting"
+    },
     "options_verify": {
         "message": "Verify connection",
         "description": "Description of verify button"
