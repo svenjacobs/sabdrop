@@ -36,42 +36,6 @@ label sup {
     cursor: help;
 }
 
-label[for="host"]:before {
-    content: "__MSG_options_setting_host__";
-}
-
-label[for="apiKey"]:before {
-    content: "__MSG_options_setting_apikey__";
-}
-
-label[for="popupHide"]:before {
-    content: "__MSG_options_setting_popuphide__";
-}
-
-label[for="authMethod"]:before {
-    content: "__MSG_options_setting_authmethod__";
-}
-
-label[for="username"]:before {
-    content: "__MSG_options_setting_username__";
-}
-
-label[for="password"]:before {
-    content: "__MSG_options_setting_password__";
-}
-
-label[for="hideCategories"]:before {
-    content: "__MSG_options_setting_hidecategories__";
-}
-
-label[for="matchPatterns"]:before {
-    content: "__MSG_options_setting_matchpatterns__";
-}
-
-label[for="fileUpload"]:before {
-    content: "__MSG_options_setting_fileupload__";
-}
-
 input[type="text"], input[type="url"], input[type="number"],
 select, textarea {
     width: 20em;

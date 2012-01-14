@@ -7,14 +7,23 @@
     document.title = chrome.i18n.getMessage("options_title");
     $("#authMethod option[value='apikey']").text(chrome.i18n.getMessage("options_setting_authmethod_api"));
     $("#authMethod option[value='login']").text(chrome.i18n.getMessage("options_setting_authmethod_login"));
+    $("label[for='host']").text(chrome.i18n.getMessage("options_setting_host"));
     $("label[for='host'] sup").prop("title", chrome.i18n.getMessage("options_setting_host_help"));
+    $("label[for='apiKey']").text(chrome.i18n.getMessage("options_setting_apikey"));
     $("label[for='apiKey'] sup").prop("title", chrome.i18n.getMessage("options_setting_apikey_help"));
+    $("label[for='popupHide']").text(chrome.i18n.getMessage("options_setting_popuphide"));
     $("label[for='popupHide'] sup").prop("title", chrome.i18n.getMessage("options_setting_popuphide_help"));
+    $("label[for='authMethod']").text(chrome.i18n.getMessage("options_setting_authmethod"));
     $("label[for='authMethod'] sup").prop("title", chrome.i18n.getMessage("options_setting_authmethod_help"));
+    $("label[for='username']").text(chrome.i18n.getMessage("options_setting_username"));
     $("label[for='username'] sup").prop("title", chrome.i18n.getMessage("options_setting_username_help"));
+    $("label[for='password']").text(chrome.i18n.getMessage("options_setting_password"));
     $("label[for='password'] sup").prop("title", chrome.i18n.getMessage("options_setting_password_help"));
+    $("label[for='hideCategories']").text(chrome.i18n.getMessage("options_setting_hidecategories"));
     $("label[for='hideCategories'] sup").prop("title", chrome.i18n.getMessage("options_setting_hidecategories_help"));
+    $("label[for='matchPatterns']").text(chrome.i18n.getMessage("options_setting_matchpatterns"));
     $("label[for='matchPatterns'] sup").prop("title", chrome.i18n.getMessage("options_setting_matchpatterns_help"));
+    $("label[for='fileUpload']").text(chrome.i18n.getMessage("options_setting_fileupload"));
     $("label[for='fileUpload'] sup").prop("title", chrome.i18n.getMessage("options_setting_fileupload_help"));
     $("a[href='#options']").text(chrome.i18n.getMessage("options_tab"));
     $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
@@ -23,7 +32,7 @@
     function setVal(opt, val) {
         opt = $(opt);
         if (opt.attr("type") === "checkbox") {
-            opt.prop("checked", val === "true" ? true : false);
+            opt.prop("checked", val === true || val === "true" ? true : false);
         } else {
             opt.val(val);
         }
