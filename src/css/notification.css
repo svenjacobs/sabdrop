@@ -1,0 +1,42 @@
+@import "common.css";
+
+body {
+    font-size: small;
+    margin: 1em;
+}
+
+img {
+    width: 32px;
+    height: 32px;
+    float: left;
+    margin-right: 0.5em;
+}
+
+#url {
+    font-family: monospace;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+#name {
+    width: 100%;
+}
+
+#submit {
+    float: right;
+}
+
+#countdown {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-size: x-small;
+}
+
+#countdown.warning {
+    color: red;
+}
+
+#title:before {
+    content: "__MSG_notification_title__";
+}

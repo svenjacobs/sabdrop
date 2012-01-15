@@ -1,4 +1,4 @@
-/*jslint browser: true, strict: true, indent: 4 */
+/*jslint browser: true, indent: 4 */
 /*global console, chrome, webkitNotifications, SABdrop, SABapi*/
 (function (window) {
     "use strict";
@@ -6,47 +6,71 @@
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
     
     var api;
+
     if (localStorage.authMethod === "login") {
         api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
     } else {
         api = new SABapi(localStorage.host, localStorage.apiKey);
     }
 
-    function sendLink(link, category) {
+    function sendLink(link, category, name) {
         if (category === undefined) {
             category = null;
         }
 
-        var basename = SABdrop.Common.basename(link),
-            method = localStorage.fileUpload === "true" ? api.sendFile : api.sendLink;
-        method.call(api, link, basename, category, function (success) {
-            var title, text;
+        if (name === undefined) {
+            name = null;
+        }
+            
+        var basename = SABdrop.Common.basename(link);
 
-            var popupHide = localStorage.popupHide || 5000;
-            if (popupHide >= 0) {
-                if (success) {
-                    title = basename;
-                    text = chrome.i18n.getMessage("sent_popup", SABdrop.Common.truncate(basename, 20));
-                } else {
-                    title = chrome.i18n.getMessage("error_popup_title");
-                    text = chrome.i18n.getMessage("error_popup");
+        if (localStorage.nzbName === "always" && name === null) {
+            // Show notification popup asking for NZB name
+
+            webkitNotifications.createHTMLNotification(
+                "notification.html#" + JSON.stringify({
+                    link: link,
+                    category: category,
+                    basename: basename
+                })
+            ).show();
+            
+        } else {
+            // Send link to SABnzbd
+
+            name = (name !== null ? name : basename);
+            var method = localStorage.fileUpload === "true" ? api.sendFile : api.sendLink;
+
+            method.call(api, link, name, category, function (success) {
+                var title,
+                    text,
+                    popupHide = localStorage.popupHide || 5000;
+
+                if (popupHide >= 0) {
+                    if (success) {
+                        title = name;
+                        text = chrome.i18n.getMessage("sent_popup", SABdrop.Common.truncate(name, 20));
+                    } else {
+                        title = chrome.i18n.getMessage("error_popup_title");
+                        text = chrome.i18n.getMessage("error_popup");
+                    }
+
+                    var notification = webkitNotifications.createNotification(
+                        "images/icons/sab48.png",
+                        title,
+                        text
+                    );
+
+                    notification.ondisplay = function () {
+                        window.setTimeout(function () {
+                            notification.cancel();
+                        }, popupHide);
+                    };
+
+                    notification.show();
                 }
-
-                var notification = webkitNotifications.createNotification(
-                    "images/icons/sab48.png",
-                    title,
-                    text
-                );
-
-                notification.ondisplay = function () {
-                    window.setTimeout(function () {
-                        notification.cancel();
-                    }, popupHide);
-                };
-
-                notification.show();
-            }
-        });
+            });
+        }
     }
 
     function createContextMenus() {
@@ -89,7 +113,19 @@
         });
     }
 
-    createContextMenus();
+    function onStart() {
+        createContextMenus();
+
+        // open options page if extension hasn't been configured yet
+        if (!localStorage.host) {
+            chrome.tabs.create({url: "options.html"});
+        }
+
+        // migration from 0.4.1 -> 0.5
+        if (localStorage.host && !localStorage.nzbName) {
+            localStorage.nzbName = "always";
+        }
+    }
 
     // Receive message from content script and page action
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
@@ -99,7 +135,7 @@
             chrome.pageAction.show(sender.tab.id);
             break;
         case "downloadLink":
-            sendLink(request.link, request.category);
+            sendLink(request.link, request.category, request.name);
             break;
         case "reloadConfig":
             console.info("Reloading SABdrop configuration");
@@ -132,8 +168,6 @@
         sendResponse({}); // clean up
     });
 
-    // open options page if extension hasn't been configured yet
-    if (!localStorage.host) {
-        chrome.tabs.create({url: "options.html"});
-    }
+    onStart();
+
 }(window));

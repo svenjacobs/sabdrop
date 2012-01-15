@@ -1,4 +1,4 @@
-/*jslint browser: true, strict: true, indent: 4 */
+/*jslint browser: true, indent: 4 */
 /*global jQuery, chrome, SABdrop*/
 (function ($) {
     "use strict";

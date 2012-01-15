@@ -1,14 +1,14 @@
-/*jslint browser: true, strict: true, indent: 4 */
+/*jslint browser: true, indent: 4 */
 /*global window, XMLHttpRequest, JSON, escape, console*/
 (function (window) {
     "use strict";
 
     /**
      * new SABapi(host, apiKey)
-     * creates SABapi object with API key authentication method
+     * Creates SABapi object with API key authentication method
      *
      * new SABapi(host, username, password)
-     * creates SABapi object with username/password authentication method
+     * Creates SABapi object with username/password authentication method
      */
     var SABapi = function (host, apiKeyOrUsername, password) {
         this._host = null;

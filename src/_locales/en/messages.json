@@ -107,6 +107,18 @@
         "message": "EXPERIMENTAL. Instead of sending a link to SABnzbd, download the NZB file locally and send that file to SABnzbd. This may work around issues with sites that require an authentication (for example forums).",
         "description": "Help for fileupload setting"
     },
+    "options_setting_nzbname": {
+        "message": "Define NZB names"
+    },
+    "options_setting_nzbname_always": {
+        "message": "Always"
+    },
+    "options_setting_nzbname_never": {
+        "message": "Never"
+    },
+    "options_setting_nzbname_help": {
+        "message": "Opens a dialog for each download for specification of NZB name. If disabled parts of URL will be chosen as name."
+    },
     "options_verify": {
         "message": "Verify connection",
         "description": "Description of verify button"
@@ -169,5 +181,8 @@
     "filter_results": {
         "message": "Filter results",
         "description": "Text for search box on page action popup"
+    },
+    "notification_title": {
+        "message": "Specify name for download"
     }
 }

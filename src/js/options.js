@@ -1,4 +1,4 @@
-/*jslint browser: true, strict: true, indent: 4 */
+/*jslint browser: true, indent: 4 */
 /*global jQuery, window, chrome, SABapi, Showdown*/
 (function ($, window, document) {
     "use strict";
@@ -7,24 +7,28 @@
     document.title = chrome.i18n.getMessage("options_title");
     $("#authMethod option[value='apikey']").text(chrome.i18n.getMessage("options_setting_authmethod_api"));
     $("#authMethod option[value='login']").text(chrome.i18n.getMessage("options_setting_authmethod_login"));
-    $("label[for='host']").text(chrome.i18n.getMessage("options_setting_host"));
+    $("#nzbName option[value='always']").text(chrome.i18n.getMessage("options_setting_nzbname_always"));
+    $("#nzbName option[value='never']").text(chrome.i18n.getMessage("options_setting_nzbname_never"));
+    $("label[for='host']").prepend(chrome.i18n.getMessage("options_setting_host"));
     $("label[for='host'] sup").prop("title", chrome.i18n.getMessage("options_setting_host_help"));
-    $("label[for='apiKey']").text(chrome.i18n.getMessage("options_setting_apikey"));
+    $("label[for='apiKey']").prepend(chrome.i18n.getMessage("options_setting_apikey"));
     $("label[for='apiKey'] sup").prop("title", chrome.i18n.getMessage("options_setting_apikey_help"));
-    $("label[for='popupHide']").text(chrome.i18n.getMessage("options_setting_popuphide"));
+    $("label[for='popupHide']").prepend(chrome.i18n.getMessage("options_setting_popuphide"));
     $("label[for='popupHide'] sup").prop("title", chrome.i18n.getMessage("options_setting_popuphide_help"));
-    $("label[for='authMethod']").text(chrome.i18n.getMessage("options_setting_authmethod"));
+    $("label[for='authMethod']").prepend(chrome.i18n.getMessage("options_setting_authmethod"));
     $("label[for='authMethod'] sup").prop("title", chrome.i18n.getMessage("options_setting_authmethod_help"));
-    $("label[for='username']").text(chrome.i18n.getMessage("options_setting_username"));
+    $("label[for='username']").prepend(chrome.i18n.getMessage("options_setting_username"));
     $("label[for='username'] sup").prop("title", chrome.i18n.getMessage("options_setting_username_help"));
-    $("label[for='password']").text(chrome.i18n.getMessage("options_setting_password"));
+    $("label[for='password']").prepend(chrome.i18n.getMessage("options_setting_password"));
     $("label[for='password'] sup").prop("title", chrome.i18n.getMessage("options_setting_password_help"));
-    $("label[for='hideCategories']").text(chrome.i18n.getMessage("options_setting_hidecategories"));
+    $("label[for='hideCategories']").prepend(chrome.i18n.getMessage("options_setting_hidecategories"));
     $("label[for='hideCategories'] sup").prop("title", chrome.i18n.getMessage("options_setting_hidecategories_help"));
-    $("label[for='matchPatterns']").text(chrome.i18n.getMessage("options_setting_matchpatterns"));
+    $("label[for='matchPatterns']").prepend(chrome.i18n.getMessage("options_setting_matchpatterns"));
     $("label[for='matchPatterns'] sup").prop("title", chrome.i18n.getMessage("options_setting_matchpatterns_help"));
-    $("label[for='fileUpload']").text(chrome.i18n.getMessage("options_setting_fileupload"));
+    $("label[for='fileUpload']").prepend(chrome.i18n.getMessage("options_setting_fileupload"));
     $("label[for='fileUpload'] sup").prop("title", chrome.i18n.getMessage("options_setting_fileupload_help"));
+    $("label[for='nzbName']").prepend(chrome.i18n.getMessage("options_setting_nzbname"));
+    $("label[for='nzbName'] sup").prop("title", chrome.i18n.getMessage("options_setting_nzbname_help"));
     $("a[href='#options']").text(chrome.i18n.getMessage("options_tab"));
     $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
     $("a[href='#about']").text(chrome.i18n.getMessage("options_tab_about"));

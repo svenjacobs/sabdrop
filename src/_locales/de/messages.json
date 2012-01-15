@@ -80,6 +80,18 @@
     "options_setting_fileupload_help": {
         "message": "EXPERIMENTELL. Anstatt einen Link an SABnzbd zu senden, lade die NZB-Datei lokal herunter und sende diese Datei an SABnzbd. Umgeht möglicherweise Probleme mit Websites, die eine Anmeldung benötigen (z.B. Foren)."
     },
+    "options_setting_nzbname": {
+        "message": "NZB-Namen festlegen"
+    },
+    "options_setting_nzbname_always": {
+        "message": "Immer"
+    },
+    "options_setting_nzbname_never": {
+        "message": "Nie"
+    },
+    "options_setting_nzbname_help": {
+        "message": "Öffnet für jeden Download einen Dialog zum Festlegen des NZB-Namens. Wenn deaktiviert werden Teile der URL als Name verwendet."
+    },
     "options_verify": {
         "message": "Verbindung überprüfen"
     },
@@ -129,5 +141,8 @@
     },
     "filter_results": {
         "message": "Ergebnisse filtern"
+    },
+    "notification_title": {
+        "message": "Spezifiziere Name für Download"
     }
 }
