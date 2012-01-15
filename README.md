@@ -71,11 +71,11 @@ Usually SABdrop tries to extract the name of NZB downloads from the download
 URL. This works well for sites with pretty URLs (e.g. 
 `www.somesite.com/downloads/somedownload.nzb`) but fails for websites with ugly
 URLs (`.../download.php?id=1337`). If this setting is set to `always` SABdrop
-displays a notification dialog for every download where the name of the NZB can be
-altered. If set to `never` SABdrop will not display the dialog and always take parts
+displays a notification dialog where the name of the NZB can be altered for every
+download. If set to `never` SABdrop will not display the dialog and always take parts
 from the URL for the name.
 
-Please not that the notification dialog automatically disappears after 10 seconds
+Please note that the notification dialog automatically disappears after 10 seconds
 and the download starts if there wasn't any interaction with the dialog. If the
 dialog is closed by the user (by clicking the "x") the download is aborted.
 
