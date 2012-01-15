@@ -11,6 +11,8 @@ those files to SABnzbd.
 
 SABdrop has been tested with SABnzbd version 0.6.0 but should run with 0.5.x, too.
 
+![Promotional image](https://github.com/svenjacobs/SABdrop/raw/master/resources/promotional2.png "SABdrop")
+
 Features
 --------
 
