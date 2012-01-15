@@ -19,6 +19,7 @@ Features
 * Supports API key and username/password authentication
 * Supports categories (NZB links can be assigned to a category with context menu)
 * Allows sending NZB files as file upload which should work around issues with sites that require an authentication (e.g. forums)
+* Specification of alternative NZB names for sites with ugly download URLs
 
 Configuration
 -------------
@@ -63,6 +64,20 @@ filled out if `API key` is used.
 ### Advanced options
 
 These settings are hidden beneath the "Advanced options" tab:
+
+#### Define NZB names
+
+Usually SABdrop tries to extract the name of NZB downloads from the download
+URL. This works well for sites with pretty URLs (e.g. 
+`www.somesite.com/downloads/somedownload.nzb`) but fails for websites with ugly
+URLs (`.../download.php?id=1337`). If this setting is set to `always` SABdrop
+displays a notification dialog for every download where the name of the NZB can be
+altered. If set to `never` SABdrop will not display the dialog and always take parts
+from the URL for the name.
+
+Please not that the notification dialog automatically disappears after 10 seconds
+and the download starts if there wasn't any interaction with the dialog. If the
+dialog is closed by the user (by clicking the "x") the download is aborted.
 
 #### Use file upload
 

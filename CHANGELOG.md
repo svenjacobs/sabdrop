@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5 (01/15/12)
+--------------
+
+* Added notification dialog to specify name of NZB download (issues [#9](https://github.com/svenjacobs/SABdrop/issues/9) and [#10](https://github.com/svenjacobs/SABdrop/issues/10))
+
 0.4.1 (01/14/12)
 ----------------
 
