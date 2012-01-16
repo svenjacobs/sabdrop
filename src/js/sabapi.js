@@ -4,11 +4,18 @@
     "use strict";
 
     /**
-     * new SABapi(host, apiKey)
-     * Creates SABapi object with API key authentication method
+     * JavaScript API for accessing a SABnzbd server
      *
-     * new SABapi(host, username, password)
-     * Creates SABapi object with username/password authentication method
+     *   new SABapi(host, apiKey)
+     *   - Creates SABapi object with API key authentication method
+     *
+     *   new SABapi(host, username, password)
+     *   - Creates SABapi object with username/password authentication method
+     *
+     * Properties and functions with a leading underscore are meant to be
+     * private and should not be called 
+     *
+     * @author Sven Jacobs <mail@svenjacobs.com>
      */
     var SABapi = function (host, apiKeyOrUsername, password) {
         this._host = null;
@@ -73,6 +80,11 @@
                 xhr.open("GET", this._host + "api?" + query, true);
                 xhr.send();
             }
+        };
+
+        this._jsonRequest = function (params, callback, noAuth, post) {
+            params.output = "json";
+            this._request(params, callback, noAuth, post);
         };
 
         this._getFile = function (link, callback) {
@@ -213,7 +225,7 @@
         };
 
         this.verifyConnection = function (callback) {
-            this._request({mode: "queue", output: "json"}, function (success, responseText) {
+            this._jsonRequest({mode: "queue"}, function (success, responseText) {
                 if (success && !/"status":false/.test(responseText)) {
                     callback(true, responseText);
                 } else {
@@ -240,7 +252,7 @@
          * @param callback A function(categories) where categories is an array of string
          */
         this.categories = function (callback) {
-            this._request({mode: "queue", output: "json"}, function (success, responseText) {
+            this._jsonRequest({mode: "queue"}, function (success, responseText) {
                 var filtered = [];
 
                 if (success) {
@@ -261,6 +273,17 @@
                 callback(filtered);
             });
         };
+
+        /**
+         * Gets queue
+         */
+        this.queue = function (callback) {
+            this._jsonRequest({mode: "queue"}, function (success, responseText) {
+            });
+        };
+
+
+
 
         if (host !== undefined) {
             this.setHost(host);
