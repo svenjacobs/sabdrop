@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 4 */
-/*global jQuery, chrome*/
-(function ($) {
+/*global $, chrome*/
+(function () {
     "use strict";
 
     var countdown = 10,
@@ -67,4 +67,4 @@
         }
     }, 1000);
 
-}(jQuery));
+}());

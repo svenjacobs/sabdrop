@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 4 */
-/*global jQuery, chrome, SABdrop*/
-(function ($) {
+/*global $, chrome, SABdrop*/
+(function () {
     "use strict";
 
     var data = null;
@@ -88,4 +88,4 @@
         .keyup(filter)
         .change(filter)
         .click(filter);
-}(jQuery));
+}());

@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 4 */
 /*global window*/
-(function (window) {
+(function () {
     "use strict";
 
     window.SABdrop = {
@@ -21,4 +21,4 @@
             }
         }
     };
-}(window));
+}());

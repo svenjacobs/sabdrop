@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 4 */
-/*global jQuery, window, chrome, SABapi, Showdown*/
-(function ($, window, document) {
+/*global $, window, chrome, SABapi, Showdown*/
+(function () {
     "use strict";
 
     // some i18n
@@ -233,4 +233,4 @@
             .css("visibility", "visible")
             .show("slide", {direction: "up"}, 400);
     }, 300);
-}(jQuery, window, document));
+}());

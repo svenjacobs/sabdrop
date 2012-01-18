@@ -1,6 +1,6 @@
 /*jslint browser: true, white: true, nomen: true, vars: true, indent: 4 */
 /*global window, XMLHttpRequest, JSON, escape, console*/
-(function (window) {
+(function () {
     "use strict";
 
     /**
@@ -363,4 +363,4 @@
     };
 
     window.SABapi = SABapi;
-}(window));
+}());

@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 4 */
-/*global jQuery, chrome, window*/
-(function ($, window) {
+/*global $, chrome, window*/
+(function () {
     "use strict";
 
     chrome.extension.sendRequest({action: "getLocalStorage", attribute: "matchPatterns"}, function (response) {
@@ -33,4 +33,4 @@
         }
     });
 
-}(jQuery, window));
+}());

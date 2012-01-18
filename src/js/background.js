@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 4 */
 /*global console, chrome, webkitNotifications, SABdrop, SABapi*/
-(function (window) {
+(function () {
     "use strict";
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
@@ -170,4 +170,4 @@
 
     onStart();
 
-}(window));
+}());
