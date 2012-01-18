@@ -1,10 +1,10 @@
-/*jslint browser: true, indent: 4 */
+/*jslint browser: true, white: true, nomen: true, vars: true, indent: 4 */
 /*global window, XMLHttpRequest, JSON, escape, console*/
 (function (window) {
     "use strict";
 
     /**
-     * JavaScript API for accessing a SABnzbd server
+     * JavaScript API for accessing a SABnzbd server.
      *
      *   new SABapi(host, apiKey)
      *   - Creates SABapi object with API key authentication method
@@ -13,7 +13,7 @@
      *   - Creates SABapi object with username/password authentication method
      *
      * Properties and functions with a leading underscore are meant to be
-     * private and should not be called 
+     * private and should not be called/accessed externally.
      *
      * @author Sven Jacobs <mail@svenjacobs.com>
      */
@@ -25,18 +25,27 @@
         this._password = null;
 
         /**
-         * @param params Object properties get translated into URL parameters
-         * @param callback A function(success, response)
-         * @param noAuth If true, no authentication parameters will be appended to query
-         * @param post If true, sends request as POST instead of GET
+         * Sends a XHR request to the SABnzbd API.
+         * 
+         * Parameter "args" is a map which may contain the following key/value pairs
+         *
+         * params (required) - Map of key/value pairs that get translated into URL parameters
+         * success (optional) - Callback function(responseText) for success
+         * error (optional) - Callback function(responseText) for error
+         * noAuth (optional) - If true, no authentication parameters will be appended to query
+         * post (optional)- If true, sends request as POST instead of GET
          */
-        this._request = function (params, callback, noAuth, post) {
+        this._request = function (args) {
+            var params = args.params;
+
             if (typeof params !== "object") {
-                callback(false, null);
+                if (args.error) {
+                    args.error(null);
+                }
                 return;
             }
 
-            if (!noAuth) {
+            if (!args.noAuth) {
                 if (this._authMethod === "apikey") {
                     params.apikey = this._apiKey;
                 } else {
@@ -60,19 +69,25 @@
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4) {
                     if (this.status === 200) {
-                        callback(true, xhr.responseText);
+                        if (args.success) {
+                            args.success(xhr.responseText);
+                        }
                     } else {
-                        callback(false, xhr.responseText);
+                        if (args.error) {
+                            args.error(xhr.responseText);
+                        }
                     }
                 }
             };
 
             xhr.onerror = function (e) {
                 console.error(e);
-                callback(false, xhr.responseText);
+                if (args.error) {
+                    args.error(xhr.responseText);
+                }
             };
 
-            if (post === true) {
+            if (args.post === true) {
                 xhr.open("POST", this._host + "api", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.send(query);
@@ -82,9 +97,29 @@
             }
         };
 
-        this._jsonRequest = function (params, callback, noAuth, post) {
-            params.output = "json";
-            this._request(params, callback, noAuth, post);
+        /**
+         * See _request()
+         *
+         * However args.success is a function(responseJSON, responseText)
+         */
+        this._jsonRequest = function (args) {
+            if (typeof args.params !== "object") {
+                if (args.error) {
+                    args.error(null);
+                }
+                return;
+            }
+
+            var success = args.success;
+
+            if (success) {
+                args.success = function (responseText) {
+                    success(JSON.parse(responseText), responseText);
+                };
+            }
+
+            args.params.output = "json";
+            this._request(args);
         };
 
         this._getFile = function (link, callback) {
@@ -93,7 +128,6 @@
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4) {
                     if (this.status === 200) {
-                        var file = xhr.responseText;
                         callback(xhr.responseText);
                     } else {
                         callback(null);
@@ -152,11 +186,14 @@
                 params.cat = category;
             }
 
-            this._request(params, function (success, responseText) {
-                if (success && responseText.replace(/\n/, "") === "ok") {
-                    callback(true, responseText);
-                } else {
-                    callback(false, responseText);
+            this._request({
+                params: params,
+                success: function (responseText) {
+                    if (responseText.replace(/\n/, "") === "ok") {
+                        callback(true, responseText);
+                    } else {
+                        callback(false, responseText);
+                    }
                 }
             });
         };
@@ -224,11 +261,22 @@
             }(this)));
         };
 
+        /**
+         * Verifies connection.
+         *
+         * @param callback A function(success, responseText)
+         */
         this.verifyConnection = function (callback) {
-            this._jsonRequest({mode: "queue"}, function (success, responseText) {
-                if (success && !/"status":false/.test(responseText)) {
-                    callback(true, responseText);
-                } else {
+            this._jsonRequest({
+                params: {mode: "queue"},
+                success: function (responseText) {
+                    if (!/"status":false/.test(responseText)) {
+                        callback(true, responseText);
+                    } else {
+                        callback(false, responseText);
+                    }
+                },
+                error: function (responseText) {
                     callback(false, responseText);
                 }
             });
@@ -240,23 +288,30 @@
          *
          * @param callback A function(success, responseText)
          */
-        this.remoteAuthMethod = function (callback) {
-            this._request({mode: "auth"}, function (success, responseText) {
-                callback(success, success ? responseText.replace(/\n/, "").toLowerCase() : responseText);
-            }, true);
+        this.getRemoteAuthMethod = function (callback) {
+            this._request({
+                params: {mode: "auth"},
+                noAuth: true,
+                success: function (responseText) {
+                    callback(true, responseText.replace(/\n/, "").toLowerCase());
+                },
+                error: function (responseText) {
+                    callback(false, responseText);
+                }
+            });
         };
 
         /**
-         * Gets categories from SABnzbd.
+         * Gets categories.
          *
          * @param callback A function(categories) where categories is an array of string
          */
-        this.categories = function (callback) {
-            this._jsonRequest({mode: "queue"}, function (success, responseText) {
-                var filtered = [];
+        this.getCategories = function (callback) {
+            this._jsonRequest({
+                params: {mode: "queue"},
+                success: function (json) {
+                    var filtered = [];
 
-                if (success) {
-                    var json = JSON.parse(responseText);
                     if (json.queue && json.queue.categories) {
                         var categories = json.queue.categories;
 
@@ -268,17 +323,25 @@
                             });
                         }
                     }
-                }
 
-                callback(filtered);
+                    callback(filtered);
+                },
+                error: function () {
+                    callback([]);
+                }
             });
         };
 
         /**
-         * Gets queue
+         * Gets slots (queued downloads)
+         *
+         * @param callback A function(queue)
          */
-        this.queue = function (callback) {
-            this._jsonRequest({mode: "queue"}, function (success, responseText) {
+        this.getSlots = function (callback) {
+            this._jsonRequest({
+                params: {mode: "queue"}, 
+                success: function (json) {
+                }
             });
         };
 

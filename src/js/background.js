@@ -88,7 +88,7 @@
             return;
         }
 
-        api.categories(function (categories) {
+        api.getCategories(function (categories) {
             if (categories.length > 0) {
                 chrome.contextMenus.create({
                     "title": chrome.i18n.getMessage("context_menu_nocategory"),
@@ -156,7 +156,7 @@
             if (localStorage.hideCategories === "true") {
                 sendResponse([]);
             } else {
-                api.categories(function (categories) {
+                api.getCategories(function (categories) {
                     sendResponse(categories);
                 });
             }

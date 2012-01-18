@@ -92,7 +92,7 @@
                 .text(text);
         };
 
-        api.remoteAuthMethod(function (success, responseText) {
+        api.getRemoteAuthMethod(function (success, responseText) {
             if (!success) {
                 result(false, chrome.i18n.getMessage("options_verify_failed"));
             } else if ($("#authMethod").val() === responseText) {
