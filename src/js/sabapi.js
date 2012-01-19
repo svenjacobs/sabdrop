@@ -340,12 +340,15 @@
         /**
          * Gets slots (queued downloads)
          *
-         * @param callback A function(queue)
+         * @param callback A function(slots)
          */
         this.getSlots = function (callback) {
             this._jsonRequest({
                 params: {mode: "queue"},
                 success: function (json) {
+                    if (json.slots && json.slots instanceof Array) {
+                        callback(json.slots);
+                    }
                 }
             });
         };
