@@ -1,4 +1,4 @@
-/*jslint browser: true, white: true, nomen: true, vars: true, indent: 4 */
+/*jslint browser: true, nomen: true, indent: 4 */
 /*global window, XMLHttpRequest, JSON, escape, console*/
 (function () {
     "use strict";
@@ -26,7 +26,7 @@
 
         /**
          * Sends a XHR request to the SABnzbd API.
-         * 
+         *
          * Parameter "args" is a map which may contain the following key/value pairs
          *
          * params (required) - Map of key/value pairs that get translated into URL parameters
@@ -36,7 +36,10 @@
          * post (optional)- If true, sends request as POST instead of GET
          */
         this._request = function (args) {
-            var params = args.params;
+            var params = args.params,
+                prop,
+                query,
+                xhr;
 
             if (typeof params !== "object") {
                 if (args.error) {
@@ -54,7 +57,7 @@
                 }
             }
 
-            var prop, query = "";
+            query = "";
             for (prop in params) {
                 if (params.hasOwnProperty(prop)) {
                     if (query) {
@@ -64,7 +67,7 @@
                 }
             }
 
-            var xhr = new XMLHttpRequest();
+            xhr = new XMLHttpRequest();
 
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4) {
@@ -210,11 +213,12 @@
                     }
 
                     var boundary = "----SABdropFormBoundary",
-                        formData = "--" + boundary + "\n";
+                        formData = "--" + boundary + "\n",
+                        xhr;
 
                     formData += "Content-Disposition: form-data; name=\"nzbfile\"; filename=\"" + name + "\"\n" +
                         "Content-Type: text/xml\n\n" +
-                        file + 
+                        file +
                         "\n--" + boundary + "\n" +
                         "Content-Disposition: form-data; name=\"mode\"\n\naddfile" +
                         "\n--" + boundary + "\n" +
@@ -237,7 +241,7 @@
 
                     formData += "\n--" + boundary + "--\n"; // last boundary
 
-                    var xhr = new XMLHttpRequest();
+                    xhr = new XMLHttpRequest();
 
                     xhr.onreadystatechange = function () {
                         if (this.readyState === 4) {
@@ -310,10 +314,11 @@
             this._jsonRequest({
                 params: {mode: "queue"},
                 success: function (json) {
-                    var filtered = [];
+                    var filtered = [],
+                        categories;
 
                     if (json.queue && json.queue.categories) {
-                        var categories = json.queue.categories;
+                        categories = json.queue.categories;
 
                         if (typeof categories === "object") {
                             categories.forEach(function (c) {
@@ -339,7 +344,7 @@
          */
         this.getSlots = function (callback) {
             this._jsonRequest({
-                params: {mode: "queue"}, 
+                params: {mode: "queue"},
                 success: function (json) {
                 }
             });

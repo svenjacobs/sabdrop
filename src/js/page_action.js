@@ -39,11 +39,13 @@
             return;
         }
 
-        var term = $(this).val().toLowerCase();
+        var term = $(this).val().toLowerCase(),
+            filtered;
+
         if (term === "") {
             buildList(data);
         } else {
-            var filtered = [];
+            filtered = [];
             $.each(data, function (index, item) {
                 if (item.toLowerCase().indexOf(term) >= 0) {
                     filtered.push(item);

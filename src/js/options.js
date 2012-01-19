@@ -1,4 +1,4 @@
-/*jslint browser: true, indent: 4 */
+/*jslint browser: true, plusplus: true, indent: 4 */
 /*global $, window, chrome, SABapi, Showdown*/
 (function () {
     "use strict";
@@ -47,8 +47,8 @@
     }
 
     function save() {
-        var opt = $(this);
-        var val;
+        var opt = $(this),
+            val;
 
         if (opt.attr("type") === "checkbox") {
             val = opt.is(":checked").toString();
@@ -65,26 +65,30 @@
      */
     function defaultValue() {
         var opt = $(this);
+
         if (!localStorage[opt.attr("id")]) {
             localStorage[opt.attr("id")] = opt.data("default");
         }
     }
 
     function verify(evt) {
+        var api,
+            result;
+
         evt.preventDefault();
         $("#verify").button("option", "disabled", true);
         $("#verifyResult")
             .removeClass("good bad")
             .empty()
             .append($("<img>").attr("src", "images/progress.gif"));
-        var api;
+
         if ($("#authMethod").val() === "apikey") {
             api = new SABapi($("#host").val(), $("#apiKey").val());
         } else {
             api = new SABapi($("#host").val(), $("#username").val(), $("#password").val());
         }
 
-        var result = function (success, text) {
+        result = function (success, text) {
             $("#verify").button("option", "disabled", false);
             $("#verifyResult")
                 .empty()
@@ -169,7 +173,7 @@
                         }
                     })
                     .html(text);
-            }; 
+            };
 
         $("#credits").data("running", true);
         show();
@@ -226,7 +230,7 @@
             }
         })
         .show(); // delayed show so that we don't see how the tabs are build
-   
+
     // just a graphical gimmick ;-)
     window.setTimeout(function () {
         $("header img")

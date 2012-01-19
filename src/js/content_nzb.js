@@ -4,12 +4,12 @@
     "use strict";
 
     chrome.extension.sendRequest({action: "getLocalStorage", attribute: "matchPatterns"}, function (response) {
-        var nzb = [];
-        var patterns = (response || "\\.nzb$").split(/\n/);
+        var nzb = [],
+            patterns = (response || "\\.nzb$").split(/\n/);
 
         $("*[href]").each(function () {
-            var url = $(this).attr("href");
-            var matches = false;
+            var url = $(this).attr("href"),
+                matches = false;
 
             $.each(patterns, function (i, p) {
                 if (url.match(p)) {

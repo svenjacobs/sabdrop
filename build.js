@@ -5,8 +5,8 @@
     "use strict";
 
     var fs = require("fs"),
-        lint = require("./js/lib/jslint.js"),
-        DIR = "js";
+        lint = require("./build/jslint.js"),
+        DIR = "src/js";
 
     fs.readdir(DIR, function (err, files) {
         if (err) {

@@ -4,7 +4,7 @@
     "use strict";
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
-    
+
     var api;
 
     if (localStorage.authMethod === "login") {
@@ -14,6 +14,9 @@
     }
 
     function sendLink(link, category, name) {
+        var basename = SABdrop.Common.basename(link),
+            method;
+
         if (category === undefined) {
             category = null;
         }
@@ -21,8 +24,6 @@
         if (name === undefined) {
             name = null;
         }
-            
-        var basename = SABdrop.Common.basename(link);
 
         if (localStorage.nzbName === "always" && name === null) {
             // Show notification popup asking for NZB name
@@ -34,17 +35,18 @@
                     basename: basename
                 })
             ).show();
-            
+
         } else {
             // Send link to SABnzbd
 
             name = (name !== null ? name : basename);
-            var method = localStorage.fileUpload === "true" ? api.sendFile : api.sendLink;
+            method = localStorage.fileUpload === "true" ? api.sendFile : api.sendLink;
 
             method.call(api, link, name, category, function (success) {
                 var title,
                     text,
-                    popupHide = localStorage.popupHide || 5000;
+                    popupHide = localStorage.popupHide || 5000,
+                    notification;
 
                 if (popupHide >= 0) {
                     if (success) {
@@ -55,7 +57,7 @@
                         text = chrome.i18n.getMessage("error_popup");
                     }
 
-                    var notification = webkitNotifications.createNotification(
+                    notification = webkitNotifications.createNotification(
                         "images/icons/sab48.png",
                         title,
                         text

@@ -6,7 +6,7 @@
     var countdown = 10,
         interval = null,
         data = JSON.parse(window.location.hash.substr(1));
-   
+
     function submit() {
         var name = $("#name").val();
 
