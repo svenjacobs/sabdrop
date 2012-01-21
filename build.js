@@ -3,7 +3,16 @@
 /*global require, console*/
 
 /**
- * node.js script that will torture all files from /js through a JSLint verification.
+ * node.js based build script for static web pages, Google Chrome extensions etc.
+ * which parses a directory structure, runs checks and compilations/minifications
+ * on JavaScript and CSS files and finally creates a packaged version of the web
+ * app in an output directory.
+ *
+ * Non-standard dependencies:
+ *   - underscore (1.3.0)
+ *   - underscore.string (2.0.0)
+ *
+ * @author Sven Jacobs <mail@svenjacobs.com>
  */
 (function() {
     'use strict';
@@ -11,13 +20,15 @@
     var _ = require('underscore'),
         fs = require('fs'),
         path = require('path'),
+        http = require('http'),
+        qs = require('querystring'),
         lint = require('./build/jslint.js');
 
     _.str = require('underscore.string');
     _.mixin(_.str.exports());
 
     /**
-     * Constructor of Build.
+     * Constructor of BuildJS.
      *
      * @param source The source dir
      * @param destination The destination/output dir
@@ -26,7 +37,7 @@
      *               these files/folders are still copied.
      *               For example: ['js/3rdparty', 'js/badcode.js']
      */
-    function Build(source, destination, ignore) {
+    function BuildJS(source, destination, ignore) {
         this.source = source;
         this.destination = destination;
         this.ignore = ignore !== undefined ? ignore : [];
@@ -35,7 +46,7 @@
     /**
      * Runs the build process.
      */
-    Build.prototype.run = function() {
+    BuildJS.prototype.run = function() {
         this.dir(this.source);
     };
 
@@ -44,7 +55,7 @@
      *
      * @private
      */
-    Build.prototype.dir = function(dir) {
+    BuildJS.prototype.dir = function(dir) {
         fs.readdir(dir, this.e(function(files) {
             files.forEach(function(file) {
                 // Ignore files/directories starting with a .
@@ -68,7 +79,7 @@
     /**
      * @private
      */
-    Build.prototype.file = function(file) {
+    BuildJS.prototype.file = function(file) {
         if (this.matchIgnored(file)) {
             return;
         }
@@ -86,7 +97,7 @@
     /**
      * @private
      */
-    Build.prototype.javascript = function(file) {
+    BuildJS.prototype.javascript = function(file) {
         console.log('=== Running JSLint on ' + file + ' ===\n');
         var content = fs.readFileSync(file, 'utf-8'),
             result = lint.JSLINT(content);
@@ -103,12 +114,61 @@
     };
 
     /**
+     * Applys Google Closure Compiler on JavaScript file.
+     *
+     * @param callback function(closureResponse)
+     *                 closureResponse is an object, see http://code.google.com/closure/compiler/docs/api-ref.html 
+     *
      * @private
      */
-    Build.prototype.matchIgnored = function(file) {
+    BuildJS.prototype.closure = function(file, callback) {
+        fs.readFile(file, 'utf8', this.e(function(contents) {
+            var body = qs.stringify({
+                    js_code: contents,
+                    compilation_level: 'SIMPLE_OPTIMIZATIONS',
+                    output_format: 'json',
+                    output_info: 'compiled_code'
+                }),
+
+                req = http.request({
+                    host: 'closure-compiler.appspot.com',
+                    path: '/compile',
+                    method: 'POST',
+                    headers: {
+                        'Content-Length': body.length,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }, function(res) {
+                    var data = '';
+
+                    res.setEncoding('utf8');
+
+                    res.on('data', function(chunk) {
+                        data += chunk;
+                    });
+
+                    res.on('end', function() {
+                        var json = JSON.parse(data);
+                        callback(data);
+                    });
+                }
+            );
+
+            req.on('error', function(err) {
+                console.error(err);
+            });
+
+            req.end(body);
+        }));
+    };
+
+    /**
+     * @private
+     */
+    BuildJS.prototype.matchIgnored = function(file) {
         var self = this;
         return _.find(this.ignore, function(item) {
-            return _(file).startsWith(path.normalize(item)) 
+            return _(file).startsWith(path.normalize(item))
                 || _(file).startsWith(path.join(self.source, item));
         }) !== undefined;
     };
@@ -121,7 +181,7 @@
      *
      * @private
      */
-    Build.prototype.e = function(callback) {
+    BuildJS.prototype.e = function(callback) {
         var self = this;
         return function() {
             var args = [],
@@ -142,8 +202,10 @@
         };
     };
 
-    var build = new Build('src', 'out', ['js/lib']);
-    build.run();
+    var build = new BuildJS('src', 'out', ['js/lib']);
+    //build.run();
+
+    build.closure('src/js/background.js');
 
     /*var fs = require('fs'),
         lint = require('./build/jslint.js'),
