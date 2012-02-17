@@ -29,7 +29,7 @@
             // Show notification popup asking for NZB name
 
             webkitNotifications.createHTMLNotification(
-                "notification.html#" + JSON.stringify({
+                "ui_notification.html#" + JSON.stringify({
                     link: link,
                     category: category,
                     basename: basename
@@ -120,7 +120,7 @@
 
         // open options page if extension hasn't been configured yet
         if (!localStorage.host) {
-            chrome.tabs.create({url: "options.html"});
+            chrome.tabs.create({url: "ui_options.html"});
         }
 
         // migration from 0.4.1 -> 0.5
