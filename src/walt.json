@@ -1,0 +1,20 @@
+// Walt build file, see https://github.com/svenjacobs/walt 
+
+{
+    "plugins": {
+        "javascript": {
+            "enabled": true,
+            "method": "uglifyjs" 
+        },
+        "css": {
+            "enabled": true
+        },
+        "html": {
+            "enabled": true
+        }
+    },
+
+    "ignore": [
+        "js/lib"
+    ]
+}
