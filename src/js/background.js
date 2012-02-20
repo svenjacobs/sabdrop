@@ -1,13 +1,13 @@
-/*jslint browser: true, indent: 4 */
+/*jshint browser: true, indent: 4 */
 /*global console, chrome, webkitNotifications, SABdrop, SABapi*/
 (function () {
-    "use strict";
+    'use strict';
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
 
     var api;
 
-    if (localStorage.authMethod === "login") {
+    if (localStorage.authMethod === 'login') {
         api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
     } else {
         api = new SABapi(localStorage.host, localStorage.apiKey);
@@ -25,11 +25,11 @@
             name = null;
         }
 
-        if (localStorage.nzbName === "always" && name === null) {
+        if (localStorage.nzbName === 'always' && name === null) {
             // Show notification popup asking for NZB name
 
             webkitNotifications.createHTMLNotification(
-                "ui_notification.html#" + JSON.stringify({
+                'ui_notification.html#' + JSON.stringify({
                     link: link,
                     category: category,
                     basename: basename
@@ -40,7 +40,7 @@
             // Send link to SABnzbd
 
             name = (name !== null ? name : basename);
-            method = localStorage.fileUpload === "true" ? api.sendFile : api.sendLink;
+            method = localStorage.fileUpload === 'true' ? api.sendFile : api.sendLink;
 
             method.call(api, link, name, category, function (success) {
                 var title,
@@ -51,14 +51,14 @@
                 if (popupHide >= 0) {
                     if (success) {
                         title = name;
-                        text = chrome.i18n.getMessage("sent_popup", SABdrop.Common.truncate(name, 20));
+                        text = chrome.i18n.getMessage('sent_popup', SABdrop.Common.truncate(name, 20));
                     } else {
-                        title = chrome.i18n.getMessage("error_popup_title");
-                        text = chrome.i18n.getMessage("error_popup");
+                        title = chrome.i18n.getMessage('error_popup_title');
+                        text = chrome.i18n.getMessage('error_popup');
                     }
 
                     notification = webkitNotifications.createNotification(
-                        "images/icons/sab48.png",
+                        'images/icons/sab48.png',
                         title,
                         text
                     );
@@ -79,34 +79,34 @@
         chrome.contextMenus.removeAll();
 
         var contextMenuId = chrome.contextMenus.create({
-            "title": chrome.i18n.getMessage("context_menu"),
-            "contexts": ["link"],
-            "onclick": function (info, tab) {
+            'title': chrome.i18n.getMessage('context_menu'),
+            'contexts': ['link'],
+            'onclick': function (info, tab) {
                 sendLink(info.linkUrl);
             }
         });
 
-        if (localStorage.hideCategories === "true") {
+        if (localStorage.hideCategories === 'true') {
             return;
         }
 
         api.getCategories(function (categories) {
             if (categories.length > 0) {
                 chrome.contextMenus.create({
-                    "title": chrome.i18n.getMessage("context_menu_nocategory"),
-                    "contexts": ["link"],
-                    "parentId": contextMenuId,
-                    "onclick": function (info, tab) {
+                    'title': chrome.i18n.getMessage('context_menu_nocategory'),
+                    'contexts': ['link'],
+                    'parentId': contextMenuId,
+                    'onclick': function (info, tab) {
                         sendLink(info.linkUrl);
                     }
                 });
 
                 categories.forEach(function (cat) {
                     chrome.contextMenus.create({
-                        "title": cat,
-                        "contexts": ["link"],
-                        "parentId": contextMenuId,
-                        "onclick": function (info, tab) {
+                        'title': cat,
+                        'contexts': ['link'],
+                        'parentId': contextMenuId,
+                        'onclick': function (info, tab) {
                             sendLink(info.linkUrl, cat);
                         }
                     });
@@ -120,42 +120,46 @@
 
         // open options page if extension hasn't been configured yet
         if (!localStorage.host) {
-            chrome.tabs.create({url: "ui_options.html"});
+            chrome.tabs.create({url: 'ui_options.html'});
         }
 
         // migration from 0.4.1 -> 0.5
         if (localStorage.host && !localStorage.nzbName) {
-            localStorage.nzbName = "always";
+            localStorage.nzbName = 'always';
         }
     }
 
     // Receive message from content script and page action
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
         switch (request.action) {
-        case "pageAction":
+
+        case 'pageAction':
             window.pageActionData[sender.tab.id] = request.data;
             chrome.pageAction.show(sender.tab.id);
             break;
-        case "downloadLink":
+
+        case 'downloadLink':
             sendLink(request.link, request.category, request.name);
             break;
-        case "reloadConfig":
-            console.info("Reloading SABdrop configuration");
+
+        case 'reloadConfig':
+            console.info('Reloading SABdrop configuration');
             api.setHost(localStorage.host);
 
-            if (localStorage.authMethod === "login") {
-                api.setAuthMethod("login");
+            if (localStorage.authMethod === 'login') {
+                api.setAuthMethod('login');
                 api.setUsername(localStorage.username);
                 api.setPassword(localStorage.password);
             } else {
-                api.setAuthMethod("apikey");
+                api.setAuthMethod('apikey');
                 api.setAPIKey(localStorage.apiKey);
             }
 
             createContextMenus(); // recreate menus because of categories
             break;
-        case "getCategories":
-            if (localStorage.hideCategories === "true") {
+
+        case 'getCategories':
+            if (localStorage.hideCategories === 'true') {
                 sendResponse([]);
             } else {
                 api.getCategories(function (categories) {
@@ -163,10 +167,12 @@
                 });
             }
             return;
-        case "getLocalStorage":
+
+        case 'getLocalStorage':
             sendResponse(localStorage[request.attribute]);
             return;
         }
+
         sendResponse({}); // clean up
     });
 

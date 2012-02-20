@@ -15,22 +15,22 @@
         "48": "images/icons/sab48.png",
        "128": "images/icons/sab128.png"
     },
-    /*"browser_action": {
+    "browser_action": {
         "default_icon": "images/icons/sab19.png",
         "default_title": "SABdrop",
-        "default_popup": "ui_popup.html"
-    },*/
+        "default_popup": "ui_browser_action.html"
+    },
     "background_page": "background.html",
     "options_page": "ui_options.html",
     "content_scripts": [
         {
             "matches": ["http://*/*", "https://*/*"],
-            "js": ["js/lib/jquery-1.6.1.min.js", "js/content_nzb.js"]
+            "js": ["js/lib/jquery-1.7.1.min.js", "js/content_nzb.js"]
         }
-    ],
+    ]/*,
     "page_action": {
         "default_icon": "images/icons/sab16.png",
         "default_title": "__MSG_page_action_title__",
         "default_popup": "ui_page_action.html"
-    }
+    }*/
 }
