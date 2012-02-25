@@ -5,7 +5,10 @@
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
 
-    var api;
+    var api,
+        cache = {
+            slots: []
+        };
 
     if (localStorage.authMethod === 'login') {
         api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
@@ -129,6 +132,12 @@
         }
     }
 
+    function updateCache() {
+        api.getSlots(function (slots) {
+            cache.slots = slots;
+        });
+    }
+
     // Receive message from content script and page action
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
         switch (request.action) {
@@ -171,11 +180,18 @@
         case 'getLocalStorage':
             sendResponse(localStorage[request.attribute]);
             return;
+
+        case 'getSlots':
+            sendResponse(cache.slots);
+            return;
         }
 
         sendResponse({}); // clean up
     });
 
     onStart();
+    updateCache();
+
+    window.setInterval(updateCache, 5000);
 
 }());

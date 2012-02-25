@@ -1,0 +1,42 @@
+@import "common.css";
+
+body {
+    width: 400px;
+    height: 300px;
+}
+
+#slots {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#slots li {
+    position: relative;
+    height: 1.5em;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: black;
+    text-shadow: 0 0 2px white;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#slots .ui-state-highlight {
+    height: 1.5em;
+    line-height: 0.8em:
+}
+
+#slots li span {
+    position: absolute;
+    top: 2px;
+    left: 5px;
+}
+
+#slots div.progress {
+    height: 1.5em;
+    background: #ffde00 url(../img/glass.png) 50% 50% repeat-x;
+    width: 0%;
+}
+

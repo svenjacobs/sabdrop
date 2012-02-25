@@ -25,7 +25,7 @@
     "content_scripts": [
         {
             "matches": ["http://*/*", "https://*/*"],
-            "js": ["js/lib/jquery-1.7.1.min.js", "js/content_nzb.js"]
+            "js": ["js/lib/jquery.min.js", "js/content_nzb.js"]
         }
     ]/*,
     "page_action": {

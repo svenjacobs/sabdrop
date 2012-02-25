@@ -364,8 +364,8 @@
         this._jsonRequest({
             params: {mode: 'queue'},
             success: function (json) {
-                if (json.slots && json.slots instanceof Array) {
-                    callback(json.slots);
+                if (json.queue && json.queue.slots && json.queue.slots instanceof Array) {
+                    callback(json.queue.slots);
                 }
             }
         });
