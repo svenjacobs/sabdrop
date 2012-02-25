@@ -5,11 +5,18 @@
         <link rel="stylesheet" type="text/css" href="css/browser_action.css"/>
     </head>
     <body>
+        <div id="tooltip">
+            <div class="name"></div>
+            <div class="progress"></div>
+            <button><span class="delete">Delete</span> <img src="images/delete.png"/></button>
+            <button><span class="play_pause">Pause</span> <img class="play_pause_img" src="images/pause.png"/></button>
+        </div>
+
         <ul id="slots">
         </ul>
 
-        <script type="text/javascript" src="js/lib/jquery.min.js"</script>
-        <script type="text/javascript" src="js/lib/jquery-ui.min.js"</script>
+        <script type="text/javascript" src="js/lib/jquery.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/browser_action.js"></script>
     </body>
 </html>

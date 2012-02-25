@@ -5,6 +5,38 @@ body {
     height: 300px;
 }
 
+#tooltip {
+    display: none;
+    position: absolute;
+    padding: 0.5em;
+    border: black solid 1px;
+    border-radius: 4px;
+    background-color: white;
+    z-index: 999;
+    font-size: small;
+    box-shadow: 2px 2px 2px #CCC;
+    -webkit-box-shadow: 2px 2px 2px #CCC;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#tooltip .name {
+    font-weight: bold;
+}
+
+#tooltip .name, #slots span.name {
+    max-width: 28em;
+    overflow: hidden;
+}
+
+#tooltip button {
+    float: right;
+}
+
+#tooltip.completed button {
+    display: none;
+}
+
 #slots {
     list-style-type: none;
     margin: 0;
@@ -19,8 +51,8 @@ body {
     border-radius: 4px;
     color: black;
     text-shadow: 0 0 2px white;
-    -webkit-user-select: none;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 #slots .ui-state-highlight {
@@ -31,12 +63,34 @@ body {
 #slots li span {
     position: absolute;
     top: 2px;
+}
+
+#slots li span.name {
     left: 5px;
+}
+
+#slots li span.percent {
+    right: 5px;
+}
+
+#slots li img {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+}
+
+#slots li.completed img {
+    display: block;
+}
+
+#slots li.completed span.percent {
+    display: none;
 }
 
 #slots div.progress {
     height: 1.5em;
-    background: #ffde00 url(../img/glass.png) 50% 50% repeat-x;
+    background: #ffde00 url(../images/glass.png) 50% 50% repeat-x;
     width: 0%;
 }
 
