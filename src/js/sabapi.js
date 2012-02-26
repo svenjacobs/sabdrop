@@ -371,5 +371,50 @@
         });
     };
 
+    /**
+     * Pauses individual download
+     *
+     * @param id NZO id of download
+     */
+    SABapi.prototype.pauseDownload = function (id) {
+        this._request({
+            params: {
+                mode: 'queue',
+                name: 'pause',
+                value: id
+            }
+        });
+    };
+
+    /**
+     * Resumes individual download
+     *
+     * @param id NZO id of download
+     */
+    SABapi.prototype.resumeDownload = function (id) {
+        this._request({
+            params: {
+                mode: 'queue',
+                name: 'resume',
+                value: id
+            }
+        });
+    };
+
+    /**
+     * Deletes individual download
+     *
+     * @param id NZO id of download
+     */
+    SABapi.prototype.deleteDownload = function (id) {
+        this._request({
+            params: {
+                mode: 'queue',
+                name: 'delete',
+                value: id
+            }
+        });
+    };
+
     window.SABapi = SABapi;
 }());

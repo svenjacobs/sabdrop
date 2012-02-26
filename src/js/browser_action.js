@@ -1,30 +1,17 @@
-/*jshint browser: true, regexp: false, bitwise: false, indent: 4*/
+/*jshint browser: true, bitwise: false, indent: 4*/
 /*global $, chrome*/
 (function () {
 
-    var FLAG_IN_TOOLTIP = 1,
-        FLAG_IN_SLOT = 2,
+    var FLAG_HOVER_TOOLTIP = 1,
+        FLAG_HOVER_SLOT = 2,
         FADE_IN_DELAY = 300,
         FADE_OUT_DELAY = 1000,
+        INTERVAL = 5000,
 
         $tooltip = $('#tooltip'),
         tooltipState = 0,
-        sorting = false;
-
-    $tooltip.hover(
-        function () {
-            tooltipState = tooltipState | FLAG_IN_TOOLTIP;
-        },
-        function () {
-            tooltipState = tooltipState & ~FLAG_IN_TOOLTIP;
-
-            window.setTimeout(function () {
-                if (tooltipState === 0) {
-                    $tooltip.fadeOut();
-                }
-            }, FADE_OUT_DELAY);
-        }
-    );
+        sorting = false,
+        updateInterval = null;
 
     function color(p) {
         var red = p < 50 ? 255 : Math.round(256 - (p - 50) * 5.12),
@@ -32,10 +19,6 @@
             
         return "rgb(" + red + "," + green + ",0)";
     }
-
-    //function id(filename) {
-    //    return 'slot_' + filename.replace(/[^A-Z0-9_\-]/gi, '');
-    //}
 
     function updateSlots(slots) {
         if (sorting) {
@@ -46,78 +29,101 @@
         var $slots = $('#slots');
         $slots.empty();
 
-        slots.forEach(function (s) {
-            var percent = parseInt(s.percentage, 10),
-                percentTxt = percent + '%',
-                mb = parseFloat(s.mb),
-                mbLeft = parseFloat(s.mbleft),
+        $('#empty').toggle(slots.length === 0);
 
-                el = newSlotElement({
-                    id: s.nzo_id,
-                    name: s.filename,
-                    percentage: percent,
-                    mb: mb,
-                    mbLeft: mbLeft
-                });
-                
-            $slots.append(el);
+        slots.forEach(function (s) {
+            $slots.append(newSlotElement(s));
         });
     }
 
     function newSlotElement(s) {
-        var mbDownloaded = (s.mb - s.mbLeft).toFixed(2),
-            completed = s.percentage === 100,
-            el = $('<li>')
-                .attr('id', s.id)
+        var percent = parseInt(s.percentage, 10),
+            percentTxt = percent + '%',
+            mb = parseFloat(s.mb),
+            mbLeft = parseFloat(s.mbleft),
+            mbDownloaded = (mb - mbLeft).toFixed(2),
+
+            $el = $('<li>')
+                .attr('id', s.nzo_id)
                 .addClass('ui-state-default')
+                .addClass(s.status.toLowerCase())
                 .append(
                     $('<div>').addClass('progress').css({
-                        'width': s.percentage + '%',
-                        'background-color': color(s.percentage)
+                        'width': percentTxt,
+                        'background-color': color(percent)
                     })
                 )
-                .append(
-                    $('<span>')
-                        .addClass('name')
-                        .text(s.name)
-                )
-                .append(
-                    $('<span>')
-                        .addClass('percent')
-                        .text(s.percentage + '%')
-                )
-                .append(
-                    $('<img>').attr('src', 'images/tick.png')
-                );
+                .append($('<span>').addClass('name').text(s.filename))
+                .append($('<span>').addClass('percent').text(percentTxt))
+                .append($('<img>').attr('src', 'images/pause.png'));
 
-        if (completed) {
-            el.addClass('completed');
-        }
-
-        el.hover(
+        $el.hover(
+            // Hover in
             function (evt) {
                 if (sorting) {
                     return;
                 }
 
-                var offset = el.offset();
+                var offset = $el.offset(),
+                    paused = $el.hasClass('paused');
 
-                tooltipState = tooltipState | FLAG_IN_SLOT;
+                tooltipState = tooltipState | FLAG_HOVER_SLOT;
+
+                // Adjust tooltip to slot currently hovered and then display it
 
                 $tooltip
+                    .data('target', s.nzo_id)
                     .css({
                         'left': offset.left + 10 + 'px',
                         'top': offset.top + 10 + 'px'
                     })
-                    .children('.name').text(s.name)
+                    .children('div.name').text(s.filename)
                     .end()
-                    .children('.progress').text(mbDownloaded + ' MB of ' + s.mb + ' MB (' + s.percentage + '%)');
+                    .children('div.progress').text(mbDownloaded + ' MB of ' + s.mb + ' MB (' + percentTxt + ')')
+                    .end()
 
-                if (completed) {
-                    $tooltip.addClass('completed');
-                } else {
-                    $tooltip.removeClass('completed');
-                }
+                    // Pause button
+                    .children('button.pause')
+                        .toggle(!paused)
+                        .off('click')
+                        .click(function () {
+                            $(this).hide();
+                            $tooltip.children('button.resume').show();
+                            $el.addClass('paused');
+                            pauseDownload(s.nzo_id);
+                            resetInterval();
+                        })
+                    .end()
+
+                    // Resume button
+                    .children('button.resume')
+                        .toggle(paused)
+                        .off('click')
+                        .click(function () {
+                            $(this).hide();
+                            $tooltip.children('button.pause').show();
+                            $el.removeClass('paused');
+                            resumeDownload(s.nzo_id);
+                            resetInterval();
+                        })
+                    .end()
+
+                    // Delete button
+                    .children('button.delete')
+                        .off('click')
+                        .click(function () {
+                            $tooltip.fadeOut();
+                            tooltipState = 0;
+                            $el.hide('drop', {
+                                direction: 'right',
+                                speed: 'fast',
+                            }, function () {
+                                $el.remove();
+                                $('#empty').toggle($('#slots li').length === 0); // No downloads left?
+                            });
+                            deleteDownload(s.nzo_id);
+                            resetInterval();
+                        });
 
                 window.setTimeout(function () {
                     if (!$tooltip.is(':visible')) {
@@ -126,8 +132,10 @@
                 }, FADE_IN_DELAY);
 
             },
+
+            // Hover out
             function (evt) {
-                tooltipState = tooltipState & ~FLAG_IN_SLOT;
+                tooltipState = tooltipState & ~FLAG_HOVER_SLOT;
 
                 window.setTimeout(function () {
                     if (tooltipState === 0) {
@@ -137,7 +145,7 @@
             }
         );
 
-        return el;
+        return $el;
     }
 
     function getSlots(callback) {
@@ -151,15 +159,46 @@
         });
     }
 
-    getSlots(updateSlots);
+    function pauseDownload(id) {
+        chrome.extension.sendRequest({action: 'pauseDownload', id: id});
+    }
 
-    window.setInterval(function () {
-        getSlots(updateSlots);
-    }, 5000);
+    function resumeDownload(id) {
+        chrome.extension.sendRequest({action: 'resumeDownload', id: id});
+    }
 
+    function deleteDownload(id) {
+        chrome.extension.sendRequest({action: 'deleteDownload', id: id});
+    }
+
+    function resetInterval() {
+        if (updateInterval) {
+            window.clearInterval(updateInterval);
+        }
+
+        updateInterval = window.setInterval(function () {
+            getSlots(updateSlots);
+        }, 5000);
+    }
+
+    $tooltip.hover(
+        function () {
+            tooltipState = tooltipState | FLAG_HOVER_TOOLTIP;
+        },
+        function () {
+            tooltipState = tooltipState & ~FLAG_HOVER_TOOLTIP;
+
+            window.setTimeout(function () {
+                if (tooltipState === 0) {
+                    $tooltip.fadeOut();
+                }
+            }, FADE_OUT_DELAY);
+        }
+    );
 
     $('#slots').sortable({
-        placeholder: "ui-state-highlight",
+        placeholder: 'ui-state-highlight',
+        axis: 'y',
         start: function () {
             sorting = true;
             $tooltip.hide();
@@ -168,5 +207,8 @@
             sorting = false;
         }
     });
+
+    getSlots(updateSlots);
+    resetInterval();
 
 }());

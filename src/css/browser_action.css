@@ -37,6 +37,14 @@ body {
     display: none;
 }
 
+#tooltip button.resume {
+    display: none;
+}
+
+#empty {
+    display: none;
+}
+
 #slots {
     list-style-type: none;
     margin: 0;
@@ -80,11 +88,11 @@ body {
     display: none;
 }
 
-#slots li.completed img {
+#slots li.paused img {
     display: block;
 }
 
-#slots li.completed span.percent {
+#slots li.paused span.percent {
     display: none;
 }
 

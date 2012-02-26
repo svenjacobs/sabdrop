@@ -138,7 +138,6 @@
         });
     }
 
-    // Receive message from content script and page action
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
         switch (request.action) {
 
@@ -184,6 +183,19 @@
         case 'getSlots':
             sendResponse(cache.slots);
             return;
+        
+        case 'pauseDownload':
+            api.pauseDownload(request.id);
+            return;
+
+        case 'resumeDownload':
+            api.resumeDownload(request.id);
+            return;
+
+        case 'deleteDownload':
+            api.deleteDownload(request.id);
+            return;
+
         }
 
         sendResponse({}); // clean up
