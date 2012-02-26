@@ -27,6 +27,7 @@ body {
 #tooltip .name, #slots span.name {
     max-width: 28em;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 #tooltip button {
