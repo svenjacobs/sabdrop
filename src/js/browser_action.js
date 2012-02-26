@@ -1,4 +1,4 @@
-/*jshint browser: true, bitwise: false, indent: 4*/
+/*jshint browser: true, bitwise: false, plusplus: false, indent: 4*/
 /*global $, chrome*/
 (function () {
 
@@ -17,7 +17,7 @@
     function color(p) {
         var red = p < 50 ? 255 : Math.round(256 - (p - 50) * 5.12),
             green = p > 50 ? 255 : Math.round(p * 5.12);
-            
+
         return "rgb(" + red + "," + green + ",0)";
     }
 
@@ -26,7 +26,7 @@
             // Don't update while user is sorting
             return;
         }
-        
+
         $slots.empty();
 
         $('#empty').toggle(queue.slots.length === 0);
@@ -159,6 +159,45 @@
         return $el;
     }
 
+    function updateGraph(history) {
+        var i = 0,
+            series = [];
+
+        history.forEach(function (h) {
+            series.push([i, h]);
+            i++;
+        });
+
+        $.plot($('#graph'), [series], {
+            series: {
+                color: '#003366',
+                lines: {
+                    show: true,
+                    fill: true,
+                    fillColor: 'rgba(51, 102, 153, 0.8)'
+                },
+                shadowSize: 0
+            },
+            xaxis: {
+                show: false
+            },
+            yaxis: {
+                min: 0
+                //tickFormatter: function (val, axis) {
+                //    return (val / 1000).toFixed(2);
+                //}
+            },
+            grid: {
+                borderColor: '#CCC'
+            }
+        });
+    }
+
+    function refresh() {
+        getQueue(updateSlots);
+        getSpeedHistory(updateGraph);
+    }
+
     function getQueue(callback) {
         chrome.extension.sendRequest({action: 'getQueue'}, function (queue) {
             if (!queue) {
@@ -167,6 +206,17 @@
             }
 
             callback(queue);
+        });
+    }
+
+    function getSpeedHistory(callback) {
+        chrome.extension.sendRequest({action: 'getSpeedHistory'}, function (history) {
+            if (!history) {
+                console.error('Couldn\'t fetch history');
+                return;
+            }
+
+            callback(history);
         });
     }
 
@@ -188,7 +238,7 @@
         }
 
         updateInterval = window.setInterval(function () {
-            getQueue(updateSlots);
+            refresh();
         }, 5000);
     }
 
@@ -270,7 +320,7 @@
 
     $('#empty span').text(chrome.i18n.getMessage('no_downloads'));
 
-    getQueue(updateSlots);
+    refresh();
     resetInterval();
 
 }());

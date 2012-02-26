@@ -5,13 +5,17 @@
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
 
-    var api,
+    var API_QUERY_INTERVAL = 5000,
+        MAX_SPEED_HISTORY = 10,
+
+        api,
+        popupHide = localStorage.popupHide || 5000,
         cache = {
             queue: {},
             history: {},
-            downloads: []
-        },
-        popupHide = localStorage.popupHide || 5000;
+            downloads: [],
+            speedHistory: []
+        };
 
     if (localStorage.authMethod === 'login') {
         api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
@@ -140,6 +144,12 @@
         notification.show();
     }
 
+    function setBadgeText(count) {
+        chrome.browserAction.setBadgeText({
+            text: count === 0 || count === null ? '' : count.toString()
+        });
+    }
+
     function queryAPI() {
         api.getQueue(function (queue) {
             cache.queue = queue;
@@ -150,9 +160,7 @@
                 }
             });
 
-            chrome.browserAction.setBadgeText({
-                text: queue.slots.length > 0 ? queue.slots.length.toString() : ''
-            });
+            setBadgeText(queue.slots.length);
         });
 
         api.getHistory(function (history) {
@@ -160,6 +168,11 @@
                 notification;
 
             cache.history = history;
+            cache.speedHistory.push(parseFloat(history.kbpersec));
+
+            if (cache.speedHistory.length > MAX_SPEED_HISTORY) {
+                cache.speedHistory.splice(0, 1);
+            }
 
             history.slots.forEach(function (slot) {
                 index = $.inArray(slot.nzo_id, cache.downloads);
@@ -217,6 +230,10 @@
         case 'getQueue':
             sendResponse(cache.queue);
             return;
+
+        case 'getHistory':
+            sendResponse(cache.history);
+            return;
         
         case 'getSlots':
             sendResponse(cache.queue.slots);
@@ -232,6 +249,11 @@
 
         case 'deleteDownload':
             api.deleteDownload(request.id);
+            var index = $.inArray(request.id, cache.downloads);
+            if (index > -1) {
+                cache.downloads.splice(index, 1);
+                setBadgeText(cache.downloads.length);
+            }
             return;
 
         case 'moveDownload':
@@ -248,6 +270,12 @@
 
         case 'deleteAll':
             api.deleteAll();
+            cache.downloads = [];
+            setBadgeText(null);
+            return;
+
+        case 'getSpeedHistory':
+            sendResponse(cache.speedHistory);
             return;
 
         }
@@ -258,6 +286,6 @@
     onStart();
     queryAPI();
 
-    window.setInterval(queryAPI, 5000);
+    window.setInterval(queryAPI, API_QUERY_INTERVAL);
 
 }());
