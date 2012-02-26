@@ -27,10 +27,5 @@
             "matches": ["http://*/*", "https://*/*"],
             "js": ["js/lib/jquery.min.js", "js/content_nzb.js"]
         }
-    ]/*,
-    "page_action": {
-        "default_icon": "images/icons/sab16.png",
-        "default_title": "__MSG_page_action_title__",
-        "default_popup": "ui_page_action.html"
-    }*/
+    ]
 }
