@@ -7,7 +7,7 @@
 
     var api,
         cache = {
-            slots: []
+            queue: {}
         };
 
     if (localStorage.authMethod === 'login') {
@@ -133,8 +133,8 @@
     }
 
     function updateCache() {
-        api.getSlots(function (slots) {
-            cache.slots = slots;
+        api.getQueue(function (queue) {
+            cache.queue = queue;
         });
     }
 
@@ -180,8 +180,12 @@
             sendResponse(localStorage[request.attribute]);
             return;
 
+        case 'getQueue':
+            sendResponse(cache.queue);
+            return;
+        
         case 'getSlots':
-            sendResponse(cache.slots);
+            sendResponse(cache.queue.slots);
             return;
         
         case 'pauseDownload':
@@ -194,6 +198,22 @@
 
         case 'deleteDownload':
             api.deleteDownload(request.id);
+            return;
+
+        case 'moveDownload':
+            api.moveDownload(request.id, request.position);
+            return;
+
+        case 'pauseAll':
+            api.pauseAll();
+            return;
+
+        case 'resumeAll':
+            api.resumeAll();
+            return;
+
+        case 'deleteAll':
+            api.deleteAll();
             return;
 
         }

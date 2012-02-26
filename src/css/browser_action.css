@@ -2,7 +2,7 @@
 
 body {
     width: 400px;
-    height: 300px;
+    min-height: 300px;
 }
 
 #tooltip {
@@ -44,11 +44,17 @@ body {
 
 #empty {
     display: none;
+    font-size: small;
+}
+
+#empty img {
+    margin-left: 0.5em;
+    vertical-align: top;
 }
 
 #slots {
     list-style-type: none;
-    margin: 0;
+    margin: 0 0 8em 0;
     padding: 0;
 }
 
@@ -62,6 +68,7 @@ body {
     text-shadow: 0 0 2px white;
     user-select: none;
     -webkit-user-select: none;
+    cursor: move;
 }
 
 #slots .ui-state-highlight {
@@ -89,11 +96,11 @@ body {
     display: none;
 }
 
-#slots li.paused img {
+#slots.pausedAll li img, #slots li.paused img {
     display: block;
 }
 
-#slots li.paused span.percent {
+#slots.pausedAll li span.percent, #slots li.paused span.percent {
     display: none;
 }
 
@@ -103,3 +110,24 @@ body {
     width: 0%;
 }
 
+#controls {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 10px;
+    margin: auto;
+    text-align: center;
+}
+
+#controls button.resume {
+    display: none;
+}
+
+#graph {
+    display: none;
+    background-color: #CCC;
+    padding: 5px;
+    text-align: center;
+    height: 50px;
+    margin-bottom: 5em;
+}

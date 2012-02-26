@@ -355,18 +355,32 @@
         });
     };
 
+
+    /**
+     * Get queue
+     *
+     * @param callback A function(queue)
+     */
+    SABapi.prototype.getQueue = function (callback) {
+        this._jsonRequest({
+            params: {mode: 'queue'},
+            success: function (json) {
+                if (json.queue) {
+                    callback(json.queue);
+                }
+            }
+        });
+    };
+
     /**
      * Gets slots (queued downloads)
      *
      * @param callback A function(slots)
      */
     SABapi.prototype.getSlots = function (callback) {
-        this._jsonRequest({
-            params: {mode: 'queue'},
-            success: function (json) {
-                if (json.queue && json.queue.slots && json.queue.slots instanceof Array) {
-                    callback(json.queue.slots);
-                }
+        this.getQueue(function (queue) {
+            if (queue.slots && queue.slots instanceof Array) {
+                callback(queue.slots);
             }
         });
     };
@@ -412,6 +426,57 @@
                 mode: 'queue',
                 name: 'delete',
                 value: id
+            }
+        });
+    };
+
+    /**
+     * Pauses all downloads of queue
+     */
+    SABapi.prototype.pauseAll = function () {
+        this._request({
+            params: {
+                mode: 'pause'
+            }
+        });
+    };
+
+    /**
+     * Resumes all downloads of queue
+     */
+    SABapi.prototype.resumeAll = function () {
+        this._request({
+            params: {
+                mode: 'resume'
+            }
+        });
+    };
+
+    /**
+     * Deletes all downloads from queue
+     */
+    SABapi.prototype.deleteAll = function () {
+        this._request({
+            params: {
+                mode: 'queue',
+                name: 'delete',
+                value: 'all'
+            }
+        });
+    };
+
+    /**
+     * Moves a download to a specific slot position
+     *
+     * @param id NZO id of download
+     * @param position zero-based slot position
+     */
+    SABapi.prototype.moveDownload = function (id, position) {
+        this._request({
+            params: {
+                mode: 'switch',
+                value: id,
+                value2: position
             }
         });
     };

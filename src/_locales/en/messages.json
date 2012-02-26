@@ -184,5 +184,52 @@
     },
     "notification_title": {
         "message": "Specify name for download"
+    },
+    "delete": {
+        "message": "Delete"
+    },
+    "delete_all": {
+        "message": "Delete all"
+    },
+    "pause": {
+        "message": "Pause"
+    },
+    "pause_all": {
+        "message": "Pause all"
+    },
+    "resume": {
+        "message": "Resume"
+    },
+    "resume_all": {
+        "message": "Resume all"
+    },
+    "mb_stats": {
+        "message": "$MB_DOWNLOADED$ MB of $MB$ MB ($PERCENT$%)",
+        "placeholders": {
+            "mb_downloaded": {
+                "content": "$1",
+                "example": "500.00"
+            },
+            "mb": {
+                "content": "$2",
+                "example": "1000.00"
+            },
+            "percent": {
+                "content": "$3",
+                "example": "50"
+            }
+        }
+    },
+    "eta_stats": {
+        "message": "ETA $ETA$",
+        "placeholders": {
+            "eta": {
+                "content": "$1",
+                "example": "1:20:00"
+            }
+        }
+    },
+    "no_downloads": {
+        "message": "Sorry, no downloads"
     }
 }
