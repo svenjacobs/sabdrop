@@ -151,7 +151,7 @@
         "message": "Download added"
     },
     "sent_popup_text": {
-        "message": "Sent $LINK$ to to SABnzbd",
+        "message": "Sent $LINK$ to SABnzbd",
         "description": "Text for popup message when link was sent to SABnzbd",
         "placeholders": {
             "link": {

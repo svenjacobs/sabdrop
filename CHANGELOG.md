@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.6 (02/26/12)
+--------------
+
+* SABdrop is now a full-featured SABnzbd client!
+* New browser action with download management functionality (pause, resume, delete, move)
+* Page action temporarily gone (will return in a future version)
+
 0.5 (01/15/12)
 --------------
 

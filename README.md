@@ -1,13 +1,12 @@
 SABdrop
 =======
 
-SABdrop is a Google Chrome extension that permits sending links of
-[NZB](http://en.wikipedia.org/wiki/NZB) files to a [SABnzbd](http://sabnzbd.org/)
-instance immediately. It adds a `Send to` option to the context menu of weblinks.
+SABdrop is a [SABnzbd](http://sabnzbd.org/) client/download manager for Google Chrome.
 
-Additionally it scans websites for linked NZB files and - when files are found - 
-adds a page action to the address bar of Chrome that offers transmission of
-those files to SABnzbd.
+It provides a browser action which permits management (pause, resume, delete, move)
+of SABnzbd downloads. SABdrop also adds a `Send to` option to the context menu of
+weblinks for immediate transmission of [NZB](http://en.wikipedia.org/wiki/NZB)
+files to a SABnzbd instance.
 
 SABdrop has been tested with SABnzbd version 0.6.0 but should run with 0.5.x, too.
 
@@ -16,8 +15,8 @@ SABdrop has been tested with SABnzbd version 0.6.0 but should run with 0.5.x, to
 Features
 --------
 
+* Browser action with download management functionality
 * Context menu to send NZB weblinks to SABnzbd for immediate download
-* Page action in address bar that scans for NZB weblinks
 * Supports API key and username/password authentication
 * Supports categories (NZB links can be assigned to a category with context menu)
 * Allows sending NZB files as file upload which should work around issues with sites that require an authentication (e.g. forums)
