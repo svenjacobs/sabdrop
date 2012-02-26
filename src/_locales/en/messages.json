@@ -1,6 +1,6 @@
 {
     "ext_description": {
-        "message": "Send NZB links to SABnzbd for download.",
+        "message": "SABnzbd client/download manager for Google Chrome",
         "description": "Description of extension"
     },
     "page_action_title": {
@@ -147,7 +147,10 @@
         "message": "Do you really want to reset all options to their default values?",
         "description": "Text of reset to defaults dialog"
     },
-    "sent_popup": {
+    "sent_popup_title": {
+        "message": "Download added"
+    },
+    "sent_popup_text": {
         "message": "Sent $LINK$ to to SABnzbd",
         "description": "Text for popup message when link was sent to SABnzbd",
         "placeholders": {
@@ -156,7 +159,18 @@
             }
         }
     },
-    "error_popup": {
+    "completed_popup_title": {
+        "message": "Downloaded completed"
+    },
+    "completed_popup_text": {
+        "message": "Download of $NAME$ completed",
+        "placeholders": {
+            "name": {
+                "content": "$1"
+            }
+        }
+    },
+    "error_popup_text": {
         "message": "There was an error while sending link to SABnzbd. Please verify connection settings and check console for details.",
         "description": "Text for popup when an error occurred"
     },
@@ -221,7 +235,7 @@
         }
     },
     "eta_stats": {
-        "message": "ETA $ETA$",
+        "message": "ETA $ETA$h",
         "placeholders": {
             "eta": {
                 "content": "$1",

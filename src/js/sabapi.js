@@ -363,10 +363,30 @@
      */
     SABapi.prototype.getQueue = function (callback) {
         this._jsonRequest({
-            params: {mode: 'queue'},
+            params: {
+                mode: 'queue'
+            },
             success: function (json) {
                 if (json.queue) {
                     callback(json.queue);
+                }
+            }
+        });
+    };
+
+    /**
+     * Get history
+     *
+     * @param callback A function(queue)
+     */
+    SABapi.prototype.getHistory = function (callback) {
+        this._jsonRequest({
+            params: {
+                mode: 'history'
+            },
+            success: function (json) {
+                if (json.history) {
+                    callback(json.history);
                 }
             }
         });

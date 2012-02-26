@@ -7,8 +7,11 @@
 
     var api,
         cache = {
-            queue: {}
-        };
+            queue: {},
+            history: {},
+            downloads: []
+        },
+        popupHide = localStorage.popupHide || 5000;
 
     if (localStorage.authMethod === 'login') {
         api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
@@ -48,32 +51,17 @@
             method.call(api, link, name, category, function (success) {
                 var title,
                     text,
-                    popupHide = localStorage.popupHide || 5000,
                     notification;
 
-                if (popupHide >= 0) {
-                    if (success) {
-                        title = name;
-                        text = chrome.i18n.getMessage('sent_popup', SABdrop.Common.truncate(name, 20));
-                    } else {
-                        title = chrome.i18n.getMessage('error_popup_title');
-                        text = chrome.i18n.getMessage('error_popup');
-                    }
-
-                    notification = webkitNotifications.createNotification(
-                        'images/icons/sab48.png',
-                        title,
-                        text
-                    );
-
-                    notification.ondisplay = function () {
-                        window.setTimeout(function () {
-                            notification.cancel();
-                        }, popupHide);
-                    };
-
-                    notification.show();
+                if (success) {
+                    title = chrome.i18n.getMessage('sent_popup_title');
+                    text = chrome.i18n.getMessage('sent_popup_text', SABdrop.Common.truncate(name, 20));
+                } else {
+                    title = chrome.i18n.getMessage('error_popup_title');
+                    text = chrome.i18n.getMessage('error_popup_text');
                 }
+
+                showNotification(title, text);
             });
         }
     }
@@ -132,9 +120,55 @@
         }
     }
 
-    function updateCache() {
+    function showNotification(title, text) {
+        if (popupHide === 0) {
+            return;
+        }
+
+        var notification = webkitNotifications.createNotification(
+            'images/icons/sab48.png',
+            title,
+            text
+        );
+
+        notification.ondisplay = function () {
+            window.setTimeout(function () {
+                notification.cancel();
+            }, popupHide);
+        };
+
+        notification.show();
+    }
+
+    function queryAPI() {
         api.getQueue(function (queue) {
             cache.queue = queue;
+
+            queue.slots.forEach(function (slot) {
+                if ($.inArray(slot.nzo_id, cache.downloads) === -1) {
+                    cache.downloads.push(slot.nzo_id);
+                }
+            });
+
+            chrome.browserAction.setBadgeText({
+                text: queue.slots.length > 0 ? queue.slots.length.toString() : ''
+            });
+        });
+
+        api.getHistory(function (history) {
+            var index, 
+                notification;
+
+            cache.history = history;
+
+            history.slots.forEach(function (slot) {
+                index = $.inArray(slot.nzo_id, cache.downloads);
+
+                if (index > -1 && slot.status === 'Completed') {
+                    cache.downloads.splice(index, 1);
+                    showNotification(chrome.i18n.getMessage('completed_popup_title'), chrome.i18n.getMessage('completed_popup_text', SABdrop.Common.truncate(slot.name, 20)));
+                }
+            });
         });
     }
 
@@ -222,8 +256,8 @@
     });
 
     onStart();
-    updateCache();
+    queryAPI();
 
-    window.setInterval(updateCache, 5000);
+    window.setInterval(queryAPI, 5000);
 
 }());

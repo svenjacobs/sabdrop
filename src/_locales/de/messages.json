@@ -1,6 +1,6 @@
 {
     "ext_description": {
-        "message": "Sendet NZB-Links an SABnzbd zum Download."
+        "message": "SABnzbd-Client/Download-Manager für Google Chrome"
     },
     "page_action_title": {
         "message": "SABdrop hat NZBs auf dieser Seite gefunden"
@@ -113,7 +113,10 @@
     "options_reset_dialog": {
         "message": "Möchtest Du wirklich alle Optionen auf ihre Standardwerte zurücksetzen?"
     },
-    "sent_popup": {
+    "sent_popup_title": {
+        "message": "Download hinzugefügt"
+    },
+    "sent_popup_text": {
         "message": "$LINK$ wurde an SABnzbd gesendet",
         "placeholders": {
             "link": {
@@ -121,7 +124,18 @@
             }
         }
     },
-    "error_popup": {
+    "completed_popup_title": {
+        "message": "Downloaded abgeschlossen"
+    },
+    "completed_popup_text": {
+        "message": "Download von $NAME$ abgeschlossen",
+        "placeholders": {
+            "name": {
+                "content": "$1"
+            }
+        }
+    },
+    "error_popup_text": {
         "message": "Beim Senden des Links an SABnzbd trat ein Fehler auf. Bitte überprüfe die Verbindungseinstellungen und beachte die Meldungen in der Konsole."
     },
     "error_popup_title": {
@@ -178,7 +192,7 @@
         }
     },
     "eta_stats": {
-        "message": "ETA $ETA$",
+        "message": "ETA $ETA$h",
         "placeholders": {
             "eta": {
                 "content": "$1"
