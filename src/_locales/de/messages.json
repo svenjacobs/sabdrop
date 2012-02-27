@@ -201,5 +201,13 @@
     },
     "no_downloads": {
         "message": "Sorry, keine Downloads"
+    },
+    "speed": {
+        "message": "Geschwindigkeit: $SPEED$",
+        "placeholders": {
+            "speed": {
+                "content": "$1"
+            }
+        }
     }
 }

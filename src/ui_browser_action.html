@@ -2,16 +2,21 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>
+        <link rel="stylesheet" type="text/css" href="css/tooltip.css"/>
         <link rel="stylesheet" type="text/css" href="css/browser_action.css"/>
     </head>
     <body>
-        <div id="tooltip">
+        <div id="slot_tooltip" class="tooltip">
             <div class="name"></div>
             <div class="progress"></div>
             <div class="eta"></div>
             <button class="delete"><span></span>&nbsp;<img src="images/delete.png" alt="Delete"/></button>
             <button class="pause"><span></span>&nbsp;<img src="images/pause.png" alt="Pause"/></button>
             <button class="resume"><span></span>&nbsp;<img src="images/play.png" alt="Resume"/></button>
+        </div>
+
+        <div id="graph_tooltip" class="tooltip">
+            <div class="speed"></div>
         </div>
 
         <div id="empty">
@@ -33,6 +38,7 @@
         <script type="text/javascript" src="js/lib/jquery.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/lib/flot/jquery.flot.min.js"></script>
+        <script type="text/javascript" src="js/tooltip.js"></script>
         <script type="text/javascript" src="js/browser_action.js"></script>
     </body>
 </html>

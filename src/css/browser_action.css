@@ -5,40 +5,21 @@ body {
     min-height: 300px;
 }
 
-#tooltip {
-    display: none;
-    position: absolute;
-    padding: 0.5em;
-    border: black solid 1px;
-    border-radius: 4px;
-    background-color: white;
-    z-index: 999;
-    font-size: small;
-    box-shadow: 2px 2px 2px #CCC;
-    -webkit-box-shadow: 2px 2px 2px #CCC;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-#tooltip .name {
+#slot_tooltip .name {
     font-weight: bold;
 }
 
-#tooltip .name, #slots span.name {
+#slot_tooltip .name, #slots span.name {
     max-width: 28em;
     overflow: hidden;
     white-space: nowrap;
 }
 
-#tooltip button {
+#slot_tooltip button {
     float: right;
 }
 
-#tooltip.completed button {
-    display: none;
-}
-
-#tooltip button.resume {
+#slot_tooltip button.resume {
     display: none;
 }
 

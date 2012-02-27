@@ -1,16 +1,14 @@
 /*jshint browser: true, bitwise: false, plusplus: false, indent: 4*/
-/*global $, chrome*/
+/*global Tooltip, $, chrome*/
 (function () {
 
-    var FLAG_HOVER_TOOLTIP = 1,
-        FLAG_HOVER_SLOT = 2,
-        FADE_IN_DELAY = 300,
-        FADE_OUT_DELAY = 1000,
-        INTERVAL = 5000,
+    var INTERVAL = 5000,
 
-        $tooltip = $('#tooltip'),
+        $slotTooltipContainer = $('#slot_tooltip'),
+        $graphTooltipContainer = $('#graph_tooltip'),
+        slotTooltip = new Tooltip($slotTooltipContainer),
+        graphTooltip = new Tooltip($graphTooltipContainer).attachTo('#graph'),
         $slots = $('#slots'),
-        tooltipState = 0,
         sorting = false,
         updateInterval = null;
 
@@ -66,8 +64,7 @@
                 .append($('<span>').addClass('percent').text(percentTxt))
                 .append($('<img>').attr('src', 'images/pause.png'));
 
-        $el.hover(
-            // Hover in
+        $el.mouseenter(
             function (evt) {
                 if (sorting) {
                     return;
@@ -76,16 +73,10 @@
                 var offset = $el.offset(),
                     paused = $el.hasClass('paused');
 
-                tooltipState = tooltipState | FLAG_HOVER_SLOT;
+                // Adjust tooltip to slot currently hovered
 
-                // Adjust tooltip to slot currently hovered and then display it
-
-                $tooltip
+                $slotTooltipContainer
                     .data('target', s.nzo_id)
-                    .css({
-                        'left': offset.left + 'px',
-                        'top': offset.top + 25 + 'px'
-                    })
                     .children('div.name').text(s.filename)
                     .end()
                     .children('div.progress').text(chrome.i18n.getMessage('mb_stats', [mbDownloaded, s.mb, percent]))
@@ -99,7 +90,7 @@
                         .off('click')
                         .click(function () {
                             $(this).hide();
-                            $tooltip.children('button.resume').show();
+                            $slotTooltipContainer.children('button.resume').show();
                             $el.addClass('paused');
                             pauseDownload(s.nzo_id);
                             resetInterval();
@@ -112,7 +103,7 @@
                         .off('click')
                         .click(function () {
                             $(this).hide();
-                            $tooltip.children('button.pause').show();
+                            $slotTooltipContainer.children('button.pause').show();
                             $el.removeClass('paused');
                             resumeDownload(s.nzo_id);
                             resetInterval();
@@ -123,8 +114,7 @@
                     .children('button.delete')
                         .off('click')
                         .click(function () {
-                            $tooltip.fadeOut();
-                            tooltipState = 0;
+                            slotTooltip.hide();
                             $el.hide('drop', {
                                 direction: 'right',
                                 speed: 'fast',
@@ -135,33 +125,19 @@
                             deleteDownload(s.nzo_id);
                             resetInterval();
                         });
-
-                window.setTimeout(function () {
-                    if (!$tooltip.is(':visible')) {
-                        $tooltip.fadeIn();
-                    }
-                }, FADE_IN_DELAY);
-
-            },
-
-            // Hover out
-            function (evt) {
-                tooltipState = tooltipState & ~FLAG_HOVER_SLOT;
-
-                window.setTimeout(function () {
-                    if (tooltipState === 0) {
-                        $tooltip.fadeOut();
-                    }
-                }, FADE_OUT_DELAY);
             }
         );
+
+        slotTooltip.attachTo($el);
 
         return $el;
     }
 
     function updateGraph(history) {
         var i = 0,
-            series = [];
+            series = [],
+            speed,
+            speedText;
 
         history.forEach(function (h) {
             series.push([i, h]);
@@ -191,6 +167,20 @@
                 borderColor: '#CCC'
             }
         });
+
+        if (history.length > 0) {
+            speed = history[history.length - 1];
+        } else {
+            speed = 0;
+        }
+
+        if (speed >= 1000) {
+            speedText = (speed / 1000).toFixed(2) + ' MB/s';
+        } else {
+            speedText = speed.toFixed(2) + ' kB/s'; 
+        }
+        
+        $graphTooltipContainer.children('div.speed').text(chrome.i18n.getMessage('speed', speedText));
     }
 
     function refresh() {
@@ -242,21 +232,10 @@
         }, 5000);
     }
 
-    $tooltip
-        .hover(
-            function () {
-                tooltipState = tooltipState | FLAG_HOVER_TOOLTIP;
-            },
-            function () {
-                tooltipState = tooltipState & ~FLAG_HOVER_TOOLTIP;
+    graphTooltip.offsetTop = 0;
+    graphTooltip.offsetLeft = 40;
 
-                window.setTimeout(function () {
-                    if (tooltipState === 0) {
-                        $tooltip.fadeOut();
-                    }
-                }, FADE_OUT_DELAY);
-            }
-        )
+    $slotTooltipContainer
         .find('button.resume span').text(chrome.i18n.getMessage('resume'))
         .end()
         .find('button.pause span').text(chrome.i18n.getMessage('pause'))
@@ -297,7 +276,7 @@
         axis: 'y',
         start: function () {
             sorting = true;
-            $tooltip.hide();
+            slotTooltip.hide(true);
         },
         stop: function (evt, ui) {
             sorting = false;

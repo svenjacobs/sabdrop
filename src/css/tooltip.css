@@ -1,0 +1,14 @@
+.tooltip {
+    display: none;
+    position: absolute;
+    padding: 0.5em;
+    border: black solid 1px;
+    border-radius: 4px;
+    background-color: white;
+    z-index: 999;
+    font-size: small;
+    box-shadow: 2px 2px 2px #CCC;
+    -webkit-box-shadow: 2px 2px 2px #CCC;
+    user-select: none;
+    -webkit-user-select: none;
+}
