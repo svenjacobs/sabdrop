@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.1 (02/28/12)
+----------------
+
+* Fixed file upload functionality (issue [#12](https://github.com/svenjacobs/SABdrop/issues/12))
+* Added tooltip to download speed graph (more information in tooltip to come)
+
 0.6 (02/26/12)
 --------------
 
