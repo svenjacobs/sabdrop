@@ -230,31 +230,37 @@
                     return;
                 }
 
+                if (file.toLowerCase().search(/<!doctype nzb/) === -1) {
+                    console.error(link + ' is not a valid NZB file!');
+                    callback(false);
+                    return;
+                }
+
                 var boundary = '----SABdropFormBoundary',
                     formData = '--' + boundary + '\n',
                     xhr;
 
-                formData += 'Content-Disposition: form-data; name=\'nzbfile\'; filename=\'' + name + '\'\n' +
+                formData += 'Content-Disposition: form-data; name="nzbfile"; filename="' + name + '"\n' +
                     'Content-Type: text/xml\n\n' +
                     file +
                     '\n--' + boundary + '\n' +
-                    'Content-Disposition: form-data; name=\'mode\'\n\naddfile' +
+                    'Content-Disposition: form-data; name="mode"\n\naddfile' +
                     '\n--' + boundary + '\n' +
-                    'Content-Disposition: form-data; name=\'nzbname\'\n\n' + name;
+                    'Content-Disposition: form-data; name="nzbname"\n\n' + name;
 
                 if (api._authMethod === 'apikey') {
                     formData += '\n--' + boundary + '\n' +
-                        'Content-Disposition: form-data; name=\'apikey\'\n\n' + api._apiKey;
+                        'Content-Disposition: form-data; name="apikey"\n\n' + api._apiKey;
                 } else {
                     formData += '\n--' + boundary + '\n' +
-                        'Content-Disposition: form-data; name=\'ma_username\'\n\n' + api._username +
+                        'Content-Disposition: form-data; name="ma_username"\n\n' + api._username +
                         '\n--' + boundary + '\n' +
-                        'Content-Disposition: form-data; name=\'ma_password\'\n\n' + api._password;
+                        'Content-Disposition: form-data; name="ma_password"\n\n' + api._password;
                 }
 
                 if (category) {
                     formData += '\n--' + boundary + '\n' +
-                        'Content-Disposition: form-data; name=\'cat\'\n\n' + category;
+                        'Content-Disposition: form-data; name="cat"\n\n' + category;
                 }
 
                 formData += '\n--' + boundary + '--\n'; // last boundary
