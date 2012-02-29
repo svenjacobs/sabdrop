@@ -105,7 +105,38 @@ body {
 }
 
 #graph {
+    width: 250px;
+    margin-right: 10px;
+}
+
+#graph, #slider_container {
     height: 150px;
+    float: left;
+}
+
+#slider_container div.slider {
+    width: 10px;
+    height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#slider_container div.value {
+    font-size: small;
+    width: 80px;
+    height: 20px;
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-align: center;
+}
+
+#slider_container div.slider .ui-slider-handle {
+    width: 18px;
+    height: 18px;
+}
+
+#graph_n_slider {
     width: 380px;
+    height: 150px;
     margin: 0 auto 1em auto;
 }

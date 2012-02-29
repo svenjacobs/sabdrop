@@ -297,6 +297,18 @@
         }
     });
 
+    $('#slider_container div.slider').slider({
+        orientation: 'vertical',
+        range: 'min',
+        min: 250,
+        max: 10000,
+        value: 10000,
+        step: 250,
+        slide: function (evt, ui) {
+            $('#slider_container div.value').text(ui.value + ' kB/s');  
+        }
+    });
+
     $('#empty span').text(chrome.i18n.getMessage('no_downloads'));
 
     refresh();
