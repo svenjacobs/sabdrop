@@ -46,9 +46,6 @@
     function newSlotElement(s) {
         var percent = parseInt(s.percentage, 10),
             percentTxt = percent + '%',
-            mb = parseFloat(s.mb),
-            mbLeft = parseFloat(s.mbleft),
-            mbDownloaded = (mb - mbLeft).toFixed(2),
 
             $el = $('<li>')
                 .attr('id', s.nzo_id)
@@ -64,6 +61,11 @@
                 .append($('<span>').addClass('percent').text(percentTxt))
                 .append($('<img>').attr('src', 'images/pause.png'));
 
+        // Update tooltip if currently visible and showing this slot element
+        if ($slotTooltipContainer.is(':visible') && $slotTooltipContainer.data('target') === s.nzo_id) {
+            updateSlotTooltip(s);
+        }
+
         $el.mouseenter(
             function (evt) {
                 if (sorting) {
@@ -75,14 +77,10 @@
 
                 // Adjust tooltip to slot currently hovered
 
+                updateSlotTooltip(s);
+
                 $slotTooltipContainer
                     .data('target', s.nzo_id)
-                    .children('div.name').text(s.filename)
-                    .end()
-                    .children('div.progress').text(chrome.i18n.getMessage('mb_stats', [mbDownloaded, s.mb, percent]))
-                    .end()
-                    .children('div.eta').text(chrome.i18n.getMessage('eta_stats', s.timeleft === '0:00:00' ? '???' : s.timeleft))
-                    .end()
 
                     // Pause button
                     .children('button.pause')
@@ -131,6 +129,20 @@
         slotTooltip.attachTo($el);
 
         return $el;
+    }
+
+    function updateSlotTooltip(s) {
+        var percent = parseInt(s.percentage, 10),
+            mb = parseFloat(s.mb),
+            mbLeft = parseFloat(s.mbleft),
+            mbDownloaded = (mb - mbLeft).toFixed(2);
+
+        $slotTooltipContainer
+            .children('div.name').text(s.filename)
+            .end()
+            .children('div.progress').text(chrome.i18n.getMessage('mb_stats', [mbDownloaded, s.mb, percent]))
+            .end()
+            .children('div.eta').text(chrome.i18n.getMessage('eta_stats', s.timeleft === '0:00:00' ? '???' : s.timeleft));
     }
 
     function updateGraph(history) {
