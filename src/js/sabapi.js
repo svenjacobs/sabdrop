@@ -383,16 +383,28 @@
     /**
      * Get history
      *
+     * @param limit Limit (optional)
      * @param callback A function(queue)
      */
-    SABapi.prototype.getHistory = function (callback) {
-        this._jsonRequest({
-            params: {
+    SABapi.prototype.getHistory = function () {
+        if (arguments.length > 2) {
+            return;
+        }
+        
+        var params = {
                 mode: 'history'
             },
+            args = Array.prototype.slice.call(arguments); // Turn arguments object into real array
+
+        if (args.length === 2) {
+            params.limit = args.shift();
+        }
+
+        this._jsonRequest({
+            params: params,
             success: function (json) {
                 if (json.history) {
-                    callback(json.history);
+                    args.shift()(json.history);
                 }
             }
         });
@@ -503,6 +515,21 @@
                 mode: 'switch',
                 value: id,
                 value2: position
+            }
+        });
+    };
+
+    /**
+     * Sets global speed limit
+     *
+     * @param limit Speed limit in kB/s
+     */
+    SABapi.prototype.setSpeedLimit = function (limit) {
+        this._request({
+            params: {
+                mode: 'config',
+                name: 'speedlimit',
+                value: limit
             }
         });
     };

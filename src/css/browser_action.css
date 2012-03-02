@@ -50,6 +50,7 @@ body {
     user-select: none;
     -webkit-user-select: none;
     cursor: move;
+    font-weight: normal;
 }
 
 #slots .ui-state-highlight {
@@ -105,7 +106,7 @@ body {
 }
 
 #graph {
-    width: 250px;
+    width: 290px;
     margin-right: 10px;
 }
 

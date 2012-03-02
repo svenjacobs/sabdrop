@@ -1,8 +1,12 @@
 /*jshint browser: true, bitwise: false, plusplus: false, indent: 4*/
-/*global Tooltip, $, chrome*/
+/*global SABdrop, Tooltip, $, chrome*/
 (function () {
 
-    var INTERVAL = 5000,
+    var INTERVAL = 10000, // ms
+        SPEED_MAX = 10000, // kB
+        SPEED_MIN = 500,
+        SPEED_STEP = 500,
+        SPEED_INFIN = SPEED_MAX + SPEED_STEP,
 
         $slotTooltipContainer = $('#slot_tooltip'),
         $graphTooltipContainer = $('#graph_tooltip'),
@@ -17,6 +21,22 @@
             green = p > 50 ? 255 : Math.round(p * 5.12);
 
         return "rgb(" + red + "," + green + ",0)";
+    }
+
+    function refresh() {
+        getQueue(function (queue) {
+            var speedlimit = queue.speedlimit === '' ? SPEED_INFIN : parseInt(queue.speedlimit, 10);
+
+            updateSlots(queue);
+
+            $('#controls button.pause').toggle(!queue.paused);
+            $('#controls button.resume').toggle(queue.paused);
+            
+            $('#slider_container div.slider').slider('value', speedlimit);
+            setSliderText(speedlimit);
+        });
+
+        getSpeedHistory(updateGraph);
     }
 
     function updateSlots(queue) {
@@ -38,9 +58,6 @@
         } else {
             $slots.removeClass('pausedAll');
         }
-
-        $('#controls button.pause').toggle(!queue.paused);
-        $('#controls button.resume').toggle(queue.paused);
     }
 
     function newSlotElement(s) {
@@ -135,7 +152,7 @@
         var percent = parseInt(s.percentage, 10),
             mb = parseFloat(s.mb),
             mbLeft = parseFloat(s.mbleft),
-            mbDownloaded = (mb - mbLeft).toFixed(2);
+            mbDownloaded = (mb - mbLeft).maybeToFixed(2);
 
         $slotTooltipContainer
             .children('div.name').text(s.filename)
@@ -149,6 +166,7 @@
         var i = 0,
             series = [],
             speed,
+            hspeed,
             speedText;
 
         history.forEach(function (h) {
@@ -186,18 +204,10 @@
             speed = 0;
         }
 
-        if (speed >= 1000) {
-            speedText = (speed / 1000).toFixed(2) + ' MB/s';
-        } else {
-            speedText = speed.toFixed(2) + ' kB/s'; 
-        }
+        hspeed = SABdrop.Common.humanizeBytes(speed * 1000, true);
+        speedText = hspeed[0].maybeToFixed(2) + ' ' + hspeed[1] + '/s';
         
         $graphTooltipContainer.children('div.speed').text(chrome.i18n.getMessage('speed', speedText));
-    }
-
-    function refresh() {
-        getQueue(updateSlots);
-        getSpeedHistory(updateGraph);
     }
 
     function getQueue(callback) {
@@ -242,6 +252,11 @@
         updateInterval = window.setInterval(function () {
             refresh();
         }, 5000);
+    }
+
+    function setSliderText(kb) {
+        var speed = SABdrop.Common.humanizeBytes(kb * 1000, true);
+        $('#slider_container div.value').html(kb === SPEED_INFIN ? '&infin;' : speed[0].toFixed(1) + ' ' + speed[1] + '/s');  
     }
 
     graphTooltip.offsetTop = 0;
@@ -312,12 +327,22 @@
     $('#slider_container div.slider').slider({
         orientation: 'vertical',
         range: 'min',
-        min: 500,
-        max: 10500,
-        value: 10500,
-        step: 500,
+        min: SPEED_MIN,
+        max: SPEED_INFIN,
+        value: SPEED_INFIN,
+        step: SPEED_STEP,
         slide: function (evt, ui) {
-            $('#slider_container div.value').text(ui.value + ' kB/s');  
+            setSliderText(ui.value);
+        },
+        stop: function (evt, ui) {
+            var limit = ui.value;
+            
+            if (ui.value === SPEED_INFIN) {
+                limit = 0;
+            }
+
+            chrome.extension.sendRequest({action: 'setSpeedLimit', limit: limit});
+            //resetInterval();
         }
     });
 

@@ -5,8 +5,9 @@
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
 
-    var API_QUERY_INTERVAL = 5000,
+    var API_QUERY_INTERVAL = 10000, // ms
         MAX_SPEED_HISTORY = 10,
+        HISTORY_LIMIT = 10,
 
         api,
         popupHide = localStorage.popupHide || 5000,
@@ -163,7 +164,7 @@
             setBadgeText(queue.slots.length);
         });
 
-        api.getHistory(function (history) {
+        api.getHistory(HISTORY_LIMIT, function (history) {
             var index, 
                 notification;
 
@@ -276,6 +277,11 @@
 
         case 'getSpeedHistory':
             sendResponse(cache.speedHistory);
+            return;
+
+        case 'setSpeedLimit':
+            api.setSpeedLimit(request.limit);
+            cache.queue.speedlimit = request.limit === 0 ? '' : request.limit;
             return;
 
         }

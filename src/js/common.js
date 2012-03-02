@@ -43,7 +43,7 @@
                 try {
                     (decimalPrefixes ? prefixes.decimal : prefixes.binary).forEach(function (p) {
                         if (bytes >= p[0]) {
-                            result = [bytes / p[0], p[1]];
+                            result = [p[0] === 0 ? 0 : bytes / p[0], p[1]];
                             throw 'break';
                         }
                     });
@@ -55,6 +55,20 @@
 
                 return result;
             }
+        }
+    };
+
+    Number.prototype.maybeToFixed = function (digits) {
+        if (this === 0) {
+            return 0;
+        }
+
+        var floor = Math.floor(this);
+
+        if (floor / this === 1) {
+            return this;
+        } else {
+            return this.toFixed(digits);
         }
     };
 }());

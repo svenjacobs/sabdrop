@@ -1,0 +1,1 @@
+* After sending requests to the API immediatly update the local cache and get rid of resetInterval() in js/browser_action.js
