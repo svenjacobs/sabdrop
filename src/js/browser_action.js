@@ -312,10 +312,10 @@
     $('#slider_container div.slider').slider({
         orientation: 'vertical',
         range: 'min',
-        min: 250,
-        max: 10000,
-        value: 10000,
-        step: 250,
+        min: 500,
+        max: 10500,
+        value: 10500,
+        step: 500,
         slide: function (evt, ui) {
             $('#slider_container div.value').text(ui.value + ' kB/s');  
         }
