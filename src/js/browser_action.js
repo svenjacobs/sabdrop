@@ -2,8 +2,7 @@
 /*global SABdrop, Tooltip, $, chrome*/
 (function () {
 
-    var INTERVAL = 10000, // ms
-        SPEED_MAX = 10000, // kB
+    var SPEED_MAX = 10000, // kB
         SPEED_MIN = 500,
         SPEED_STEP = 500,
         SPEED_INFIN = SPEED_MAX + SPEED_STEP,
@@ -14,6 +13,7 @@
         graphTooltip = new Tooltip($graphTooltipContainer).attachTo('#graph'),
         $slots = $('#slots'),
         sorting = false,
+        sliding = false,
         updateInterval = null;
 
     function color(p) {
@@ -31,9 +31,11 @@
 
             $('#controls button.pause').toggle(!queue.paused);
             $('#controls button.resume').toggle(queue.paused);
-            
-            $('#slider_container div.slider').slider('value', speedlimit);
-            setSliderText(speedlimit);
+           
+            if (!sliding) {
+                $('#slider_container div.slider').slider('value', speedlimit);
+                setSliderText(speedlimit);
+            }
         });
 
         getSpeedHistory(updateGraph);
@@ -249,9 +251,7 @@
             window.clearInterval(updateInterval);
         }
 
-        updateInterval = window.setInterval(function () {
-            refresh();
-        }, 5000);
+        updateInterval = window.setInterval(refresh, parseInt(localStorage.requestInterval, 10) || 10000);
     }
 
     function setSliderText(kb) {
@@ -334,8 +334,13 @@
         slide: function (evt, ui) {
             setSliderText(ui.value);
         },
+        start: function () {
+            sliding = true;
+        },
         stop: function (evt, ui) {
             var limit = ui.value;
+
+            sliding = false;
             
             if (ui.value === SPEED_INFIN) {
                 limit = 0;

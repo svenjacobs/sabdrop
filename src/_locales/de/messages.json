@@ -92,6 +92,12 @@
     "options_setting_nzbname_help": {
         "message": "Öffnet für jeden Download einen Dialog zum Festlegen des NZB-Namens. Wenn deaktiviert werden Teile der URL als Name verwendet."
     },
+    "options_setting_requestinterval": {
+        "message": "Abfrageintervall (ms)"
+    },
+    "options_setting_requestinterval_help": {
+        "message": "Legt den Intervall fest, in dem Anfragen an den SABnzbd-Server geschickt werden. Bei einer Mobilverbindung und/oder limitierten Datenvolumen, sollte dieser Wert höher gesetzt werden."
+    },
     "options_verify": {
         "message": "Verbindung überprüfen"
     },

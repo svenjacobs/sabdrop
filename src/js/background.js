@@ -5,12 +5,12 @@
 
     window.pageActionData = []; // TODO: Is there a better way to send data to the page action?
 
-    var API_QUERY_INTERVAL = 10000, // ms
-        MAX_SPEED_HISTORY = 10,
+    var MAX_SPEED_HISTORY = 10,
         HISTORY_LIMIT = 10,
 
         api,
         popupHide = localStorage.popupHide || 5000,
+        requestInterval = null,
         cache = {
             queue: {},
             history: {},
@@ -22,6 +22,14 @@
         api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
     } else {
         api = new SABapi(localStorage.host, localStorage.apiKey);
+    }
+
+    function resetInterval() {
+        if (requestInterval) {
+            window.clearInterval(requestInterval);
+        }
+
+        requestInterval = window.setInterval(queryAPI, parseInt(localStorage.requestInterval, 10) || 10000);
     }
 
     function sendLink(link, category, name) {
@@ -123,6 +131,11 @@
         if (localStorage.host && !localStorage.nzbName) {
             localStorage.nzbName = 'always';
         }
+
+        // migration from 0.6.1 -> 0.6.2
+        if (!localStorage.requestInterval) {
+            localStorage.requestInterval = '10000';
+        }
     }
 
     function showNotification(title, text) {
@@ -212,6 +225,7 @@
             }
 
             createContextMenus(); // recreate menus because of categories
+            resetInterval();
             break;
 
         case 'getCategories':
@@ -291,7 +305,6 @@
 
     onStart();
     queryAPI();
-
-    window.setInterval(queryAPI, API_QUERY_INTERVAL);
+    resetInterval();
 
 }());

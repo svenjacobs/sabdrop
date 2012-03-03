@@ -1,62 +1,64 @@
-/*jslint browser: true, plusplus: true, indent: 4 */
+/*jshint browser: true, plusplus: false, indent: 4 */
 /*global $, window, chrome, SABapi, Showdown*/
 (function () {
-    "use strict";
+    'use strict';
 
     // some i18n
-    document.title = chrome.i18n.getMessage("options_title");
-    $("#authMethod option[value='apikey']").text(chrome.i18n.getMessage("options_setting_authmethod_api"));
-    $("#authMethod option[value='login']").text(chrome.i18n.getMessage("options_setting_authmethod_login"));
-    $("#nzbName option[value='always']").text(chrome.i18n.getMessage("options_setting_nzbname_always"));
-    $("#nzbName option[value='never']").text(chrome.i18n.getMessage("options_setting_nzbname_never"));
-    $("label[for='host']").prepend(chrome.i18n.getMessage("options_setting_host"));
-    $("label[for='host'] sup").prop("title", chrome.i18n.getMessage("options_setting_host_help"));
-    $("label[for='apiKey']").prepend(chrome.i18n.getMessage("options_setting_apikey"));
-    $("label[for='apiKey'] sup").prop("title", chrome.i18n.getMessage("options_setting_apikey_help"));
-    $("label[for='popupHide']").prepend(chrome.i18n.getMessage("options_setting_popuphide"));
-    $("label[for='popupHide'] sup").prop("title", chrome.i18n.getMessage("options_setting_popuphide_help"));
-    $("label[for='authMethod']").prepend(chrome.i18n.getMessage("options_setting_authmethod"));
-    $("label[for='authMethod'] sup").prop("title", chrome.i18n.getMessage("options_setting_authmethod_help"));
-    $("label[for='username']").prepend(chrome.i18n.getMessage("options_setting_username"));
-    $("label[for='username'] sup").prop("title", chrome.i18n.getMessage("options_setting_username_help"));
-    $("label[for='password']").prepend(chrome.i18n.getMessage("options_setting_password"));
-    $("label[for='password'] sup").prop("title", chrome.i18n.getMessage("options_setting_password_help"));
-    $("label[for='hideCategories']").prepend(chrome.i18n.getMessage("options_setting_hidecategories"));
-    $("label[for='hideCategories'] sup").prop("title", chrome.i18n.getMessage("options_setting_hidecategories_help"));
-    $("label[for='matchPatterns']").prepend(chrome.i18n.getMessage("options_setting_matchpatterns"));
-    $("label[for='matchPatterns'] sup").prop("title", chrome.i18n.getMessage("options_setting_matchpatterns_help"));
-    $("label[for='fileUpload']").prepend(chrome.i18n.getMessage("options_setting_fileupload"));
-    $("label[for='fileUpload'] sup").prop("title", chrome.i18n.getMessage("options_setting_fileupload_help"));
-    $("label[for='nzbName']").prepend(chrome.i18n.getMessage("options_setting_nzbname"));
-    $("label[for='nzbName'] sup").prop("title", chrome.i18n.getMessage("options_setting_nzbname_help"));
-    $("a[href='#options']").text(chrome.i18n.getMessage("options_tab"));
-    $("a[href='#advanced']").text(chrome.i18n.getMessage("options_tab_advanced"));
-    $("a[href='#about']").text(chrome.i18n.getMessage("options_tab_about"));
+    document.title = chrome.i18n.getMessage('options_title');
+    $('#authMethod option[value="apikey"]').text(chrome.i18n.getMessage('options_setting_authmethod_api'));
+    $('#authMethod option[value="login"]').text(chrome.i18n.getMessage('options_setting_authmethod_login'));
+    $('#nzbName option[value="always"]').text(chrome.i18n.getMessage('options_setting_nzbname_always'));
+    $('#nzbName option[value="never"]').text(chrome.i18n.getMessage('options_setting_nzbname_never'));
+    $('label[for="host"]').prepend(chrome.i18n.getMessage('options_setting_host'));
+    $('label[for="host"] sup').prop('title', chrome.i18n.getMessage('options_setting_host_help'));
+    $('label[for="apiKey"]').prepend(chrome.i18n.getMessage('options_setting_apikey'));
+    $('label[for="apiKey"] sup').prop('title', chrome.i18n.getMessage('options_setting_apikey_help'));
+    $('label[for="popupHide"]').prepend(chrome.i18n.getMessage('options_setting_popuphide'));
+    $('label[for="popupHide"] sup').prop('title', chrome.i18n.getMessage('options_setting_popuphide_help'));
+    $('label[for="authMethod"]').prepend(chrome.i18n.getMessage('options_setting_authmethod'));
+    $('label[for="authMethod"] sup').prop('title', chrome.i18n.getMessage('options_setting_authmethod_help'));
+    $('label[for="username"]').prepend(chrome.i18n.getMessage('options_setting_username'));
+    $('label[for="username"] sup').prop('title', chrome.i18n.getMessage('options_setting_username_help'));
+    $('label[for="password"]').prepend(chrome.i18n.getMessage('options_setting_password'));
+    $('label[for="password"] sup').prop('title', chrome.i18n.getMessage('options_setting_password_help'));
+    $('label[for="hideCategories"]').prepend(chrome.i18n.getMessage('options_setting_hidecategories'));
+    $('label[for="hideCategories"] sup').prop('title', chrome.i18n.getMessage('options_setting_hidecategories_help'));
+    $('label[for="matchPatterns"]').prepend(chrome.i18n.getMessage('options_setting_matchpatterns'));
+    $('label[for="matchPatterns"] sup').prop('title', chrome.i18n.getMessage('options_setting_matchpatterns_help'));
+    $('label[for="fileUpload"]').prepend(chrome.i18n.getMessage('options_setting_fileupload'));
+    $('label[for="fileUpload"] sup').prop('title', chrome.i18n.getMessage('options_setting_fileupload_help'));
+    $('label[for="nzbName"]').prepend(chrome.i18n.getMessage('options_setting_nzbname'));
+    $('label[for="nzbName"] sup').prop('title', chrome.i18n.getMessage('options_setting_nzbname_help'));
+    $('label[for="requestInterval"]').prepend(chrome.i18n.getMessage('options_setting_requestinterval'));
+    $('label[for="requestInterval"] sup').prop('title', chrome.i18n.getMessage('options_setting_requestinterval_help'));
+    $('a[href="#options"]').text(chrome.i18n.getMessage('options_tab'));
+    $('a[href="#advanced"]').text(chrome.i18n.getMessage('options_tab_advanced'));
+    $('a[href="#about"]').text(chrome.i18n.getMessage('options_tab_about'));
 
     function setVal(opt, val) {
         opt = $(opt);
-        if (opt.attr("type") === "checkbox") {
-            opt.prop("checked", val === true || val === "true" ? true : false);
+        if (opt.attr('type') === 'checkbox') {
+            opt.prop('checked', val === true || val === 'true' ? true : false);
         } else {
             opt.val(val);
         }
     }
 
     function load() {
-        setVal(this, localStorage[$(this).attr("id")]);
+        setVal(this, localStorage[$(this).attr('id')]);
     }
 
     function save() {
         var opt = $(this),
             val;
 
-        if (opt.attr("type") === "checkbox") {
-            val = opt.is(":checked").toString();
+        if (opt.attr('type') === 'checkbox') {
+            val = opt.is(':checked').toString();
         } else {
             val = opt.val();
         }
 
-        localStorage[opt.attr("id")] = val;
+        localStorage[opt.attr('id')] = val;
     }
 
     /**
@@ -66,8 +68,25 @@
     function defaultValue() {
         var opt = $(this);
 
-        if (!localStorage[opt.attr("id")]) {
-            localStorage[opt.attr("id")] = opt.data("default");
+        if (!localStorage[opt.attr('id')]) {
+            localStorage[opt.attr('id')] = opt.data('default');
+        }
+    }
+
+    /**
+     * Makes sure that values of type="number" fields with
+     * "min" attributes are not less than "min"
+     */
+    function minValue() {
+        var $t = $(this),
+            min;
+
+        if ($t.is('input[type="number"][min]')) {
+            min = parseInt($t.attr('min'), 10);
+            
+            if (parseInt($t.val(), 10) < min) {
+                $t.val(min);
+            }
         }
     }
 
@@ -76,74 +95,74 @@
             result;
 
         evt.preventDefault();
-        $("#verify").button("option", "disabled", true);
-        $("#verifyResult")
-            .removeClass("good bad")
+        $('#verify').button('option', 'disabled', true);
+        $('#verifyResult')
+            .removeClass('good bad')
             .empty()
-            .append($("<img>").attr("src", "images/progress.gif"));
+            .append($('<img>').attr('src', 'images/progress.gif'));
 
-        if ($("#authMethod").val() === "apikey") {
-            api = new SABapi($("#host").val(), $("#apiKey").val());
+        if ($('#authMethod').val() === 'apikey') {
+            api = new SABapi($('#host').val(), $('#apiKey').val());
         } else {
-            api = new SABapi($("#host").val(), $("#username").val(), $("#password").val());
+            api = new SABapi($('#host').val(), $('#username').val(), $('#password').val());
         }
 
         result = function (success, text) {
-            $("#verify").button("option", "disabled", false);
-            $("#verifyResult")
+            $('#verify').button('option', 'disabled', false);
+            $('#verifyResult')
                 .empty()
-                .addClass(success ? "good" : "bad")
+                .addClass(success ? 'good' : 'bad')
                 .text(text);
         };
 
         api.getRemoteAuthMethod(function (success, responseText) {
             if (!success) {
-                result(false, chrome.i18n.getMessage("options_verify_failed"));
-            } else if ($("#authMethod").val() === responseText) {
+                result(false, chrome.i18n.getMessage('options_verify_failed'));
+            } else if ($('#authMethod').val() === responseText) {
                 api.verifyConnection(function (success) {
-                    result(success, success ? chrome.i18n.getMessage("options_verify_ok") : chrome.i18n.getMessage("options_verify_failed"));
+                    result(success, success ? chrome.i18n.getMessage('options_verify_ok') : chrome.i18n.getMessage('options_verify_failed'));
                 });
-            } else if (responseText === "none") {
-                result(false, chrome.i18n.getMessage("options_verify_none"));
+            } else if (responseText === 'none') {
+                result(false, chrome.i18n.getMessage('options_verify_none'));
             } else {
-                result(false, chrome.i18n.getMessage("options_verify_nomatch"));
+                result(false, chrome.i18n.getMessage('options_verify_nomatch'));
             }
         });
     }
 
     function authOptions() {
-        if ($(this).val() === "apikey") {
-            $("#apiKey").prop("disabled", false);
-            $("#username, #password").prop("disabled", true);
+        if ($(this).val() === 'apikey') {
+            $('#apiKey').prop('disabled', false);
+            $('#username, #password').prop('disabled', true);
         } else {
-            $("#apiKey").prop("disabled", true);
-            $("#username, #password").prop("disabled", false);
+            $('#apiKey').prop('disabled', true);
+            $('#username, #password').prop('disabled', false);
         }
     }
 
     function reset() {
-        $("#resetDialog").dialog({
+        $('#resetDialog').dialog({
             resizeable: false,
             modal: true,
             width: 400,
-            title: chrome.i18n.getMessage("options_reset"),
+            title: chrome.i18n.getMessage('options_reset'),
             buttons: [
                 {
-                    text: chrome.i18n.getMessage("yes"),
+                    text: chrome.i18n.getMessage('yes'),
                     click: function () {
-                        $("input, select, textarea")
+                        $('input, select, textarea')
                             .each(function () {
-                                setVal(this, $(this).data("default"));
+                                setVal(this, $(this).data('default'));
                             })
                             .each(save);
-                        authOptions.call($("#authMethod"));
-                        $(this).dialog("close");
+                        authOptions.call($('#authMethod'));
+                        $(this).dialog('close');
                     }
                 },
                 {
-                    text: chrome.i18n.getMessage("no"),
+                    text: chrome.i18n.getMessage('no'),
                     click: function () {
-                        $(this).dialog("close");
+                        $(this).dialog('close');
                     }
                 }
             ]
@@ -151,11 +170,11 @@
     }
 
     var credits = [
-        "The SABnzbd team",
-        "The jQuery and jQuery UI developers for great and very useful JavaScript libraries",
-        "Google for their Chrome browser and other products",
-        "GitHub for hosting this project",
-        "My girlfriend for her patience ♥"
+        'The SABnzbd team',
+        'The jQuery and jQuery UI developers for great and very useful JavaScript libraries',
+        'Google for their Chrome browser and other products',
+        'GitHub for hosting this project',
+        'My girlfriend for her patience ♥'
     ];
 
     function startCredits() {
@@ -163,9 +182,9 @@
             index = 0,
             show = function () {
                 var text = credits[index];
-                $("#credits")
-                    .css("left", 0) // reset style attribute because of strange behaviour when tab is inactive (interval is paused)
-                    .show("slide", {direction: "left"}, 600, function () {
+                $('#credits')
+                    .css('left', 0) // reset style attribute because of strange behaviour when tab is inactive (interval is paused)
+                    .show('slide', {direction: 'left'}, 600, function () {
                         if (index === credits.length - 1) {
                             index = 0;
                         } else {
@@ -175,12 +194,12 @@
                     .html(text);
             };
 
-        $("#credits").data("running", true);
+        $('#credits').data('running', true);
         show();
 
         window.setInterval(function () {
-            var crdt = $("#credits");
-            if (crdt.is(":visible")) {
+            var crdt = $('#credits');
+            if (crdt.is(':visible')) {
                 crdt.fadeOut(400, show);
             } else {
                 show();
@@ -189,42 +208,45 @@
     }
 
     $(window).unload(function () {
-        chrome.extension.sendRequest({action: "reloadConfig"});
+        chrome.extension.sendRequest({action: 'reloadConfig'});
     });
 
-    $("input, select, textarea")
+    $('#requestInterval').change();
+
+    $('input, select, textarea')
         .each(defaultValue)
         .each(load)
-        .keyup(save)
+        .change(minValue)
         .change(save)
+        .keyup(save)
         .click(save);
 
-    $("#verify")
-        .text(chrome.i18n.getMessage("options_verify"))
+    $('#verify')
+        .text(chrome.i18n.getMessage('options_verify'))
         .button()
         .click(verify);
 
-    $("#reset")
-        .text(chrome.i18n.getMessage("options_reset"))
+    $('#reset')
+        .text(chrome.i18n.getMessage('options_reset'))
         .button()
         .click(reset);
 
-    $("#authMethod")
+    $('#authMethod')
         .each(authOptions)
         .change(authOptions);
 
-    $("#host")
+    $('#host')
         .focus()
         .select();
 
-    $("#tabs")
+    $('#tabs')
         .tabs({
             select: function (evt, ui) {
-                if (ui.index === 2 && $("#changelog").children().length === 0) {
-                    $.get(chrome.extension.getURL("/CHANGELOG.md"), function (data) {
-                        $("#changelog").html(new Showdown.converter().makeHtml(data));
+                if (ui.index === 2 && $('#changelog').children().length === 0) {
+                    $.get(chrome.extension.getURL('/CHANGELOG.md'), function (data) {
+                        $('#changelog').html(new Showdown.converter().makeHtml(data));
                     });
-                } else if (ui.index === 3 && $("#credits").data("running") === false) {
+                } else if (ui.index === 3 && $('#credits').data('running') === false) {
                     window.setTimeout(startCredits, 500);
                 }
             }
@@ -233,8 +255,8 @@
 
     // just a graphical gimmick ;-)
     window.setTimeout(function () {
-        $("header img")
-            .css("visibility", "visible")
-            .show("slide", {direction: "up"}, 400);
+        $('header img')
+            .css('visibility', 'visible')
+            .show('slide', {direction: 'up'}, 400);
     }, 300);
 }());

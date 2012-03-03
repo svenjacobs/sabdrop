@@ -119,6 +119,12 @@
     "options_setting_nzbname_help": {
         "message": "Opens a dialog for each download for specification of NZB name. If disabled parts of URL will be chosen as name."
     },
+    "options_setting_requestinterval": {
+        "message": "Request interval (ms)"
+    },
+    "options_setting_requestinterval_help": {
+        "message": "Specifys the request interval for queries to the SABnzbd server. If you are on a mobile connection and/or have limited data volume this value should be increased."
+    },
     "options_verify": {
         "message": "Verify connection",
         "description": "Description of verify button"
