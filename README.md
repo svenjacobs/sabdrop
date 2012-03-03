@@ -80,6 +80,11 @@ Please note that the notification dialog automatically disappears after 10 secon
 and the download starts if there wasn't any interaction with the dialog. If the
 dialog is closed by the user (by clicking the "x") the download is aborted.
 
+#### Request interval
+
+The request interval (in ms) for queries to the SABnzbd server. If you are on a
+mobile connection and/or have limited data volume this value should be increased.
+
 #### Use file upload
 
 The default behavior of SABdrop is to send the weblink of a NZB file to SABnzbd.

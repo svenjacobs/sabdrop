@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.6.2 (03/03/12)
+----------------
+
+* Added speed limit slider to browser action popup
+* Added request interval configuration option (issue [#14](https://github.com/svenjacobs/SABdrop/issues/14))
+* Bandwidth usage improvements (also issue [#14](https://github.com/svenjacobs/SABdrop/issues/14))
+* Bugfixes
+
 0.6.1 (02/28/12)
 ----------------
 
