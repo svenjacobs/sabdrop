@@ -16,6 +16,7 @@ Features
 --------
 
 * Browser action with download management functionality
+* Slider in browser action popup to adjust download speed limit
 * Context menu to send NZB weblinks to SABnzbd for immediate download
 * Supports API key and username/password authentication
 * Supports categories (NZB links can be assigned to a category with context menu)
