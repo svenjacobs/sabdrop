@@ -1,1 +1,2 @@
 * After sending requests to the API immediatly update the local cache and get rid of resetInterval() in js/browser_action.js
+* Popup might not disappear when Chrome is hidden/minimized because timeout might never be called
