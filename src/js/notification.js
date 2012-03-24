@@ -14,12 +14,11 @@
             name = data.basename;
         }
 
-        chrome.extension.sendRequest({
-            action: 'downloadLink',
-            link: data.link,
-            category: data.category,
-            name: name
-        });
+        chrome.extension.getBackgroundPage().getApi().downloadLink(
+            data.link,
+            data.category,
+            name
+        );
 
         window.close();
     }

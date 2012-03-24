@@ -24,21 +24,20 @@
     }
 
     function refresh() {
-        getQueue(function (queue) {
-            var speedlimit = queue.speedlimit === '' ? SPEED_INFIN : parseInt(queue.speedlimit, 10);
+        var queue = getQueue(),
+            speedlimit = queue.speedlimit === '' ? SPEED_INFIN : parseInt(queue.speedlimit, 10);
 
-            updateSlots(queue);
+        updateSlots(queue);
 
-            $('#controls button.pause').toggle(!queue.paused);
-            $('#controls button.resume').toggle(queue.paused);
-           
-            if (!sliding) {
-                $('#slider_container div.slider').slider('value', speedlimit);
-                setSliderText(speedlimit);
-            }
-        });
+        $('#controls button.pause').toggle(!queue.paused);
+        $('#controls button.resume').toggle(queue.paused);
+       
+        if (!sliding) {
+            $('#slider_container div.slider').slider('value', speedlimit);
+            setSliderText(speedlimit);
+        }
 
-        getSpeedHistory(updateGraph);
+        updateGraph(getSpeedHistory());
     }
 
     function updateSlots(queue) {
@@ -212,38 +211,24 @@
         $graphTooltipContainer.children('div.speed').text(chrome.i18n.getMessage('speed', speedText));
     }
 
-    function getQueue(callback) {
-        chrome.extension.sendRequest({action: 'getQueue'}, function (queue) {
-            if (!queue) {
-                console.error('Couldn\'t fetch queue');
-                return;
-            }
-
-            callback(queue);
-        });
+    function getQueue() {
+        return chrome.extension.getBackgroundPage().getApi().getQueue();
     }
 
-    function getSpeedHistory(callback) {
-        chrome.extension.sendRequest({action: 'getSpeedHistory'}, function (history) {
-            if (!history) {
-                console.error('Couldn\'t fetch history');
-                return;
-            }
-
-            callback(history);
-        });
+    function getSpeedHistory() {
+        return chrome.extension.getBackgroundPage().getApi().getSpeedHistory();
     }
 
     function pauseDownload(id) {
-        chrome.extension.sendRequest({action: 'pauseDownload', id: id});
+        chrome.extension.getBackgroundpage().getApi().pauseDownload(id);
     }
 
     function resumeDownload(id) {
-        chrome.extension.sendRequest({action: 'resumeDownload', id: id});
+        chrome.extension.getBackgroundPage().getApi().resumeDownload(id);
     }
 
     function deleteDownload(id) {
-        chrome.extension.sendRequest({action: 'deleteDownload', id: id});
+        chrome.extension.getBackgroundPage().getApi().deleteDownload(id);
     }
 
     function resetInterval() {
@@ -275,7 +260,7 @@
             $('#controls button.resume').show();
             $slots.addClass('pausedAll');
             resetInterval();
-            chrome.extension.sendRequest({action: 'pauseAll'});
+            chrome.extension.getBackgroundPage().getApi().pauseAll();
         })
         .children('span').text(chrome.i18n.getMessage('pause_all'));
 
@@ -285,7 +270,7 @@
             $('#controls button.pause').show();
             $slots.removeClass('pausedAll');
             resetInterval();
-            chrome.extension.sendRequest({action: 'resumeAll'});
+            chrome.extension.getBackgroundPage().getApi().resumeAll();
         })
         .children('span').text(chrome.i18n.getMessage('resume_all'));
 
@@ -294,7 +279,7 @@
             $slots.empty();
             $('#empty').show();
             resetInterval();
-            chrome.extension.sendRequest({action: 'deleteAll'});
+            chrome.extension.getBackgroundPage().getApi().deleteAll();
         })
         .children('span').text(chrome.i18n.getMessage('delete_all'));
 
@@ -310,12 +295,11 @@
 
             $slots.children('li').each(function (pos, item) {
                 if ($(ui.item).attr('id') === $(item).attr('id')) {
-                    chrome.extension.sendRequest({
-                        action: 'moveDownload',
-                        id: $(ui.item).attr('id'),
-                        position: pos
-                    });
-
+                    chrome.extension.getBackgroundPage().getApi().moveDownload(
+                        $(ui.item).attr('id'),
+                        pos
+                    );
+                    
                     resetInterval();
 
                     return false;
@@ -346,7 +330,7 @@
                 limit = 0;
             }
 
-            chrome.extension.sendRequest({action: 'setSpeedLimit', limit: limit});
+            chrome.extension.getBackgroundPage().getApi().setSpeedLimit(limit);
             //resetInterval();
         }
     });

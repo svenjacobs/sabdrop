@@ -208,7 +208,7 @@
     }
 
     $(window).unload(function () {
-        chrome.extension.sendRequest({action: 'reloadConfig'});
+        chrome.extension.getBackgroundPage().getApi().reloadConfig();
     });
 
     $('#requestInterval').change();

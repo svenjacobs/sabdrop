@@ -8,7 +8,7 @@
     var MAX_SPEED_HISTORY = 10,
         HISTORY_LIMIT = 10,
 
-        api,
+        sabApi,
         popupHide = localStorage.popupHide || 5000,
         requestInterval = null,
         cache = {
@@ -19,9 +19,9 @@
         };
 
     if (localStorage.authMethod === 'login') {
-        api = new SABapi(localStorage.host, localStorage.username, localStorage.password);
+        sabApi = new SABapi(localStorage.host, localStorage.username, localStorage.password);
     } else {
-        api = new SABapi(localStorage.host, localStorage.apiKey);
+        sabApi = new SABapi(localStorage.host, localStorage.apiKey);
     }
 
     function resetInterval() {
@@ -59,9 +59,9 @@
             // Send link to SABnzbd
 
             name = (name !== null ? name : basename);
-            method = localStorage.fileUpload === 'true' ? api.sendFile : api.sendLink;
+            method = localStorage.fileUpload === 'true' ? sabApi.sendFile : sabApi.sendLink;
 
-            method.call(api, link, name, category, function (success) {
+            method.call(sabApi, link, name, category, function (success) {
                 var title,
                     text,
                     notification;
@@ -94,7 +94,7 @@
             return;
         }
 
-        api.getCategories(function (categories) {
+        sabApi.getCategories(function (categories) {
             if (categories.length > 0) {
                 chrome.contextMenus.create({
                     'title': chrome.i18n.getMessage('context_menu_nocategory'),
@@ -165,7 +165,7 @@
     }
 
     function queryAPI() {
-        api.getQueue(function (queue) {
+        sabApi.getQueue(function (queue) {
             cache.queue = queue;
 
             queue.slots.forEach(function (slot) {
@@ -177,7 +177,7 @@
             setBadgeText(queue.slots.length);
         });
 
-        api.getHistory(HISTORY_LIMIT, function (history) {
+        sabApi.getHistory(HISTORY_LIMIT, function (history) {
             var index, 
                 notification;
 
@@ -199,6 +199,95 @@
         });
     }
 
+    function getApi() {
+        return {
+            downloadLink: function (link, category, name) {
+                sendLink(link, category, name);
+            },
+
+            reloadConfig: function () {
+                console.info('Reloading SABdrop configuration');
+                sabApi.setHost(localStorage.host);
+
+                if (localStorage.authMethod === 'login') {
+                    sabApi.setAuthMethod('login');
+                    sabApi.setUsername(localStorage.username);
+                    sabApi.setPassword(localStorage.password);
+                } else {
+                    sabApi.setAuthMethod('apikey');
+                    sabApi.setAPIKey(localStorage.apiKey);
+                }
+
+                createContextMenus(); // recreate menus because of categories
+                resetInterval();
+            },
+
+            getCategories: function (callback) {
+                if (localStorage.hideCategories === 'true') {
+                    callback([]);
+                } else {
+                    sabApi.getCategories(callback);
+                }
+            },
+
+            getQueue: function () {
+                return cache.queue;
+            },
+
+            getHistory: function () {
+                return cache.history;
+            },
+
+            getSlots: function () {
+                return cache.queue.slots;
+            },
+
+            getSpeedHistory: function () {
+                return cache.speedHistory;
+            },
+
+            pauseDownload: function (id) {
+                sabApi.pauseDownload(id)
+            },
+
+            resumeDownload: function (id) {
+                sabApi.resumeDownload(id);
+            },
+
+            deleteDownload: function (id) {
+                sabApi.deleteDownload(request.id);
+                var index = $.inArray(id, cache.downloads);
+                if (index > -1) {
+                    cache.downloads.splice(index, 1);
+                    setBadgeText(cache.downloads.length);
+                }
+            },
+
+            moveDownload: function (id, position) {
+                sabApi.moveDownload(id, position);
+            },
+
+            pauseAll: function () {
+                sabApi.pauseAll();
+            },
+
+            resumeAll: function () {
+                sabApi.resumeAll();
+            },
+
+            deleteAll: function () {
+                sabApi.deleteAll();
+                cache.downloads = [];
+                setBadgeText(null);
+            },
+
+            setSpeedLimit: function (limit) {
+                sabApi.setSpeedLimit(limit);
+                cache.queue.speedlimit = limit === 0 ? '' : limit;
+            }
+        };
+    }
+
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
         switch (request.action) {
 
@@ -207,95 +296,8 @@
             chrome.pageAction.show(sender.tab.id);
             break;
 
-        case 'downloadLink':
-            sendLink(request.link, request.category, request.name);
-            break;
-
-        case 'reloadConfig':
-            console.info('Reloading SABdrop configuration');
-            api.setHost(localStorage.host);
-
-            if (localStorage.authMethod === 'login') {
-                api.setAuthMethod('login');
-                api.setUsername(localStorage.username);
-                api.setPassword(localStorage.password);
-            } else {
-                api.setAuthMethod('apikey');
-                api.setAPIKey(localStorage.apiKey);
-            }
-
-            createContextMenus(); // recreate menus because of categories
-            resetInterval();
-            break;
-
-        case 'getCategories':
-            if (localStorage.hideCategories === 'true') {
-                sendResponse([]);
-            } else {
-                api.getCategories(function (categories) {
-                    sendResponse(categories);
-                });
-            }
-            return;
-
         case 'getLocalStorage':
             sendResponse(localStorage[request.attribute]);
-            return;
-
-        case 'getQueue':
-            sendResponse(cache.queue);
-            return;
-
-        case 'getHistory':
-            sendResponse(cache.history);
-            return;
-        
-        case 'getSlots':
-            sendResponse(cache.queue.slots);
-            return;
-        
-        case 'pauseDownload':
-            api.pauseDownload(request.id);
-            return;
-
-        case 'resumeDownload':
-            api.resumeDownload(request.id);
-            return;
-
-        case 'deleteDownload':
-            api.deleteDownload(request.id);
-            var index = $.inArray(request.id, cache.downloads);
-            if (index > -1) {
-                cache.downloads.splice(index, 1);
-                setBadgeText(cache.downloads.length);
-            }
-            return;
-
-        case 'moveDownload':
-            api.moveDownload(request.id, request.position);
-            return;
-
-        case 'pauseAll':
-            api.pauseAll();
-            return;
-
-        case 'resumeAll':
-            api.resumeAll();
-            return;
-
-        case 'deleteAll':
-            api.deleteAll();
-            cache.downloads = [];
-            setBadgeText(null);
-            return;
-
-        case 'getSpeedHistory':
-            sendResponse(cache.speedHistory);
-            return;
-
-        case 'setSpeedLimit':
-            api.setSpeedLimit(request.limit);
-            cache.queue.speedlimit = request.limit === 0 ? '' : request.limit;
             return;
 
         }
