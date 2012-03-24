@@ -220,7 +220,7 @@
     }
 
     function pauseDownload(id) {
-        chrome.extension.getBackgroundpage().getApi().pauseDownload(id);
+        chrome.extension.getBackgroundPage().getApi().pauseDownload(id);
     }
 
     function resumeDownload(id) {

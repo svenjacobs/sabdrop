@@ -29,7 +29,7 @@
             window.clearInterval(requestInterval);
         }
 
-        requestInterval = window.setInterval(queryAPI, parseInt(localStorage.requestInterval, 10) || 10000);
+        requestInterval = window.setInterval(querySabApi, parseInt(localStorage.requestInterval, 10) || 10000);
     }
 
     function sendLink(link, category, name) {
@@ -164,7 +164,7 @@
         });
     }
 
-    function queryAPI() {
+    function querySabApi() {
         sabApi.getQueue(function (queue) {
             cache.queue = queue;
 
@@ -247,7 +247,7 @@
             },
 
             pauseDownload: function (id) {
-                sabApi.pauseDownload(id)
+                sabApi.pauseDownload(id);
             },
 
             resumeDownload: function (id) {
@@ -255,7 +255,7 @@
             },
 
             deleteDownload: function (id) {
-                sabApi.deleteDownload(request.id);
+                sabApi.deleteDownload(id);
                 var index = $.inArray(id, cache.downloads);
                 if (index > -1) {
                     cache.downloads.splice(index, 1);
@@ -306,7 +306,7 @@
     });
 
     onStart();
-    queryAPI();
+    querySabApi();
     resetInterval();
 
     window.getApi = getApi;
