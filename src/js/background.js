@@ -309,4 +309,5 @@
     queryAPI();
     resetInterval();
 
+    window.getApi = getApi;
 }());
