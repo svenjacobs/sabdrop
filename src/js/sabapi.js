@@ -165,6 +165,20 @@
         xhr.send();
     };
 
+    SABapi.prototype._addCallbackToArgs = function (args, callback) {
+        if (callback && typeof callback === 'function') {
+            args.success = function (responseText) {
+                callback(true, responseText);
+            };
+
+            args.error = function (responseText) {
+                callback(false, responseText);
+            };
+        }
+
+        return args;
+    };
+
     SABapi.prototype.setHost = function (host) {
         if (!/\/$/.test(host)) {
             host += '/';
@@ -427,80 +441,89 @@
      * Pauses individual download
      *
      * @param id NZO id of download
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.pauseDownload = function (id) {
-        this._request({
+    SABapi.prototype.pauseDownload = function (id, callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'queue',
                 name: 'pause',
                 value: id
             }
-        });
+        }, callback));
     };
 
     /**
      * Resumes individual download
      *
      * @param id NZO id of download
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.resumeDownload = function (id) {
-        this._request({
+    SABapi.prototype.resumeDownload = function (id, callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'queue',
                 name: 'resume',
                 value: id
             }
-        });
+        }, callback));
     };
 
     /**
      * Deletes individual download
      *
      * @param id NZO id of download
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.deleteDownload = function (id) {
-        this._request({
+    SABapi.prototype.deleteDownload = function (id, callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'queue',
                 name: 'delete',
                 value: id
             }
-        });
+        }, callback));
     };
 
     /**
      * Pauses all downloads of queue
+     *
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.pauseAll = function () {
-        this._request({
+    SABapi.prototype.pauseAll = function (callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'pause'
             }
-        });
+        }, callback));
     };
 
     /**
      * Resumes all downloads of queue
+     *
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.resumeAll = function () {
-        this._request({
+    SABapi.prototype.resumeAll = function (callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'resume'
             }
-        });
+        }, callback));
     };
 
     /**
      * Deletes all downloads from queue
+     *
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.deleteAll = function () {
-        this._request({
+    SABapi.prototype.deleteAll = function (callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'queue',
                 name: 'delete',
                 value: 'all'
             }
-        });
+        }, callback));
     };
 
     /**
@@ -508,30 +531,32 @@
      *
      * @param id NZO id of download
      * @param position zero-based slot position
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.moveDownload = function (id, position) {
-        this._request({
+    SABapi.prototype.moveDownload = function (id, position, callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'switch',
                 value: id,
                 value2: position
             }
-        });
+        }, callback));
     };
 
     /**
      * Sets global speed limit
      *
      * @param limit Speed limit in kB/s
+     * @param callback Optional callback which will be called after request
      */
-    SABapi.prototype.setSpeedLimit = function (limit) {
-        this._request({
+    SABapi.prototype.setSpeedLimit = function (limit, callback) {
+        this._request(this._addCallbackToArgs({
             params: {
                 mode: 'config',
                 name: 'speedlimit',
                 value: limit
             }
-        });
+        }, callback));
     };
 
     window.SABapi = SABapi;

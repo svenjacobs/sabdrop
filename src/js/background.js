@@ -199,6 +199,11 @@
         });
     }
 
+    function postCommand() {
+        querySabApi();
+        resetInterval();
+    }
+
     function getApi() {
         return {
             downloadLink: function (link, category, name) {
@@ -247,15 +252,15 @@
             },
 
             pauseDownload: function (id) {
-                sabApi.pauseDownload(id);
+                sabApi.pauseDownload(id, postCommand);
             },
 
             resumeDownload: function (id) {
-                sabApi.resumeDownload(id);
+                sabApi.resumeDownload(id, postCommand);
             },
 
             deleteDownload: function (id) {
-                sabApi.deleteDownload(id);
+                sabApi.deleteDownload(id, postCommand);
                 var index = $.inArray(id, cache.downloads);
                 if (index > -1) {
                     cache.downloads.splice(index, 1);
@@ -264,25 +269,25 @@
             },
 
             moveDownload: function (id, position) {
-                sabApi.moveDownload(id, position);
+                sabApi.moveDownload(id, position, postCommand);
             },
 
             pauseAll: function () {
-                sabApi.pauseAll();
+                sabApi.pauseAll(postCommand);
             },
 
             resumeAll: function () {
-                sabApi.resumeAll();
+                sabApi.resumeAll(postCommand);
             },
 
             deleteAll: function () {
-                sabApi.deleteAll();
+                sabApi.deleteAll(postCommand);
                 cache.downloads = [];
                 setBadgeText(null);
             },
 
             setSpeedLimit: function (limit) {
-                sabApi.setSpeedLimit(limit);
+                sabApi.setSpeedLimit(limit, postCommand);
                 cache.queue.speedlimit = limit === 0 ? '' : limit;
             }
         };
