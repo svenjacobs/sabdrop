@@ -149,13 +149,11 @@
             text
         );
 
-        notification.ondisplay = function () {
-            window.setTimeout(function () {
-                notification.cancel();
-            }, popupHide);
-        };
-
         notification.show();
+
+        window.setTimeout(function () {
+            notification.cancel();
+        }, popupHide);
     }
 
     function setBadgeText(count) {
