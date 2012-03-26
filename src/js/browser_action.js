@@ -14,7 +14,8 @@
         $slots = $('#slots'),
         sorting = false,
         sliding = false,
-        updateInterval = null;
+
+        api = chrome.extension.getBackgroundPage().getApi();
 
     function color(p) {
         var red = p < 50 ? 255 : Math.round(256 - (p - 50) * 5.12),
@@ -24,7 +25,7 @@
     }
 
     function refresh() {
-        var queue = getQueue(),
+        var queue = api.getQueue(),
             speedlimit = queue.speedlimit === '' ? SPEED_INFIN : parseInt(queue.speedlimit, 10);
 
         updateSlots(queue);
@@ -37,7 +38,7 @@
             setSliderText(speedlimit);
         }
 
-        updateGraph(getSpeedHistory());
+        updateGraph(api.getSpeedHistory());
     }
 
     function updateSlots(queue) {
@@ -108,8 +109,7 @@
                             $(this).hide();
                             $slotTooltipContainer.children('button.resume').show();
                             $el.addClass('paused');
-                            pauseDownload(s.nzo_id);
-                            resetInterval();
+                            api.pauseDownload(s.nzo_id);
                         })
                     .end()
 
@@ -121,8 +121,7 @@
                             $(this).hide();
                             $slotTooltipContainer.children('button.pause').show();
                             $el.removeClass('paused');
-                            resumeDownload(s.nzo_id);
-                            resetInterval();
+                            api.resumeDownload(s.nzo_id);
                         })
                     .end()
 
@@ -138,8 +137,7 @@
                                 $el.remove();
                                 $('#empty').toggle($slots.children('li').length === 0); // No downloads left?
                             });
-                            deleteDownload(s.nzo_id);
-                            resetInterval();
+                            api.deleteDownload(s.nzo_id);
                         });
             }
         );
@@ -211,34 +209,6 @@
         $graphTooltipContainer.children('div.speed').text(chrome.i18n.getMessage('speed', speedText));
     }
 
-    function getQueue() {
-        return chrome.extension.getBackgroundPage().getApi().getQueue();
-    }
-
-    function getSpeedHistory() {
-        return chrome.extension.getBackgroundPage().getApi().getSpeedHistory();
-    }
-
-    function pauseDownload(id) {
-        chrome.extension.getBackgroundPage().getApi().pauseDownload(id);
-    }
-
-    function resumeDownload(id) {
-        chrome.extension.getBackgroundPage().getApi().resumeDownload(id);
-    }
-
-    function deleteDownload(id) {
-        chrome.extension.getBackgroundPage().getApi().deleteDownload(id);
-    }
-
-    function resetInterval() {
-        if (updateInterval) {
-            window.clearInterval(updateInterval);
-        }
-
-        updateInterval = window.setInterval(refresh, parseInt(localStorage.requestInterval, 10) || 10000);
-    }
-
     function setSliderText(kb) {
         var speed = SABdrop.Common.humanizeBytes(kb * 1000, true);
         $('#slider_container div.value').html(kb === SPEED_INFIN ? '&infin;' : speed[0].toFixed(1) + ' ' + speed[1] + '/s');  
@@ -259,8 +229,7 @@
             $(this).hide();
             $('#controls button.resume').show();
             $slots.addClass('pausedAll');
-            resetInterval();
-            chrome.extension.getBackgroundPage().getApi().pauseAll();
+            api.pauseAll();
         })
         .children('span').text(chrome.i18n.getMessage('pause_all'));
 
@@ -269,8 +238,7 @@
             $(this).hide();
             $('#controls button.pause').show();
             $slots.removeClass('pausedAll');
-            resetInterval();
-            chrome.extension.getBackgroundPage().getApi().resumeAll();
+            api.resumeAll();
         })
         .children('span').text(chrome.i18n.getMessage('resume_all'));
 
@@ -278,8 +246,7 @@
         .click(function () {
             $slots.empty();
             $('#empty').show();
-            resetInterval();
-            chrome.extension.getBackgroundPage().getApi().deleteAll();
+            api.deleteAll();
         })
         .children('span').text(chrome.i18n.getMessage('delete_all'));
 
@@ -295,12 +262,10 @@
 
             $slots.children('li').each(function (pos, item) {
                 if ($(ui.item).attr('id') === $(item).attr('id')) {
-                    chrome.extension.getBackgroundPage().getApi().moveDownload(
+                    api.moveDownload(
                         $(ui.item).attr('id'),
                         pos
                     );
-                    
-                    resetInterval();
 
                     return false;
                 }
@@ -330,14 +295,17 @@
                 limit = 0;
             }
 
-            chrome.extension.getBackgroundPage().getApi().setSpeedLimit(limit);
-            //resetInterval();
+            api.setSpeedLimit(limit);
         }
     });
 
     $('#empty span').text(chrome.i18n.getMessage('no_downloads'));
 
     refresh();
-    resetInterval();
+    api.addSabQueryListener(refresh);
+    
+    $(window).unload(function () {
+        api.removeSabQueryListener(refresh);
+    });
 
 }());

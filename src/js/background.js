@@ -1,4 +1,4 @@
-/*jshint browser: true, indent: 4 */
+/*jshint browser: true, bitwise: false, plusplus: false, indent: 4 */
 /*global console, chrome, webkitNotifications, SABdrop, SABapi*/
 (function () {
     'use strict';
@@ -16,7 +16,8 @@
             history: {},
             downloads: [],
             speedHistory: []
-        };
+        },
+        sabQueryListeners = [];
 
     if (localStorage.authMethod === 'login') {
         sabApi = new SABapi(localStorage.host, localStorage.username, localStorage.password);
@@ -162,7 +163,23 @@
         });
     }
 
+    function notifySabQueryListeners() {
+        sabQueryListeners.forEach(function (listener) {
+            listener();
+        });
+    }
+
     function querySabApi() {
+        var s = 0,
+            semaphore = function (flag) {
+                s = s | flag;
+
+                if (s === 3) {
+                    notifySabQueryListeners();
+                    semaphore = function () {}; // noop
+                }
+            };
+
         sabApi.getQueue(function (queue) {
             cache.queue = queue;
 
@@ -173,6 +190,8 @@
             });
 
             setBadgeText(queue.slots.length);
+
+            semaphore(1);
         });
 
         sabApi.getHistory(HISTORY_LIMIT, function (history) {
@@ -194,16 +213,35 @@
                     showNotification(chrome.i18n.getMessage('completed_popup_title'), chrome.i18n.getMessage('completed_popup_text', SABdrop.Common.truncate(slot.name, 20)));
                 }
             });
+
+            semaphore(2);
         });
     }
 
     function postCommand() {
-        querySabApi();
         resetInterval();
+        querySabApi();
     }
 
     function getApi() {
         return {
+            addSabQueryListener: function (listener) {
+                if (typeof listener === 'function') {
+                    sabQueryListeners.push(listener);
+                }
+            },
+
+            removeSabQueryListener: function (listener) {
+                var i;
+
+                for (i = 0; i < sabQueryListeners.length; i++) {
+                    if (sabQueryListeners[i] === listener) {
+                        sabQueryListeners.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+
             downloadLink: function (link, category, name) {
                 sendLink(link, category, name);
             },
@@ -295,8 +333,8 @@
         switch (request.action) {
 
         case 'pageAction':
-            window.pageActionData[sender.tab.id] = request.data;
-            chrome.pageAction.show(sender.tab.id);
+            //window.pageActionData[sender.tab.id] = request.data;
+            //chrome.pageAction.show(sender.tab.id);
             break;
 
         case 'getLocalStorage':
