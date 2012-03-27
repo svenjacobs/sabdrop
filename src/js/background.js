@@ -9,7 +9,6 @@
         HISTORY_LIMIT = 10,
 
         sabApi,
-        popupHide = localStorage.popupHide || 5000,
         requestInterval = null,
         cache = {
             queue: {},
@@ -140,6 +139,8 @@
     }
 
     function showNotification(title, text) {
+        var popupHide = localStorage.popupHide || 5000;
+        
         if (popupHide === 0) {
             return;
         }

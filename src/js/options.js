@@ -219,6 +219,7 @@
         .change(minValue)
         .change(save)
         .keyup(save)
+        .mousewheel(save)
         .click(save);
 
     $('#verify')
