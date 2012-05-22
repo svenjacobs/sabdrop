@@ -24,10 +24,13 @@ body {
 
 #empty {
     display: none;
+}
+
+#empty, #error {
     font-size: small;
 }
 
-#empty img {
+#empty img, #error img {
     margin-left: 0.5em;
     vertical-align: top;
 }

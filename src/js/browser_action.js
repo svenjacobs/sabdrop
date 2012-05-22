@@ -300,12 +300,21 @@
     });
 
     $('#empty span').text(chrome.i18n.getMessage('no_downloads'));
+    $('#error span').text(chrome.i18n.getMessage('connection_error'));
 
-    refresh();
-    api.addSabQueryListener(refresh);
-    
-    $(window).unload(function () {
-        api.removeSabQueryListener(refresh);
+    api.verifyConnection(function (success) {
+        if (success) {
+            $('#error').hide();
+
+            refresh();
+            api.addSabQueryListener(refresh);
+            
+            $(window).unload(function () {
+                api.removeSabQueryListener(refresh);
+            });
+        }
     });
+
+    updateGraph([]);
 
 }());

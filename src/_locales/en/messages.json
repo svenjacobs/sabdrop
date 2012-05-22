@@ -259,5 +259,8 @@
                 "content": "$1"
             }
         }
+    },
+    "connection_error": {
+        "message": "Error while connecting to SABnzbd"
     }
 }

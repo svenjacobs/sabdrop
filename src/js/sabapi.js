@@ -309,10 +309,13 @@
      * @param callback A function(success, responseText)
      */
     SABapi.prototype.verifyConnection = function (callback) {
-        this._jsonRequest({
-            params: {mode: 'queue'},
+        this._request({
+            params: {
+                mode: 'queue',
+                output: 'json'
+            },
             success: function (responseText) {
-                if (!/'status':false/.test(responseText)) {
+                if (!/"status":false/.test(responseText)) {
                     callback(true, responseText);
                 } else {
                     callback(false, responseText);

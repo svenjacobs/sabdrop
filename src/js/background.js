@@ -326,6 +326,10 @@
             setSpeedLimit: function (limit) {
                 sabApi.setSpeedLimit(limit, postCommand);
                 cache.queue.speedlimit = limit === 0 ? '' : limit;
+            },
+
+            verifyConnection: function (callback) {
+                sabApi.verifyConnection(callback);
             }
         };
     }
