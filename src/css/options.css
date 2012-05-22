@@ -50,10 +50,6 @@ br {
     display: none;
 }
 
-/*#verify:before {
-    content: "__MSG_options_verify__";
-}*/
-
 #verifyResult {
     font-weight: bold;
 }

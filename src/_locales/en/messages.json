@@ -100,11 +100,11 @@
         "description": "Help for matchpatterns setting"
     },
     "options_setting_fileupload": {
-        "message": "Use file upload",
+        "message": "Disable NZB file upload",
         "description": "Name for fileupload setting"
     },
     "options_setting_fileupload_help": {
-        "message": "EXPERIMENTAL. Instead of sending a link to SABnzbd, download the NZB file locally and send that file to SABnzbd. This may work around issues with sites that require an authentication (for example forums).",
+        "message": "By default SABdrop downloads and sends NZB files to SABnzbd to work around issues with password-protected sites. If this option is enabled SABdrop will only send the link of an NZB to SABnzbd.",
         "description": "Help for fileupload setting"
     },
     "options_setting_nzbname": {

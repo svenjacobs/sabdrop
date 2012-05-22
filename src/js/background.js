@@ -59,7 +59,7 @@
             // Send link to SABnzbd
 
             name = (name !== null ? name : basename);
-            method = localStorage.fileUpload === 'true' ? sabApi.sendFile : sabApi.sendLink;
+            method = localStorage.noFileUpload === 'false' ? sabApi.sendFile : sabApi.sendLink;
 
             method.call(sabApi, link, name, category, function (success) {
                 var title,
@@ -135,6 +135,12 @@
         // migration from 0.6.1 -> 0.6.2
         if (!localStorage.requestInterval) {
             localStorage.requestInterval = '10000';
+        }
+
+        // migration from 0.6.3 -> 0.7.0
+        if (localStorage.fileUpload) {
+            delete localStorage['fileUpload'];
+            localStorage['noFileUpload'] = 'false';
         }
     }
 

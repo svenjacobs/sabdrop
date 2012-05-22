@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.0 (05/22/12)
+----------------
+
+* NZB file upload now is default method to work around issues with password-protected sites
+* Bugfixes
+
 0.6.3 (03/27/12)
 ----------------
 

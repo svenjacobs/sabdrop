@@ -86,15 +86,11 @@ dialog is closed by the user (by clicking the "x") the download is aborted.
 The request interval (in ms) for queries to the SABnzbd server. If you are on a
 mobile connection and/or have limited data volume this value should be increased.
 
-#### Use file upload
+#### Disable NZB file upload
 
-The default behavior of SABdrop is to send the weblink of a NZB file to SABnzbd.
-If this options is enabled SABdrop will instead download the NZB file locally and
-then send that file to SABnzbd. This may work around issues with sites that require
-an authentication (e.g. forums).
-
-This is an **experimental** feature and has not been tested thoroughly. It may not
-work as expected.
+The default behavior of SABdrop is to download NZB files locally and then send them 
+to SABnzbd to work around issues with password-protected sites. If this options is
+enabled SABdrop will instead only send the weblink of a NZB to SABnzbd.
 
 #### Hide categories
 

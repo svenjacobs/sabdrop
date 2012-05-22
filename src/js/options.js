@@ -25,8 +25,8 @@
     $('label[for="hideCategories"] sup').prop('title', chrome.i18n.getMessage('options_setting_hidecategories_help'));
     $('label[for="matchPatterns"]').prepend(chrome.i18n.getMessage('options_setting_matchpatterns'));
     $('label[for="matchPatterns"] sup').prop('title', chrome.i18n.getMessage('options_setting_matchpatterns_help'));
-    $('label[for="fileUpload"]').prepend(chrome.i18n.getMessage('options_setting_fileupload'));
-    $('label[for="fileUpload"] sup').prop('title', chrome.i18n.getMessage('options_setting_fileupload_help'));
+    $('label[for="noFileUpload"]').prepend(chrome.i18n.getMessage('options_setting_fileupload'));
+    $('label[for="noFileUpload"] sup').prop('title', chrome.i18n.getMessage('options_setting_fileupload_help'));
     $('label[for="nzbName"]').prepend(chrome.i18n.getMessage('options_setting_nzbname'));
     $('label[for="nzbName"] sup').prop('title', chrome.i18n.getMessage('options_setting_nzbname_help'));
     $('label[for="requestInterval"]').prepend(chrome.i18n.getMessage('options_setting_requestinterval'));
