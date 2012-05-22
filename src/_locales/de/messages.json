@@ -98,6 +98,9 @@
     "options_setting_requestinterval_help": {
         "message": "Legt den Intervall fest, in dem Anfragen an den SABnzbd-Server geschickt werden. Bei einer Mobilverbindung und/oder limitierten Datenvolumen, sollte dieser Wert höher gesetzt werden."
     },
+    "options_save": {
+        "message": "Speichern"
+    },
     "options_verify": {
         "message": "Verbindung überprüfen"
     },

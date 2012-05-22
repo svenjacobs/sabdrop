@@ -222,6 +222,13 @@
         .mousewheel(save)
         .click(save);
 
+    $('#save')
+        .text(chrome.i18n.getMessage('options_save'))
+        .button()
+        .click(function () {
+            chrome.extension.getBackgroundPage().getApi().reloadConfig();
+        });
+
     $('#verify')
         .text(chrome.i18n.getMessage('options_verify'))
         .button()
