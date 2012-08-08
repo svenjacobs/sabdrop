@@ -174,7 +174,7 @@
         'The jQuery and jQuery UI developers for great and very useful JavaScript libraries',
         'Google for their Chrome browser and other products',
         'GitHub for hosting this project',
-        'My girlfriend for her patience ♥'
+        'My wife for her patience ♥'
     ];
 
     function startCredits() {

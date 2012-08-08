@@ -244,18 +244,23 @@
                     return;
                 }
 
-                if (file.toLowerCase().search(/<!doctype nzb/) === -1) {
-                    console.error(link + ' is not a valid NZB file!');
-                    callback(false);
-                    return;
-                }
-
                 var boundary = '----SABdropFormBoundary',
                     formData = '--' + boundary + '\n',
+                    contentType,
+                    contentTransferEncoding = '',
                     xhr;
 
+                if (file.toLowerCase().search(/<!doctype nzb/) !== -1) {
+                    contentType = 'text/xml';
+                } else {
+                    // File might be zip/rar compressed
+                    contentType = 'application/octet-stream';
+                    contentTransferEncoding = '\nContent-Transfer-Encoding: base64';
+                    file = window.btoa(unescape(encodeURIComponent(file))); // Base64 encoding
+                }
+
                 formData += 'Content-Disposition: form-data; name="nzbfile"; filename="' + name + '"\n' +
-                    'Content-Type: text/xml\n\n' +
+                    'Content-Type: ' + contentType + contentTransferEncoding + '\n\n' +
                     file +
                     '\n--' + boundary + '\n' +
                     'Content-Disposition: form-data; name="mode"\n\naddfile' +
