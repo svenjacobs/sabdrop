@@ -122,6 +122,8 @@
                 api.verifyConnection(function (success) {
                     result(success, success ? chrome.i18n.getMessage('options_verify_ok') : chrome.i18n.getMessage('options_verify_failed'));
                 });
+            } else if (responseText === 'badkey') {
+                result(false, chrome.i18n.getMessage('options_verify_failed'));
             } else if (responseText === 'none') {
                 result(false, chrome.i18n.getMessage('options_verify_none'));
             } else {
@@ -174,7 +176,7 @@
         'The jQuery and jQuery UI developers for great and very useful JavaScript libraries',
         'Google for their Chrome browser and other products',
         'GitHub for hosting this project',
-        'My girlfriend for her patience ♥'
+        'My wife for her patience ♥'
     ];
 
     function startCredits() {

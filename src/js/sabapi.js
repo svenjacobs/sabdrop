@@ -335,7 +335,12 @@
      */
     SABapi.prototype.getRemoteAuthMethod = function (callback) {
         this._request({
-            params: {mode: 'auth'},
+            params: {
+                mode: 'auth',
+                key: this._apiKey // Since SABnzbd 0.7 the "key" parameter is required when
+                                  // key authentication is enabled else this call will
+                                  // return "badkey".
+            },
             noAuth: true,
             success: function (responseText) {
                 callback(true, responseText.replace(/\n/, '').toLowerCase());
