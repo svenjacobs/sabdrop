@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.1 (09/30/12)
+----------------
+
+* Fix for SABnzbd 0.7.x apikey authentication issue
+
 0.7.0 (05/22/12)
 ----------------
 
