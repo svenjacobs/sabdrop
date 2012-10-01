@@ -31,6 +31,12 @@
     $('label[for="nzbName"] sup').prop('title', chrome.i18n.getMessage('options_setting_nzbname_help'));
     $('label[for="requestInterval"]').prepend(chrome.i18n.getMessage('options_setting_requestinterval'));
     $('label[for="requestInterval"] sup').prop('title', chrome.i18n.getMessage('options_setting_requestinterval_help'));
+    $('label[for="speedSliderMin"]').prepend(chrome.i18n.getMessage('options_setting_speedslidermin'));
+    $('label[for="speedSliderMin"] sup').prop('title', chrome.i18n.getMessage('options_setting_speedslidermin_help'));
+    $('label[for="speedSliderMax"]').prepend(chrome.i18n.getMessage('options_setting_speedslidermax'));
+    $('label[for="speedSliderMax"] sup').prop('title', chrome.i18n.getMessage('options_setting_speedslidermax_help'));
+    $('label[for="speedSliderStep"]').prepend(chrome.i18n.getMessage('options_setting_speedsliderstep'));
+    $('label[for="speedSliderStep"] sup').prop('title', chrome.i18n.getMessage('options_setting_speedsliderstep_help'));
     $('a[href="#options"]').text(chrome.i18n.getMessage('options_tab'));
     $('a[href="#advanced"]').text(chrome.i18n.getMessage('options_tab_advanced'));
     $('a[href="#about"]').text(chrome.i18n.getMessage('options_tab_about'));

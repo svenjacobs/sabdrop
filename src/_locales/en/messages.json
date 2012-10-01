@@ -125,6 +125,24 @@
     "options_setting_requestinterval_help": {
         "message": "Specifys the request interval for queries to the SABnzbd server. If you are on a mobile connection and/or have limited data volume this value should be increased."
     },
+    "options_setting_speedslidermin": {
+        "message": "Speed slider minimum (kb/s)"
+    },
+    "options_setting_speedslidermin_help": {
+        "message": "Minimum value of speed slider in kb/s"
+    },
+    "options_setting_speedslidermax": {
+        "message": "Speed slider maximum (kb/s)"
+    },
+    "options_setting_speedslidermax_help": {
+        "message": "Maximum value of speed slider in kb/s"
+    },
+    "options_setting_speedsliderstep": {
+        "message": "Speed slider step (kb/s)"
+    },
+    "options_setting_speedsliderstep_help": {
+        "message": "Step/interval of speed slider in kb/s"
+    },
     "options_save": {
         "message": "Save"
     },

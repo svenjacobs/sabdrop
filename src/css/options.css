@@ -36,7 +36,7 @@ label sup {
     cursor: help;
 }
 
-input[type="text"], input[type="url"], input[type="number"],
+input[type="text"], input[type="password"], input[type="url"], input[type="number"],
 select, textarea {
     width: 20em;
 }

@@ -2,9 +2,9 @@
 /*global SABdrop, Tooltip, $, chrome*/
 (function () {
 
-    var SPEED_MAX = 10000, // kB
-        SPEED_MIN = 500,
-        SPEED_STEP = 500,
+    var SPEED_MAX = localStorage.speedSliderMax ? parseInt(localStorage.speedSliderMax, 10) : 10000, // kB
+        SPEED_MIN = localStorage.speedSliderMin ? parseInt(localStorage.speedSliderMin, 10) : 500,
+        SPEED_STEP = localStorage.speedSliderStep ? parseInt(localStorage.speedSliderStep, 10) : 500,
         SPEED_INFIN = SPEED_MAX + SPEED_STEP,
 
         $slotTooltipContainer = $('#slot_tooltip'),

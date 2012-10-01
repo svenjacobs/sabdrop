@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.2 (10/01/12)
+----------------
+
+* Speed slider min/max/step now configurable in options
+
 0.7.1 (09/30/12)
 ----------------
 

@@ -98,6 +98,24 @@
     "options_setting_requestinterval_help": {
         "message": "Legt den Intervall fest, in dem Anfragen an den SABnzbd-Server geschickt werden. Bei einer Mobilverbindung und/oder limitierten Datenvolumen, sollte dieser Wert höher gesetzt werden."
     },
+    "options_setting_speedslidermin": {
+        "message": "Geschw.regler Minimum (kb/s)"
+    },
+    "options_setting_speedslidermin_help": {
+        "message": "Minimaler Wert des Geschwindigkeitsreglers in kb/s"
+    },
+    "options_setting_speedslidermax": {
+        "message": "Geschw.regler Maximum (kb/s)"
+    },
+    "options_setting_speedslidermax_help": {
+        "message": "Maximaler Wert des Geschwindigkeitsreglers in kb/s"
+    },
+    "options_setting_speedsliderstep": {
+        "message": "Geschw.regler Schritte (kb/s)"
+    },
+    "options_setting_speedsliderstep_help": {
+        "message": "Schritte/Intervall des Geschwindigkeitsreglers in kb/s"
+    },
     "options_save": {
         "message": "Speichern"
     },
