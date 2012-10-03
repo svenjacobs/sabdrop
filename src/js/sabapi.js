@@ -244,7 +244,8 @@
                     return;
                 }
 
-                if (file.toLowerCase().search(/<nzb>/) === -1) {
+                if (file.toLowerCase().search(/<!doctype nzb/) === -1 &&
+                    file.toLowerCase().search(/<nzb/) === -1) {
                     console.error(link + ' is not a valid NZB file!');
                     callback(false);
                     return;

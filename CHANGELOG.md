@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.4 (10/03/12)
+----------------
+
+* Further improved NZB file detection
+
 0.7.3 (10/01/12)
 ----------------
 
