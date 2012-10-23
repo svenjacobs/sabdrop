@@ -244,6 +244,9 @@
     "resume_all": {
         "message": "Resume all"
     },
+    "open_sabnzbd": {
+        "message": "Open SABnzbd"
+    },
     "mb_stats": {
         "message": "$MB_DOWNLOADED$ MB of $MB$ MB ($PERCENT$%)",
         "placeholders": {

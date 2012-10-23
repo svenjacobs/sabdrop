@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.5 (10/23/12)
+----------------
+
+* Added "Open SABnzbd" button to browser popup
+
 0.7.4 (10/03/12)
 ----------------
 

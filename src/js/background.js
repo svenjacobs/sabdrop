@@ -336,6 +336,10 @@
 
             verifyConnection: function (callback) {
                 sabApi.verifyConnection(callback);
+            },
+
+            getHost: function () {
+                return sabApi.getHost();
             }
         };
     }

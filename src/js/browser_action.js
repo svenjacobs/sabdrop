@@ -250,6 +250,25 @@
         })
         .children('span').text(chrome.i18n.getMessage('delete_all'));
 
+    $('#controls button.sabnzbd')
+        .click(function () {
+            var url = api.getHost(),
+                username = localStorage.username,
+                password = localStorage.password,
+                i = url.indexOf('://');
+
+            // Insert HTTP Basic Auth params between protocol and hostname
+            if (username && password && i > -1) {
+                i += 3;
+                url = url.substring(0, i) + username + ':' + password + '@' + url.substring(i);
+            }
+
+            chrome.tabs.create({
+                url: url
+            });
+        })
+        .children('span').text(chrome.i18n.getMessage('open_sabnzbd'));
+
     $slots.sortable({
         placeholder: 'ui-state-highlight',
         axis: 'y',

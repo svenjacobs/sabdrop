@@ -186,6 +186,10 @@
         this._host = host;
     };
 
+    SABapi.prototype.getHost = function () {
+        return this._host;
+    };
+
     /**
      * authMethod === 'apikey' || 'login'
      */
