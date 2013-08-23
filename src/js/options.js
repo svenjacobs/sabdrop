@@ -7,8 +7,8 @@
     document.title = chrome.i18n.getMessage('options_title');
     $('#authMethod option[value="apikey"]').text(chrome.i18n.getMessage('options_setting_authmethod_api'));
     $('#authMethod option[value="login"]').text(chrome.i18n.getMessage('options_setting_authmethod_login'));
-    $('#nzbName option[value="always"]').text(chrome.i18n.getMessage('options_setting_nzbname_always'));
-    $('#nzbName option[value="never"]').text(chrome.i18n.getMessage('options_setting_nzbname_never'));
+    //$('#nzbName option[value="always"]').text(chrome.i18n.getMessage('options_setting_nzbname_always'));
+    //$('#nzbName option[value="never"]').text(chrome.i18n.getMessage('options_setting_nzbname_never'));
     $('label[for="host"]').prepend(chrome.i18n.getMessage('options_setting_host'));
     $('label[for="host"] sup').prop('title', chrome.i18n.getMessage('options_setting_host_help'));
     $('label[for="apiKey"]').prepend(chrome.i18n.getMessage('options_setting_apikey'));
@@ -27,8 +27,8 @@
     $('label[for="matchPatterns"] sup').prop('title', chrome.i18n.getMessage('options_setting_matchpatterns_help'));
     $('label[for="noFileUpload"]').prepend(chrome.i18n.getMessage('options_setting_fileupload'));
     $('label[for="noFileUpload"] sup').prop('title', chrome.i18n.getMessage('options_setting_fileupload_help'));
-    $('label[for="nzbName"]').prepend(chrome.i18n.getMessage('options_setting_nzbname'));
-    $('label[for="nzbName"] sup').prop('title', chrome.i18n.getMessage('options_setting_nzbname_help'));
+    //$('label[for="nzbName"]').prepend(chrome.i18n.getMessage('options_setting_nzbname'));
+    //$('label[for="nzbName"] sup').prop('title', chrome.i18n.getMessage('options_setting_nzbname_help'));
     $('label[for="requestInterval"]').prepend(chrome.i18n.getMessage('options_setting_requestinterval'));
     $('label[for="requestInterval"] sup').prop('title', chrome.i18n.getMessage('options_setting_requestinterval_help'));
     $('label[for="speedSliderMin"]').prepend(chrome.i18n.getMessage('options_setting_speedslidermin'));
@@ -181,8 +181,7 @@
         'The SABnzbd team',
         'The jQuery and jQuery UI developers for great and very useful JavaScript libraries',
         'Google for their Chrome browser and other products',
-        'GitHub for hosting this project',
-        'My wife for her patience ♥'
+        'GitHub for hosting this project'
     ];
 
     function startCredits() {

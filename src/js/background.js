@@ -43,40 +43,44 @@
         if (name === undefined) {
             name = null;
         }
+        
+        // webkitNotifications.createHTMLNotification() is deprecated and as of
+        // Chrome 29 doesn't work anymore, so the following code is commented out
 
-        if (localStorage.nzbName === 'always' && name === null) {
-            // Show notification popup asking for NZB name
+        //if (localStorage.nzbName === 'always' && name === null) {
+        //    // Show notification popup asking for NZB name
+        //
+        //    webkitNotifications.createHTMLNotification(
+        //        'ui_notification.html#' + JSON.stringify({
+        //            link: link,
+        //            category: category,
+        //            basename: basename
+        //        })
+        //    ).show();
 
-            webkitNotifications.createHTMLNotification(
-                'ui_notification.html#' + JSON.stringify({
-                    link: link,
-                    category: category,
-                    basename: basename
-                })
-            ).show();
+        //} else {
+        
+        // Send link to SABnzbd
 
-        } else {
-            // Send link to SABnzbd
+        name = (name !== null ? name : basename);
+        method = localStorage.noFileUpload === 'false' ? sabApi.sendFile : sabApi.sendLink;
 
-            name = (name !== null ? name : basename);
-            method = localStorage.noFileUpload === 'false' ? sabApi.sendFile : sabApi.sendLink;
+        method.call(sabApi, link, name, category, function (success) {
+            var title,
+                text,
+                notification;
 
-            method.call(sabApi, link, name, category, function (success) {
-                var title,
-                    text,
-                    notification;
+            if (success) {
+                title = chrome.i18n.getMessage('sent_popup_title');
+                text = chrome.i18n.getMessage('sent_popup_text', SABdrop.Common.truncate(name, 20));
+            } else {
+                title = chrome.i18n.getMessage('error_popup_title');
+                text = chrome.i18n.getMessage('error_popup_text');
+            }
 
-                if (success) {
-                    title = chrome.i18n.getMessage('sent_popup_title');
-                    text = chrome.i18n.getMessage('sent_popup_text', SABdrop.Common.truncate(name, 20));
-                } else {
-                    title = chrome.i18n.getMessage('error_popup_title');
-                    text = chrome.i18n.getMessage('error_popup_text');
-                }
-
-                showNotification(title, text);
-            });
-        }
+            showNotification(title, text);
+        });
+        //}
     }
 
     function createContextMenus() {

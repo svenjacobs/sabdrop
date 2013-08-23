@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.6 (08/23/13)
+----------------
+
+* Removed popup dialog with NZB name chooser because unfortunately required API is deprecated (SABdrop was broken in Chrome 29)
+
 0.7.5 (10/23/12)
 ----------------
 
