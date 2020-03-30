@@ -1,3 +1,5 @@
+**The project is no longer maintained and is looking for a new maintainer!**
+
 SABdrop
 =======
 
