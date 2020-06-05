@@ -1,3 +1,5 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 **The project is no longer maintained and is looking for a new maintainer!**
 
 SABdrop
